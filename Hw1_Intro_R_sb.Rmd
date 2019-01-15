@@ -1,0 +1,195 @@
+---
+title: "STOR 767 Spring 2019 Hw1: Computational Part"
+author: "YOUR NAME"
+header-includes:
+- \usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm}
+- \usepackage[labelsep=space]{caption}
+output:
+  pdf_document: default
+  html_document: default
+subtitle: \textbf{Due on 01/23/2019 in Class}
+bibliography: bibfile.bib
+link-citations: yes
+linkcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require("diagram")) { install.packages("diagram", repos = "http://cran.us.r-project.org"); library(diagram) }
+if(!require("ggplot2")) { install.packages("ggplot2", repos = "http://cran.us.r-project.org"); library(ggplot2) }
+if(!require("dplyr")) { install.packages("dplyr", repos = "http://cran.us.r-project.org"); library(dplyr) }
+if(!require("knitr")) {install.packages("knitr", repos = "http://cran.us.r-project.org"); library("knitr")}
+if(!require("kableExtra")) {install.packages("kableExtra", repos = "http://cran.us.r-project.org"); library("kableExtra")}
+if(!require("lbfgs")) {install.packages("lbfgs", repos = "http://cran.us.r-project.org"); library("lbfgs")}
+```
+
+\theoremstyle{definition}
+\newtheorem*{hint}{Hint}
+\newtheorem*{pchln}{Punchline}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+
+\newcommand{\Hb}{\mathbf{H}}
+
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cX}{\mathcal{X}}
+
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbR}{\mathbb{R}}
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+
+**Instruction.** 
+
+- Homework 1 includes \textbf{Theoretical Part} (50\%) and \textbf{Computational Part} (50\%).
+
+- For homework submission and grading, edit this document and create a PDF file to print and submit in class. Codes and key results should be displayed.
+
+**Exercise 1.** *(5 pt)* **Hadamard matrix** is a useful construction for two-level orthogonal design. It's defined recursively by
+$$ \Hb_1 = \begin{pmatrix} 1 \end{pmatrix} \in \bbR^{1\times 1}, \quad \Hb_{2^k} = \begin{pmatrix} \Hb_{2^{k-1}} & \Hb_{2^{k-1}} \\ \Hb_{2^{k-1}} & - \Hb_{2^{k-1}} \end{pmatrix} \in \bbR^{2^{k}\times 2^{k}}. \quad(k \in \bbN) $$
+Create $\Hb_{2^4}$ in **R**.
+
+```{r, eval=FALSE}
+YOUR CODE HERE
+```
+
+**Exercise 2.** *(5 pt)* It has been shown that a LASSO estimate for the location of $X$ is of the following thresholding  form
+$$ \hat{\mu}_{\textrm{LASSO}} = \argmin_{\mu \in \bbR} {1 \over 2} (X - \mu)^2 + \lambda |\mu| = \begin{cases} 
+X + \lambda, & X \le -\lambda \\
+0, & -\lambda < X \le \lambda \\
+X - \lambda, & X > \lambda
+\end{cases} $$
+Now let $\lambda=1$ and consider 100 *i.i.d.* sample $\{X_i\}_{i=1}^n$ drawn from $\cN(0,1)$. Return the vector of the LASSO estimates for their individual locations in **R**.
+
+```{r, eval=FALSE}
+x <- rnorm(100)
+YOUR CODE HERE
+```
+
+**Exercise 3.** *(5 pt)* Table \ref{tab:oa} presents a mixed 2-level and 3-level orthogonal design from [@wu2011experiments]. The first four rows in 2-level factors A, B and C, as a $2^{3-1}$ design, have been repeated for the next eight 4-row groups. Groups are embedded into a $3^{3-1}$ design in 3-level factors D, E and F. In particular, column C = column A $\times$ column B, column F = column D + column E (mod 3) by encoding $(-1,0,1)$ in $(1,2,0)$. Create such design matrix in **R** without reading from Table \ref{tab:oa} directly.
+
+\rowcolors{2}{gray!6}{white}
+\begin{table}[!h]
+
+\caption{\label{tab:oa}$2^{3-1} \times 3^{3-1}$ Orthogonal Array}
+\centering
+\begin{tabu} to \linewidth {>{\bfseries}l>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X}
+\hiderowcolors
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{2-Level Factors} & \multicolumn{3}{c}{3-Level Factors} \\
+\cmidrule(l{2pt}r{2pt}){2-4} \cmidrule(l{2pt}r{2pt}){5-7}
+\textbf{ } & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{D} & \textbf{E} & \textbf{F}\\
+\midrule
+\showrowcolors
+1 & -1 & -1 & 1 & -1 & -1 & -1\\
+2 & 1 & -1 & -1 & -1 & -1 & -1\\
+3 & -1 & 1 & -1 & -1 & -1 & -1\\
+4 & 1 & 1 & 1 & -1 & -1 & -1\\
+\hline
+5 & -1 & -1 & 1 & 0 & -1 & 0\\
+6 & 1 & -1 & -1 & 0 & -1 & 0\\
+7 & -1 & 1 & -1 & 0 & -1 & 0\\
+8 & 1 & 1 & 1 & 0 & -1 & 0\\
+\hline
+9 & -1 & -1 & 1 & 1 & -1 & 1\\
+10 & 1 & -1 & -1 & 1 & -1 & 1\\
+11 & -1 & 1 & -1 & 1 & -1 & 1\\
+12 & 1 & 1 & 1 & 1 & -1 & 1\\
+\hline
+13 & -1 & -1 & 1 & -1 & 0 & 0\\
+14 & 1 & -1 & -1 & -1 & 0 & 0\\
+15 & -1 & 1 & -1 & -1 & 0 & 0\\
+16 & 1 & 1 & 1 & -1 & 0 & 0\\
+\hline
+17 & -1 & -1 & 1 & 0 & 0 & 1\\
+18 & 1 & -1 & -1 & 0 & 0 & 1\\
+19 & -1 & 1 & -1 & 0 & 0 & 1\\
+20 & 1 & 1 & 1 & 0 & 0 & 1\\
+\hline
+21 & -1 & -1 & 1 & 1 & 0 & -1\\
+22 & 1 & -1 & -1 & 1 & 0 & -1\\
+23 & -1 & 1 & -1 & 1 & 0 & -1\\
+24 & 1 & 1 & 1 & 1 & 0 & -1\\
+\hline
+25 & -1 & -1 & 1 & -1 & 1 & 1\\
+26 & 1 & -1 & -1 & -1 & 1 & 1\\
+27 & -1 & 1 & -1 & -1 & 1 & 1\\
+28 & 1 & 1 & 1 & -1 & 1 & 1\\
+\hline
+29 & -1 & -1 & 1 & 0 & 1 & -1\\
+30 & 1 & -1 & -1 & 0 & 1 & -1\\
+31 & -1 & 1 & -1 & 0 & 1 & -1\\
+32 & 1 & 1 & 1 & 0 & 1 & -1\\
+\hline
+33 & -1 & -1 & 1 & 1 & 1 & 0\\
+34 & 1 & -1 & -1 & 1 & 1 & 0\\
+35 & -1 & 1 & -1 & 1 & 1 & 0\\
+36 & 1 & 1 & 1 & 1 & 1 & 0\\
+\bottomrule
+\end{tabu}
+\end{table}
+\rowcolors{2}{white}{white}
+
+```{r eval=FALSE}
+YOUR CODE HERE
+```
+
+**Exercise 4.** *(5 pt)* Thickness data from a paint experiment based on Table \ref{tab:oa} design in [@wu2011experiments] are collected as below. Compute the sum of squares for all factors (main effects) from scratch, *i.e.* without resorting to any ANOVA-type **R** functions. Compare them with outputs produced by `aov`.
+
+```{r eval=FALSE}
+y <- scan(text = "0.755 0.550 0.550 0.600 0.900 0.875 1.000 1.000 1.400 1.225 1.225 1.475 
+0.600 0.600 0.625 0.500 0.925 1.025 0.875 0.850 1.200 1.250 1.150 1.150 0.500 0.550 0.575 
+0.600 0.900 1.025 0.850 0.975 1.100 1.200 1.150 1.300")
+
+YOUR CODE HERE
+```
+
+**Exercise 5.** *(10 pt)* Write a function `optim_gd(par, fn, gr, gr_lips, maxit = 10000, tol = 1e-5)` to find the minimizer of a smooth convex function using gradient descent [^4].
+
+- `par`: initial values for the parameters to be optimized over.
+- `fn`: objective function to be minimized $f$ on domain $\cX$.
+- `gr`: gradient of objective function $\nabla f$.
+- `gr_lips`: Lipschitz gradient constant $L_f$, *i.e.*
+$$\|\nabla f(\bx) - \nabla f(\by)\|_2 \le L_f\|\bx - \by\|_2. \quad (\forall \bx, \by \in \cX)$$
+- `maxit`: maximal number of iterations.
+- `tol`: convergence tolerance parameter $\epsilon > 0$.
+
+Iterations are performed by
+$$\bx^{k+1} := \bx^k - {1 \over L_f}\nabla f(\bx^k)$$
+with stopping criterion
+$${\|\nabla f(\bx^k)\|_2 \over \max\{1,\|\nabla f(\bx^0)\|_2\}} \le \epsilon.$$
+
+[^4]: STOR 893 Fall 2018 lecture note http://quoctd.web.unc.edu/files/2018/10/lecture4-selected-cvx-methods.pdf.
+
+Return a list with `par =` minimizer,  `value =` optimal objective value, and `counts =` number of iterations performed. Apply it to the bivariate function [^5]
+
+[^5]: Negative log-likelihood of Logistic regression of the data $\{(-1,1),(0,0),(1,1)\}$. Try performing `glm` to see whether the outputs coincide.
+
+$$f(x_1,x_2) =  \log\left( 1+e^{-x_1+x_2} \right) + \log\left( 1+e^{x_1} \right) + \log\left( 1+e^{-x_1-x_2} \right) $$
+with $L_f = {5 \over 4}$ and initial value $(0, 0)$. Compare it with the built-in optimization function `optim` with `method = "BFGS"`.
+
+```{r, eval=FALSE}
+YOUR CODE HERE
+```
+
+**Exercise 6.** *(10 pt)* Create the ANOVA table based on **Exercise 4** from scratch. Sum of squares, degrees of freedom, F-values, p-values and indicators of significance are to be reported. Comment on the relationship of all sum of squares and explain why.
+
+```{r eval=FALSE}
+YOUR CODE HERE
+```
+
+**Exercise 7.** *(10 pt)* Reproduce the code that generates the following plot based on **Exercise 4**.
+
+```{r echo=FALSE}
+knitr::include_graphics("main_effect_plots.pdf")
+```
+
+```{r eval=FALSE}
+YOUR CODE HERE
+```
+
+# Biblography
