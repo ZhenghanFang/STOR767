@@ -11,6 +11,6 @@ The table below shows the textbook exercises contained in each homework.
 |hw4       |5.1, 5.4, 5.7, 5.13, 6.12      |
 |hw5       |6.9, 7.4, 7.5, 7.9             |
 
-Other repos on solutions to The Elements of Statistical Learning:\
+Other repos on solutions to The Elements of Statistical Learning:  
 1. https://github.com/talwarabhimanyu/my-solutions-The-Elements-of-Statistical-Learning.git
 2. https://github.com/ajtulloch/Elements-of-Statistical-Learning.git
