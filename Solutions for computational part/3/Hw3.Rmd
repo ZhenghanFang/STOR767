@@ -1,0 +1,159 @@
+---
+title: "STOR 767 Spring 2019 Hw3: Computational Part"
+author: "Zhenghan Fang"
+header-includes:
+- \usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm}
+- \usepackage[labelsep=space]{caption}
+output:
+  html_document: default
+  pdf_document: default
+subtitle: \textbf{Due on 02/18/2019 in Class}
+
+link-citations: yes
+linkcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require("diagram")) { install.packages("diagram", repos = "http://cran.us.r-project.org"); library(diagram) }
+if(!require("ggplot2")) { install.packages("ggplot2", repos = "http://cran.us.r-project.org"); library(ggplot2) }
+if(!require("dplyr")) { install.packages("dplyr", repos = "http://cran.us.r-project.org"); library(dplyr) }
+if(!require("knitr")) {install.packages("knitr", repos = "http://cran.us.r-project.org"); library("knitr")}
+if(!require("kableExtra")) {install.packages("kableExtra", repos = "http://cran.us.r-project.org"); library("kableExtra")}
+if(!require("lbfgs")) {install.packages("lbfgs", repos = "http://cran.us.r-project.org"); library("lbfgs")}
+library('MASS')
+library('rms')
+```
+
+\theoremstyle{definition}
+\newtheorem*{hint}{Hint}
+\newtheorem*{pchln}{Punchline}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+
+\newcommand{\Hb}{\mathbf{H}}
+
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cX}{\mathcal{X}}
+
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbR}{\mathbb{R}}
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+
+**Instruction.** 
+
+- For homework submission and grading, edit this document and create a PDF file to print and submit in class. Codes and key results should be displayed.
+
+**Exercise 1.**
+
+Load dataset.
+```{r}
+SAheart = read.table('SAheart.data.txt', sep=",", header=T, row.names=1)
+```
+Use half of the dataset as training data.
+```{r}
+train = sample(1:462, 231)
+```
+Perform LDA.
+```{r}
+model = lda(formula=chd~., data=SAheart, subset=train)
+model
+```
+Define error as number of misclassified samples/total number of samples.
+
+The test error of LDA is
+```{r}
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum(pred$class != SAheart$chd[-train] ) / length(pred$class)
+err
+```
+Perform QDA.
+```{r}
+model = qda(formula=chd~., data=SAheart, subset=train)
+model
+```
+The test error of QDA is
+```{r}
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum(pred$class != SAheart$chd[-train] ) / length(pred$class)
+err
+```
+Perform Logistic regression.
+```{r}
+model = lrm(formula=chd~., data=SAheart, subset=train)
+model
+```
+The test error of Logistic regression is
+```{r}
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum((pred>0)*1 != SAheart$chd[-train] ) / length(pred)
+err
+```
+
+**Exercise 2.**
+
+Load dataset. Remove column with NA numbers.
+```{r}
+zip.train = read.csv("zip.train.gz", header = F, sep=" ")
+zip.test = read.csv("zip.test.gz", header = F, sep=" ")
+zip.train = zip.train[,-258]
+```
+Select data of 3's and 8's.
+```{r}
+zip.train = zip.train[which(zip.train$V1==3 | zip.train$V1==8), ]
+zip.test = zip.test[which(zip.test$V1==3 | zip.test$V1==8), ]
+```
+Perform LDA.
+```{r}
+model = lda(formula=V1~., data=zip.train)
+model
+```
+Define error as number of misclassified samples/total number of samples.
+
+The test error of LDA is
+```{r}
+pred = predict(object = model, newdata = zip.test)
+err = sum(pred$class != zip.test$V1 ) / length(pred$class)
+err
+```
+Perform QDA.
+```{r error=TRUE}
+model = qda(formula=V1~., data=zip.train)
+```
+Failed becaused of "rank deficiency in group 8". To deal with rank deficiency, find and remove the collinear variables. Calculate the correlation matrix from samples in group 8 and remove the variables with correlation > 0.7.
+```{r}
+tmp <- cor(zip.train[zip.train$V1 == 8,-c(1)])
+tmp[upper.tri(tmp)] <- 0
+diag(tmp) <- 0
+tmp[is.na(tmp)] <- 1
+new.var = which(!apply(tmp,1,function(x) any(x > 0.7))) + 1
+zip.train.new = zip.train[, c(1,new.var)]
+```
+Perform QDA after removing collinearity.
+```{r}
+model = qda(formula=V1~., data=zip.train.new)
+model
+```
+The test error of QDA is
+```{r}
+pred = predict(object = model, newdata = zip.test)
+err = sum(pred$class != zip.test$V1 ) / length(pred$class)
+err
+```
+Perform Logistic regression (on the data after collinearity removal).
+```{r}
+model = lrm(formula=V1~., data=zip.train.new)
+model
+```
+The test error of Logistic regression is
+```{r}
+pred = predict(object = model, newdata = zip.test)
+err = sum((pred>0) != (zip.test$V1 == 8) ) / length(pred)
+err
+```
+

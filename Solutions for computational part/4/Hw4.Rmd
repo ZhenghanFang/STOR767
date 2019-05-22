@@ -1,0 +1,289 @@
+---
+title: "STOR 767 Spring 2019 Hw4: Computational Part"
+author: "Zhenghan Fang"
+header-includes:
+- \usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm}
+- \usepackage[labelsep=space]{caption}
+output:
+  html_document: default
+  pdf_document: default
+subtitle: \textbf{Due on 02/27/2019 in Class}
+
+link-citations: yes
+linkcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require("diagram")) { install.packages("diagram", repos = "http://cran.us.r-project.org"); library(diagram) }
+if(!require("ggplot2")) { install.packages("ggplot2", repos = "http://cran.us.r-project.org"); library(ggplot2) }
+if(!require("dplyr")) { install.packages("dplyr", repos = "http://cran.us.r-project.org"); library(dplyr) }
+if(!require("knitr")) {install.packages("knitr", repos = "http://cran.us.r-project.org"); library("knitr")}
+if(!require("kableExtra")) {install.packages("kableExtra", repos = "http://cran.us.r-project.org"); library("kableExtra")}
+if(!require("lbfgs")) {install.packages("lbfgs", repos = "http://cran.us.r-project.org"); library("lbfgs")}
+library('MASS')
+library('rms')
+library(splines)
+library('locfit')
+library('kernlab')
+```
+
+\theoremstyle{definition}
+\newtheorem*{hint}{Hint}
+\newtheorem*{pchln}{Punchline}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+
+\newcommand{\Hb}{\mathbf{H}}
+
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cX}{\mathcal{X}}
+
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbR}{\mathbb{R}}
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+
+**Instruction.** 
+
+- For homework submission and grading, edit this document and create a PDF file to print and submit in class. Codes and key results should be displayed.
+
+**Exercise 1.**
+
+Generate training data.
+```{r}
+x = runif(100,0,1)
+e = rnorm(100)
+y = sin(12*(x + 0.2))/(x+0.2) + e
+```
+Generate test data.
+```{r}
+x.te = runif(10000,0,1)
+x.te = sort(x.te)
+e.te = rnorm(10000)
+y.te = sin(12*(x.te + 0.2))/(x.te+0.2)
+```
+Polynomial (cubic) regression.
+```{r}
+fit = lm(y~bs(x,degree=3))
+summary(fit)
+```
+MSE (mean square error) of polynomial regression is
+```{r}
+pred.poly = predict(fit, data.frame(x=x.te))
+mean((pred.poly - y.te)^2)
+```
+B-spline.
+```{r}
+fit = lm(y~bs(x,df=7,degree=3))
+summary(fit)
+```
+MSE of B-spline is
+```{r}
+pred.bs = predict(fit, data.frame(x=x.te))
+mean((pred.bs - y.te)^2)
+```
+Natural cubic spline.
+```{r}
+fit = lm(y~ns(x,df=7))
+summary(fit)
+```
+MSE of natural cubic spline is
+```{r}
+pred.ns = predict(fit, data.frame(x=x.te))
+mean((pred.ns - y.te)^2)
+```
+Smoothing spline (using ‘generalized’ cross-validation).
+```{r}
+fit = smooth.spline(x,y)
+fit
+summary(fit)
+```
+MSE of smoothing spline is
+```{r}
+pred.smooth = predict(fit,x.te)
+mean((pred.smooth$y - y.te)^2)
+```
+Local polynomial regression with Gaussian kernel.
+```{r}
+fit.loc.gauss = locfit(y~x, data.frame(x=x,y=y), kern='gauss')
+summary(fit.loc.gauss)
+```
+MSE of local polynomial regression with Gaussian kernel is
+```{r}
+pred.loc.gauss = predict(fit.loc.gauss, data.frame(x=x.te))
+mean((pred.loc.gauss - y.te)^2)
+```
+Local polynomial regression with tricube kernel.
+```{r}
+fit.loc.tricube = locfit(y~x, data.frame(x=x,y=y), kern='tcub')
+summary(fit.loc.tricube)
+```
+MSE of local polynomial regression with tricube kernel is
+```{r}
+pred.loc.tricube = predict(fit.loc.tricube, data.frame(x=x.te))
+mean((pred.loc.tricube - y.te)^2)
+```
+Plot the fitting results.
+```{r}
+plot(x, y, ylim=c(-7,4))
+lines(x.te, pred.poly, col = 'red')
+lines(x.te, pred.bs, col = 'blue')
+lines(x.te, pred.ns, col = 'yellow')
+lines(x.te, pred.smooth$y, col = 'green')
+lines(x.te, pred.loc.gauss, col = 'brown')
+lines(x.te, pred.loc.tricube, col = 'orange')
+legend("bottomright",c('Polynomial','B-spline','Natural spline','Smoothing spline','Local regression with Gaussian kernel','Local regression with tricube kernel'), lty = c(1), col = c('red','blue','yellow','green','brown','orange'))
+```
+
+**Exercise 2.**
+
+Load data.
+```{r}
+zip.train = read.csv('zip.train.gz', header = F, sep=" ")
+zip.test = read.csv('zip.test.gz', header = F, sep=" ")
+zip.train = zip.train[, -258]
+zip.train = zip.train[which(zip.train$V1==3 | zip.train$V1==8), ]
+zip.test = zip.test[which(zip.test$V1==3 | zip.test$V1==8), ]
+N.3 = length(which(zip.train$V1==3))
+N.8 = length(which(zip.train$V1==8))
+N.test = dim(zip.test)[1]
+```
+
+Generate a Gaussian radial basis function kernel.
+```{r}
+rbf <- rbfdot(sigma = 0.05)
+```
+
+Define function "locLda" for local LDA, which returns the logit for the test sample "test" using training data "zip.train" and kernel function "kernel".
+```{r}
+locLda = function(zip.train, test, kernel){
+  
+  # compute weights for training samples
+  weight = kernelMatrix(kernel, data.matrix(zip.train[,-1]), data.matrix(test))
+  
+  # compute centers and covariance by weighted average
+  t = cov.wt(zip.train[which(zip.train$V1==3), -1], weight[which(zip.train$V1==3)])
+  mu.3 = data.matrix(t$center)
+  cov.3 = t$cov
+  t = cov.wt(zip.train[which(zip.train$V1==8), -1], weight[which(zip.train$V1==8)])
+  mu.8 = data.matrix(t$center)
+  cov.8 = t$cov
+  cov.all = (cov.3 * N.3 + cov.8 * N.8) / (N.3+N.8 - 2)
+  
+  # compute prior probablity of classes by weighted average
+  pi.3 = sum(weight[which(zip.train$V1==3)]) / sum(weight)
+  pi.8 = sum(weight[which(zip.train$V1==8)]) / sum(weight)
+  
+  # compute inverse of covariance matrix
+  cov.all.inv = solve(cov.all)
+  
+  # compute the logit
+  logit = log(pi.3/pi.8) - 0.5 * t(mu.3 + mu.8) %*% cov.all.inv %*% (mu.3 - mu.8) + data.matrix(test) %*% cov.all.inv %*% (mu.3 - mu.8)
+  
+  return(logit)
+}
+```
+
+Apply local LDA with Gaussian radial basis function kernel. The test error rate is
+```{r}
+logit = c()
+for (k in c(1:N.test)){
+  logit[k] = locLda(zip.train, zip.test[k,-1], rbf)
+}
+pred = factor(3*(logit > 0) + 8*(logit <= 0))
+err = sum(pred != zip.test$V1) / N.test
+err
+```
+
+Apply local LDA with Polynomial kernel. The test error rate is
+```{r}
+poly <- polydot(degree = 2)
+logit = c()
+for (k in c(1:N.test)){
+  logit[k] = locLda(zip.train, zip.test[k,-1], poly)
+}
+pred = factor(3*(logit > 0) + 8*(logit <= 0))
+err = sum(pred != zip.test$V1) / N.test
+err
+```
+
+**Exercise 3.**
+
+Load data. Select samples of the phonemes "aa" and "ao". Randomly select 1000 training samples.
+```{r}
+phoneme = read.csv('phoneme.data')
+phoneme = phoneme[which(phoneme$g=='aa' | phoneme$g=='ao'),]
+phoneme = phoneme[,2:258]
+train = sample(c(1:1717))[1:1000]
+```
+
+Filter the inputs by bases of natural cubic splines (degree of freedom = 12).
+```{r}
+phoneme.matrix = data.matrix(phoneme[,1:256])
+basis = ns(c(1:256), df=12)
+x.filtered = phoneme.matrix %*% basis
+```
+
+Fit coefficients $\theta$ on filtered inputs by logistic regression.
+```{r}
+phoneme.filtered = data.frame(x.filtered)
+phoneme.filtered$g = factor(phoneme$g)
+fit.restricted = glm(g~., data=phoneme.filtered, family = binomial(link = "logit"), subset = train)
+theta.restricted = basis %*% fit.restricted$coefficients[2:13]
+```
+
+Fit $\theta$ on raw inputs.
+```{r}
+fit.raw = glm(g~., data=phoneme, family = binomial(link = "logit"), subset = train)
+theta.raw = fit.raw$coefficients[2:257]
+```
+
+Plot the coefficients obtained from raw (gray) and filtered (red) data as a function of frequency (i.e. Figure 5.5 in textbook).
+```{r}
+plot(c(1:256), theta.raw, type='l', col = "dark gray", xlab='Frequency', ylab='Logistic Regression Coefficients', main='Phoneme Classification: Raw and Restricted Logistic Regression')
+lines(c(1:256), theta.restricted, col = "red")
+lines(c(1:256), rep(0,256), col = "black")
+```
+
+Quadratic discriminant analysis (QDA).
+
+Set five degrees of freedom: 6, 9, 12, 15, 18. Because intercept is not included, the corresponding numbers of knots are 7, 10, 13, 16, 19.
+```{r}
+df.cv = c(6,9,12,15,18)
+```
+
+Use cross validation to select the best degree of freedom. Define error as the proportion of misclassified samples. The cross-validation errors for different degrees of freedom are
+```{r}
+i=1
+err=c()
+for (df.i in df.cv){
+  basis = ns(c(1:256), df=df.i)
+  x.filtered = phoneme.matrix %*% basis
+  
+  phoneme.filtered = data.frame(x.filtered)
+  phoneme.filtered$g = factor(phoneme$g)
+  
+  fit.qda.cv = qda(g~., data=phoneme.filtered, subset=train, CV=TRUE)
+  err[i] = sum(fit.qda.cv$class != phoneme.filtered$g[train])/1000
+  i=i+1
+}
+err
+```
+
+Select the degree of freedom that yields the lowest error (`r df.cv[which(err == min(err))]`, error = `r min(err)`). The test error of QDA is
+```{r}
+basis = ns(c(1:256), df=df.cv[which(err == min(err))])
+x.filtered = phoneme.matrix %*% basis
+phoneme.filtered = data.frame(x.filtered)
+phoneme.filtered$g = factor(phoneme$g)
+
+fit.qda = qda(g~., data=phoneme.filtered, subset=train)
+
+pred.qda = predict(fit.qda, phoneme.filtered[-train,])
+sum(pred.qda$class != phoneme.filtered$g[-train])/717
+```

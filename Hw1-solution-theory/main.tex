@@ -1,0 +1,362 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumerate}
+\newcommand{\XX}{\boldsymbol{X}}
+\newcommand{\HH}{\mathbf{H}}
+\newcommand{\BB}{\boldsymbol{\beta}}
+\newcommand{\II}{\boldsymbol{I}}
+\DeclareMathOperator{\Tr}{Tr}
+\newcommand{\Cov}{\mathbf{Cov}}
+\newcommand{\MSE}{\mathbf{MSE}}
+\newcommand{\Var}{\mathbf{Var}}
+\newcommand{\Xnew}{\boldsymbol{X}_m}
+\newcommand{\Ynew}{Y_m}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\def\name{Zhenghan Fang}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\name}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\begin{document}
+
+
+% ========== Edit your name here
+\author{\name}
+\title{STOR 767, Advanced Machine Learning \\ Homework 1, Theoretical Part}
+\maketitle
+
+% ========== Begin answering questions here
+\begin{enumerate}
+
+\item
+Answer to question 1:
+
+\begin{enumerate}[(i)]
+\item
+\begin{align}
+    Y = \XX\BB + \epsilon
+\end{align}
+where $Y = \begin{bmatrix}Y_1 \\ \vdots \\ Y_n\end{bmatrix}$, 
+$\XX = \begin{bmatrix} \XX_1^T \\ \vdots \\ \XX_n^T \end{bmatrix}$, and
+$\epsilon = \begin{bmatrix} \epsilon_1 \\ \vdots \\ \epsilon_n \end{bmatrix}$.
+
+\item
+The least square estimate (LSE) of $\BB$ is
+\begin{align}
+    \hat\BB_{LS} = \arg \min_{\BB}{(Y-\XX\BB)^T(Y-\XX\BB)}
+\end{align}
+Set the derivative of $(Y-\XX\BB)^T(Y-\XX\BB)$ w.r.t $\BB$ to zero, we get
+\begin{align}
+    & \XX^T(Y-\XX\hat\BB_{LS}) = 0 \\
+    \Rightarrow \quad &
+    \XX^TY - \XX^T\XX\hat\BB_{LS} = 0 \\
+    \Rightarrow \quad &
+    \hat\BB_{LS} = (\XX^T\XX)^{-1}\XX^TY
+\end{align}
+
+The LSE of $\sigma^2$ is
+\begin{align}
+    \hat\sigma^2_{LS} 
+    & = \frac{1}{n}(Y-\hat Y)^T(Y-\hat Y) \\
+    & = \frac{1}{n}(Y-\XX\hat\BB_{LS})^T(Y-\XX\hat\BB_{LS}) \\
+    & =\frac{1}{n}(Y-\XX(\XX^T\XX)^{-1}\XX^TY)^T(Y-\XX(\XX^T\XX)^{-1}\XX^TY)
+\end{align}
+
+\item
+\begin{align}
+    \HH = \XX(\XX^T\XX)^{-1}\XX^T
+\end{align}
+$\HH$ represents the linear transform from $\{Y_i\}_{i=1}^n$ to 
+the estimations of $\{Y_i\}_{i=1}^n$ by the linear regression model. $\HH$ implies that this transform is determined only by
+$\{\XX_i\}_{i=1}^n$.
+
+\item
+\begin{align}
+    \mathbb{E}(\hat\BB_{LS}) 
+    & = \mathbb{E}\left((\XX^T\XX)^{-1}\XX^TY\right) \\
+    & = (\XX^T\XX)^{-1}\XX^T\mathbb{E}\left(Y\right) \\
+    & = (\XX^T\XX)^{-1}\XX^T\XX\BB \\
+    & = \BB
+\end{align}
+
+\begin{align}
+    \mathbb{E}(\hat\sigma^2_{LS}) 
+    & = \mathbb{E}\left( \frac{1}{n}(Y-\XX(\XX^T\XX)^{-1}\XX^TY)^T(Y-\XX(\XX^T\XX)^{-1}\XX^TY) \right) \\
+    & = \mathbb{E}\left( \frac{1}{n}(Y-\HH Y)^T(Y - \HH Y) \right) \\
+    & = \frac{1}{n} \left((\II - \HH)\XX\BB \right) ^T \left((\II - \HH)\XX\BB \right) + \frac{\sigma^2}{n} \Tr \left( (\II-\HH) (\II-\HH)^T \right) \\
+    & = \frac{\sigma^2}{n} \Tr \left( \II-\HH \right) \\
+    & = \sigma^2 \left(1- \frac{1}{n} \Tr \left( \HH \right) \right)
+\end{align}
+
+\begin{align}
+    \Cov \left( \hat\BB_{LS} \right) & = \Cov \left( (\XX^T\XX)^{-1}\XX^TY \right) \\
+    & = (\XX^T\XX)^{-1}\XX^T \Cov \left( Y \right) \left( (\XX^T\XX)^{-1}\XX^T \right)^T \\
+    & = (\XX^T\XX)^{-1}\XX^T \Cov \left( Y \right) \XX (\XX^T \XX) ^{-1} \\
+    & = (\XX^T\XX)^{-1}\XX^T \Cov \left( \epsilon \right) \XX (\XX^T \XX) ^{-1} \\
+    & = \sigma^2  (\XX^T \XX) ^{-1}
+\end{align}
+
+\item
+\begin{align}
+    \hat\BB_{ML}, \hat\sigma^2_{ML} & = \arg \max_{\BB, \sigma^2} \Pr \left( \XX, Y | \BB, \sigma^2 \right) \\
+    & = \arg \max_{\BB, \sigma^2} \Pr \left( Y | \XX, \BB, \sigma^2 \right) \\
+    & = \arg \max_{\BB, \sigma^2} \prod_{i=1}^{n} \Pr \left(Y_i | \XX_i, \BB, \sigma^2 \right) \\
+    & = \arg \max_{\BB, \sigma^2} \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left[ -\frac{( Y_i - \XX_i^T \BB )^2}{2\sigma^2} \right] \\
+    & = \arg \max_{\BB, \sigma^2} \sum_{i=1}^{n} \left\{ - \frac{1}{2} \log \left(\sigma^2\right) -\frac{( Y_i - \XX_i^T \BB )^2}{2\sigma^2} \right\} \\
+    & = \arg \max_{\BB, \sigma^2} - \frac{n}{2} \log \left(\sigma^2\right) -\frac{1}{2\sigma^2} \sum_{i=1}^{n} ( Y_i - \XX_i^T \BB )^2
+\end{align}
+
+Differentiate the object function w.r.t. $\BB$ and $\sigma^2$, and set the derivative to zero, we get
+
+\begin{align}
+    \hat\BB_{ML} = (\XX^T\XX)^{-1}\XX^TY
+\end{align}
+
+\begin{align}
+    & \frac{n}{2\hat\sigma^2_{ML}} - \frac{\sum_{i=1}^{n} ( Y_i - \XX_i^T \hat\BB_{ML} )^2}{2(\hat\sigma^2_{ML})^2} = 0 \\
+    \Rightarrow \quad & \hat\sigma^2_{ML} = \frac{1}{n} \sum_{i=1}^{n} ( Y_i - \XX_i^T \hat\BB_{ML} )^2 \\
+    \Rightarrow \quad & \hat\sigma^2_{ML} =  \frac{1}{n}(Y-\HH Y)^T(Y-\HH Y)
+\end{align}
+
+Proof of $\hat\BB_{ML} \independent  \hat\sigma^2_{ML}$:
+\begin{align}
+    \mathbb{E}(\hat\BB_{ML})
+    & = \mathbb{E}( (\XX^T\XX)^{-1}\XX^TY ) \\
+    & =  \BB
+\end{align}
+
+
+\begin{align}
+    \mathbb{E} \left[ \hat\BB_{ML} \hat\sigma^2_{ML} \right]
+    & =  \mathbb{E} \left[ (\XX^T\XX)^{-1}\XX^TY \hat\sigma^2_{ML} \right]\\
+    & =  \mathbb{E} \left[(\XX^T\XX)^{-1}\XX^T (\XX\BB+\epsilon) \hat\sigma^2_{ML} \right]\\
+    & = \mathbb{E} \left[(\XX^T\XX)^{-1}\XX^T \XX\BB \hat\sigma^2_{ML} + (\XX^T\XX)^{-1}\XX^T \epsilon \hat\sigma^2_{ML} \right]\\
+    & = \mathbb{E} \left[\BB \hat\sigma^2_{ML} + (\XX^T\XX)^{-1}\XX^T \epsilon \hat\sigma^2_{ML} \right] \\
+    & = \BB \mathbb{E} \left[\hat\sigma^2_{ML} \right] + (\XX^T\XX)^{-1}\XX^T  \mathbb{E} \left[\epsilon \hat\sigma^2_{ML} \right] 
+\end{align}
+where
+\begin{align}
+    \mathbb{E} \left[\epsilon \hat\sigma^2_{ML} \right] 
+    & = \mathbb{E} [ \epsilon \XX\BB^T (\II-\HH) \XX\BB + \epsilon \epsilon^T (\II-\HH) \XX\BB \\
+    & \quad  + \epsilon \XX\BB^T (\II-\HH) \epsilon + \epsilon \epsilon^T (\II-\HH) \epsilon ] \\
+    & = 0 + \sigma^2 (\II-\HH) \XX\BB + \sigma^2 (\II-\HH) \XX\BB + 0 \\
+    & = 0
+\end{align}
+Therefore,
+\begin{align}
+    \mathbb{E} \left[ \hat\BB_{ML} \hat\sigma^2_{ML} \right]
+    & = \BB \mathbb{E} \left[ \hat\sigma^2_{ML} \right] \\
+    & = \mathbb{E} \left[ \hat\BB_{ML} \right] \mathbb{E} \left[ \hat\sigma^2_{ML} \right]
+\end{align}
+Therefore, $\hat\BB_{ML} \independent  \hat\sigma^2_{ML}$. 
+
+\item
+From the calculation above, we get
+\begin{gather}
+    \hat\BB_{ML} = \hat\BB_{LS} \\
+    \hat\sigma^2_{ML} = \hat\sigma^2_{LS}
+\end{gather}
+This suggests that the MLE of $\BB$ and $\sigma^2$ under the assumption that error $\epsilon$ follows Gaussian distribution yields the LSE of  $\BB$ and $\sigma^2$.
+
+\item
+We denote the new independent sample to be predicted as $( \Xnew, \Ynew)$, because we have defined $\XX = \begin{bmatrix} \XX_1^T \\ \vdots \\ \XX_n^T \end{bmatrix}$ and $Y = \begin{bmatrix}Y_1 \\ \vdots \\ Y_n\end{bmatrix}$.
+\begin{align}
+    \MSE (\hat Y_{LS}) 
+    & = \mathbb{E}\left( \Ynew - \hat Y_{LS} \right) ^2 \\
+    & = \mathbb{E}\left( \Xnew^T \BB + \epsilon - \hat Y_{LS} \right) ^2 \\
+    & = \mathbb{E}\left( \Xnew^T \BB - \hat Y_{LS} \right) ^2 + \mathbb{E} (\epsilon ^2) \\
+    & = \left[\mathbb{E}\left( \Xnew^T \BB - \hat Y_{LS} \right) \right]^2 + \Cov (\Xnew^T \BB - \hat Y_{LS}) + \sigma^2 \\
+    & = \left[\mathbb{E}\left( \Xnew^T \BB - \hat Y_{LS} \right) \right]^2 + \Cov (\hat Y_{LS}) + \sigma^2
+\end{align}
+where
+\begin{align}
+    \mathbb{E}\left( \Xnew^T \BB - \hat Y_{LS} \right) 
+    & = \Xnew^T \BB - \mathbb{E}\left( \hat Y_{LS} \right) \\
+    & = \Xnew^T \BB - \mathbb{E}\left( \Xnew^T \hat \BB_{LS} \right) \\
+    & = 0
+\end{align}
+and 
+\begin{align}
+    \Cov (\hat Y_{LS}) & = \Xnew^T \Cov (\hat \BB_{LS}) \Xnew \\
+    & = \sigma^2 \Xnew^T (\XX^T \XX) ^{-1} \Xnew
+\end{align}
+Therefore,
+\begin{align}
+    \MSE (\hat Y_{LS}) & = \sigma^2 \left( \Xnew^T (\XX^T \XX) ^{-1} \Xnew + 1 \right)
+\end{align}
+\end{enumerate}
+
+
+\item Answer to question 2:
+
+Let 
+\begin{gather}
+    \XX_1 = \begin{bmatrix} \XX_{11}^T \\ \vdots \\ \XX_{n1}^T \end{bmatrix} 
+\end{gather}
+and split the new independent sample $\XX_m$ as
+\begin{gather}
+    \XX_m = \begin{bmatrix} \XX_{m1}  \\ \XX_{m2} \end{bmatrix}
+\end{gather}
+where $\XX_{m1} \in \mathbb{R}^{p_1}, \XX_{m2} \in \mathbb{R}^{p_2}$.
+\begin{enumerate}[(i)]
+\item
+
+\begin{align}
+    \MSE \left( \hat Y_{LS}^{(1)} \right) & = \sigma^2 \left( \Xnew{}_{1}^T (\XX_1^T \XX_1) ^{-1} \Xnew{}_{1} + 1 \right)
+\end{align}
+
+\begin{align}
+    \MSE \left( \hat Y_{LS}^{(1,2)} \right) & = \sigma^2 \left( \Xnew^T (\XX^T \XX) ^{-1} \Xnew + 1 \right)
+\end{align}
+
+\item
+For $\MSE \left( \hat Y_{LS}^{(1)} \right)$, the bias of $\hat Y_{LS}^{(1)}$ is not zero:
+\begin{align}
+    \mathbb{E}\left( \Xnew^T \BB - \hat Y_{LS}^{(1)} \right) 
+    & = \Xnew^T \BB - \mathbb{E}\left( \hat Y_{LS}^{(1)} \right) \\
+    & = \Xnew^T \BB - \Xnew{}_1^T \mathbb{E}\left(  \hat \BB_{LS}^{(1)} \right)
+\end{align}
+where 
+\begin{align}
+    \mathbb{E} \left(\hat \BB_{LS}^{(1)} \right) 
+    & = \mathbb{E} \left((\XX_1^T \XX_1) ^{-1} \XX_1^T Y \right) \\
+    & = (\XX_1^T \XX_1) ^{-1} \XX_1^T \XX \BB  
+\end{align}
+Therefore, 
+\begin{align}
+    \MSE \left( \hat Y_{LS}^{(1)} \right) = & \left( \Xnew^T \BB - \Xnew{}_1^T (\XX_1^T \XX_1) ^{-1} \XX_1^T \XX \BB  \right)^2 \\
+    & + \sigma^2 \left( \Xnew{}_{1}^T (\XX_1^T \XX_1) ^{-1} \Xnew{}_{1} + 1 \right)
+\end{align}
+
+Besides,
+\begin{align}
+    \MSE \left( \hat Y_{LS}^{(1,2)} \right) & = \sigma^2 \left( \Xnew^T (\XX^T \XX) ^{-1} \Xnew + 1 \right)
+\end{align}
+
+Therefore, the condition under which 
+\begin{align}
+    \MSE \left( \hat Y_{LS}^{(1,2)} \right) \le \MSE \left( \hat Y_{LS}^{(1)} \right)
+\end{align}
+is
+\begin{align}
+    & \sigma^2 \Xnew^T (\XX^T \XX) ^{-1} \Xnew 
+    \le \\
+    & \left( \Xnew^T \BB - \Xnew{}_1^T (\XX_1^T \XX_1) ^{-1} \XX_1^T \XX \BB  \right)^2 + \sigma^2 \Xnew{}_{1}^T (\XX_1^T \XX_1) ^{-1} \Xnew{}_{1}
+\end{align}
+
+
+\end{enumerate}
+
+\item Answer to question 3:
+\begin{enumerate}[(i)]
+\item
+Let
+\begin{align}
+    \boldsymbol{\tilde{x}} = \mathbf{A} \boldsymbol{x} + \mathbf{b}
+\end{align}
+Because $ \mathbf{\Sigma}$ is real symmetric, it can be decomposed as
+\begin{align}
+    \mathbf{\Sigma} = \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^T
+\end{align}
+where $\mathbf{Q}$ is an orthogonal matrix whose columns are the eigenvectors of $\mathbf{\Sigma}$, and $\mathbf{\Lambda}$ is a diagonal matrix whose entries are the eigenvalues of $\mathbf{\Sigma}$.
+
+Let 
+\begin{gather}
+    \mathbf{A} = (\mathbf{Q} \mathbf{\Lambda}^{-\frac{1}{2}})^T \\
+    \mathbf{b} = -\mathbf{A} \boldsymbol{\mu}
+\end{gather}
+
+Then
+\begin{align}
+    cov(\boldsymbol{\tilde{x}}) 
+    & = \mathbf{A} cov(\boldsymbol{x}) \mathbf{A}^T \\
+    & = \mathbf{A} \mathbf{\Sigma} \mathbf{A}^T \\
+    & = (\mathbf{Q} \mathbf{\Lambda}^{-\frac{1}{2}})^T \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^T (\mathbf{Q} \mathbf{\Lambda}^{-\frac{1}{2}}) \\
+    & = \mathbf{I} \qquad (\mathbf{Q}^T \mathbf{Q} = \mathbf{I}) \\
+    \\
+    E(\boldsymbol{\tilde{x}}) 
+    & = \mathbf{A} \boldsymbol{\mu} + \mathbf{b} \\
+    & = \mathbf{0}
+\end{align}
+
+\item
+
+
+\begin{enumerate}[a)]
+\item
+If $\boldsymbol{y}^T\boldsymbol{x} \ne 0$,
+
+$\boldsymbol{x}\boldsymbol{y}^T$ has one nonzero eigenvalue
+\begin{gather}
+    \lambda_1 = \boldsymbol{y}^T\boldsymbol{x}
+\end{gather}
+with corresponding eigenvector
+\begin{gather}
+    \boldsymbol{v}_1 = \boldsymbol{x}
+\end{gather}
+and $(n-1)$ zero eigenvalues with corresponding eigenvectors
+\begin{gather}
+    \left\{\boldsymbol{v} \;|\; \boldsymbol{v}^T \boldsymbol{y} = 0 \right\}
+\end{gather}
+
+\item
+If $\boldsymbol{y}^T\boldsymbol{x} = 0$ and $\boldsymbol{y} \ne \boldsymbol{0}$ and $\boldsymbol{x} \ne \boldsymbol{0}$,
+
+$\boldsymbol{x}\boldsymbol{y}^T$ has $(n-1)$ zero eigenvalues with corresponding eigenvectors
+\begin{gather}
+    \left\{\boldsymbol{v} \;|\; \boldsymbol{v}^T \boldsymbol{y} = 0 \right\}
+\end{gather}
+
+\item 
+If $\boldsymbol{y} = \boldsymbol{0}$ or $\boldsymbol{x} = \boldsymbol{0}$,
+\begin{align}
+    \boldsymbol{x}\boldsymbol{y}^T = \boldsymbol{0}
+\end{align}
+
+\end{enumerate}
+
+\item
+Because $\boldsymbol{A}$ is real symmetric,
+\begin{gather}
+    \sum_{i=1}^p \sum_{j=1}^p a_{ij}^2 = \Tr(\boldsymbol{A} \boldsymbol{A})
+\end{gather}
+and the eigendecomposition of $\boldsymbol{A}$ yields
+\begin{gather}
+    \boldsymbol{A} = \boldsymbol{Q}\boldsymbol{\Lambda}\boldsymbol{Q}^T
+\end{gather}
+where $\boldsymbol{Q}$ is orthogonal and $\boldsymbol{\Lambda}$ is a diagonal matrix whose entries are eigenvalues of $\boldsymbol{A}$, i.e. $\lambda_1,...,\lambda_p$. Then,
+\begin{align}
+    \boldsymbol{A} \boldsymbol{A} & = \boldsymbol{Q}\boldsymbol{\Lambda}\boldsymbol{Q}^T\boldsymbol{Q}\boldsymbol{\Lambda}\boldsymbol{Q}^T \\
+    & = \boldsymbol{Q}\boldsymbol{\Lambda}\boldsymbol{\Lambda}\boldsymbol{Q}^T \\
+    & = \begin{bmatrix}
+    \boldsymbol{q}_1 & ... & \boldsymbol{q}_p
+    \end{bmatrix}
+    \boldsymbol{\Lambda}\boldsymbol{\Lambda}
+    \begin{bmatrix}
+    \boldsymbol{q}_1^T \\
+    \vdots \\
+    \boldsymbol{q}_p^T
+    \end{bmatrix} \\
+    & = \sum_{i=1}^p \lambda_i^2 \boldsymbol{q}_i \boldsymbol{q}_i^T
+\end{align}
+where $\boldsymbol{q}_1, ... ,\boldsymbol{q}_p$ are the columns of $\boldsymbol{Q}$. Therefore,
+\begin{align}
+\sum_{i=1}^p \sum_{j=1}^p a_{ij}^2 = \Tr(\boldsymbol{A}\boldsymbol{A}) 
+& = \Tr\left( \sum_{i=1}^p \lambda_i^2 \boldsymbol{q}_i \boldsymbol{q}_i^T \right) \\
+& = \sum_{i=1}^p \lambda_i^2  \Tr\left(  \boldsymbol{q}_i \boldsymbol{q}_i^T \right) \\
+& = \sum_{i=1}^p \lambda_i^2 \qquad \text{($\boldsymbol{q}_i$'s are orthonormal vectors)}
+\end{align}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
+\grid
+\grid

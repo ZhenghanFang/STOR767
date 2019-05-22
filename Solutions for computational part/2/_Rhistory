@@ -1,0 +1,512 @@
+data.test <- data[which(!data$train), ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+lm.model <- lm(as.formula(paste("lpsa ~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(lm.model, data.test)
+err <- abs(data.test[,"lpsa"] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- lm.model
+}
+print(mean(err))
+print(i)
+print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost)
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+test.pred
+err <- abs(data.test[,"lpsa"] - test.pred) ^ 2
+mean(err)
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data){
+pred.name <- colnames(data)
+pred.N <- length(pred.name)-2
+data.train <- data[which(data$train), ]
+data.test <- data[which(!data$train), ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+lm.model <- lm(as.formula(paste("lpsa ~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(lm.model, data.test)
+err <- abs(data.test[,"lpsa"] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- lm.model
+}
+print(mean(err))
+print(i)
+print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost)
+a
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- lm.model
+}
+print(mean(err))
+print(i)
+print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost)
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- lm.model
+}
+print(mean(err))
+print(i)
+print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- model
+}
+print(mean(err))
+print(i)
+print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- model
+}
+# print(mean(err))
+# print(i)
+# print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 0)
+library("MASS")
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- model
+}
+# print(mean(err))
+# print(i)
+# print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 0)
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- model
+}
+# print(mean(err))
+# print(i)
+# print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 0)
+model.ridge
+0.68/0.42-1
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- model
+}
+# print(mean(err))
+# print(i)
+# print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 0.619)
+model.ridge
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 3)
+model.ridge
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 6)
+model.ridge
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 12)
+model.ridge
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 24)
+model.ridge
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 20)
+model.ridge
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 22)
+model.ridge
+model.ridge <- lm.ridge(as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ ")), data.train, lambda = 21)
+model.ridge
+library("losso2")
+library("lasso2")
+install.packages("lasso2")
+library("lasso2")
+lars
+library("lars")
+install.packages("lars")
+library("lars")
+lars(data.train[pred.name], data.train[resp.name], type = "lasso")
+lars(data.train[,pred.name], data.train[,resp.name], type = "lasso")
+data.train
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+formula.full <- as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ "))
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(formula.full, data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- model
+}
+# print(mean(err))
+# print(i)
+# print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+model.ridge <- lm.ridge(formula.full, data.train, lambda = 0.619)
+l1ce(formula.full, data = data.train, bound = 0.5)
+model.ls
+library("pls")
+install.packages("pls")
+library("pls")
+?mvr
+pcr
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+formula.full <- as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ "))
+# standardize to unit variance
+for (i in pred.name){
+t <- data.prost[, i]
+data.prost[ ,i] <- t / sqrt( var(t) )
+}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+model.ls <- lm(formula.full, data.train)
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+best.subset <- function(data, resp.name, pred.name, train.idx, test.idx){
+pred.N <- length(pred.name)
+data.train <- data[train.idx, ]
+data.test <- data[test.idx, ]
+best.model <- NULL
+best.err <- -1
+for(i in c(1:(pred.N-1))){
+for(j in c((i+1):pred.N)){
+model <- lm(as.formula(paste(resp.name, "~", pred.name[i], "+", pred.name[j], sep=" ")), data.train)
+test.pred <- predict(model, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+if(mean(err) < best.err || best.err == -1){
+best.err <- mean(err)
+best.model <- model
+}
+# print(mean(err))
+# print(i)
+# print(j)
+}
+}
+return(list(best.err, best.model))
+}
+a <- best.subset(data.prost, resp.name, pred.name, train.idx, test.idx)
+model.ridge <- lm.ridge(formula.full, data.train, lambda = 0.619)
+model.lasso <- l1ce(formula.full, data = data.train, bound = 0.5)
+model.pcr <- pcr(formula.full, 6, data = data.train, validation = "CV")
+model.pcr
+model.pcr
+pls.options()$mvralg
+model.pcr
+model.pcr.ncomp
+model.pcr$ncomp
+model.pcr$method
+model.pcrrr <- pcr(formula.full, 6, data = data.train, validation = "CV")
+model.pls <- plsr(formula.full, 6, data = data.train, validation = "CV")
+model.pcrrr
+model.pls

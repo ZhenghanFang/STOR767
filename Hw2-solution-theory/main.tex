@@ -1,0 +1,727 @@
+\documentclass[10pt]{article}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm,romannum,enumitem}
+\usepackage[dvips]{graphicx}
+
+\usepackage[pagebackref,bookmarksnumbered]{hyperref}
+\usepackage{url}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=red,
+	filecolor=magenta,      
+	urlcolor=blue,
+}
+
+\setcounter{tocdepth}{3}
+\usepackage[depth=3]{bookmark}
+
+\usepackage[margin=1in]{geometry}
+\renewcommand{\baselinestretch}{1.5}	% Line Stretch
+
+\usepackage[utf8]{inputenc}
+
+%----- theorems -----%
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{coro}[thm]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}[section]
+\newtheorem*{pchln}{Punchline}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem{eg}{Example}[section]
+\newtheorem{fact}{Fact}[section]
+\newtheorem*{hint}{Hint}
+
+
+%----- bold fonts -----%
+
+\newcommand{\ab}{\mathbf{a}}
+\newcommand{\bbb}{\mathbf{b}}
+\newcommand{\cbb}{\mathbf{c}}
+\newcommand{\db}{\mathbf{d}}
+\newcommand{\eb}{\mathbf{e}}
+\newcommand{\fb}{\mathbf{f}}
+\newcommand{\gb}{\mathbf{g}}
+\newcommand{\hb}{\mathbf{h}}
+\newcommand{\ib}{\mathbf{i}}
+\newcommand{\jb}{\mathbf{j}}
+\newcommand{\kb}{\mathbf{k}}
+\newcommand{\lb}{\mathbf{l}}
+\newcommand{\mb}{\mathbf{m}}
+\newcommand{\nbb}{\mathbf{n}}
+\newcommand{\ob}{\mathbf{o}}
+\newcommand{\pb}{\mathbf{p}}
+\newcommand{\qb}{\mathbf{q}}
+\newcommand{\rb}{\mathbf{r}}
+\newcommand{\sbb}{\mathbf{s}}
+\newcommand{\tb}{\mathbf{t}}
+\newcommand{\ub}{\mathbf{u}}
+\newcommand{\vb}{\mathbf{v}}
+\newcommand{\wb}{\mathbf{w}}
+\newcommand{\xb}{\mathbf{x}}
+\newcommand{\yb}{\mathbf{y}}
+\newcommand{\zb}{\mathbf{z}}
+
+% denote vectors
+\newcommand{\ba}{\bm{a}}
+\newcommand{\bb}{\bm{b}}
+\newcommand{\bc}{\bm{c}}
+\newcommand{\bd}{\bm{d}}
+\newcommand{\be}{\bm{e}}
+\newcommand{\bbf}{\bm{f}}
+\newcommand{\bg}{\bm{g}}
+\newcommand{\bh}{\bm{h}}
+\newcommand{\bi}{\bmf{i}}
+\newcommand{\bj}{\bm{j}}
+\newcommand{\bk}{\bm{k}}
+\newcommand{\bl}{\bm{l}}
+\newcommand{\bbm}{\bm{m}}
+\newcommand{\bn}{\bm{n}}
+\newcommand{\bo}{\bm{o}}
+\newcommand{\bp}{\bm{p}}
+\newcommand{\bq}{\bm{q}}
+\newcommand{\br}{\bm{r}}
+\newcommand{\bs}{\bm{s}}
+\newcommand{\bt}{\bm{t}}
+\newcommand{\bu}{\bm{u}}
+\newcommand{\bv}{\bm{v}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bz}{\bm{z}}
+
+% denote random matrices
+\newcommand{\Ab}{\mathbf{A}}
+\newcommand{\Bb}{\mathbf{B}}
+\newcommand{\Cb}{\mathbf{C}}
+\newcommand{\Db}{\mathbf{D}}
+\newcommand{\Eb}{\mathbf{E}}
+\newcommand{\Fb}{\mathbf{F}}
+\newcommand{\Gb}{\mathbf{G}}
+\newcommand{\Hb}{\mathbf{H}}
+\newcommand{\Ib}{\mathbf{I}}
+\newcommand{\Jb}{\mathbf{J}}
+\newcommand{\Kb}{\mathbf{K}}
+\newcommand{\Lb}{\mathbf{L}}
+\newcommand{\Mb}{\mathbf{M}}
+\newcommand{\Nb}{\mathbf{N}}
+\newcommand{\Ob}{\mathbf{O}}
+\newcommand{\Pb}{\mathbf{P}}
+\newcommand{\Qb}{\mathbf{Q}}
+\newcommand{\Rb}{\mathbf{R}}
+\newcommand{\Sbb}{\mathbf{S}}
+\newcommand{\Tb}{\mathbf{T}}
+\newcommand{\Ub}{\mathbf{U}}
+\newcommand{\Vb}{\mathbf{V}}
+\newcommand{\Wb}{\mathbf{W}}
+\newcommand{\Xb}{\mathbf{X}}
+\newcommand{\Yb}{\mathbf{Y}}
+\newcommand{\Zb}{\mathbf{Z}}
+
+% denote random vectors
+\newcommand{\bA}{\bm{A}}
+\newcommand{\bB}{\bm{B}}
+\newcommand{\bC}{\bm{C}}
+\newcommand{\bD}{\bm{D}}
+\newcommand{\bE}{\bm{E}}
+\newcommand{\bF}{\bm{F}}
+\newcommand{\bG}{\bm{G}}
+\newcommand{\bH}{\bm{H}}
+\newcommand{\bI}{\bm{I}}
+\newcommand{\bJ}{\bm{J}}
+\newcommand{\bK}{\bm{K}}
+\newcommand{\bL}{\bm{L}}
+\newcommand{\bM}{\bm{M}}
+\newcommand{\bN}{\bm{N}}
+\newcommand{\bO}{\bm{O}}
+\newcommand{\bP}{\bm{P}}
+\newcommand{\bQ}{\bm{Q}}
+\newcommand{\bR}{\bm{R}}
+\newcommand{\bS}{\bm{S}}
+\newcommand{\bT}{\bm{T}}
+\newcommand{\bU}{\bm{U}}
+\newcommand{\bV}{\bm{V}}
+\newcommand{\bW}{\bm{W}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bZ}{\bm{Z}}
+
+% denote vectors
+\newcommand{\bbeta}{\bm{\beta}}
+\newcommand{\balpha}{\bm{\alpha}}
+\newcommand{\bgamma}{\bm{\gamma}}
+\newcommand{\blambda}{\bm{\lambda}}
+\newcommand{\bomega}{\bm{\omega}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\bepsilon}{\bm{\epsilon}}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\bphi}{\bm{\phi}}
+\newcommand{\bvarphi}{\bm{\varphi}}
+\newcommand{\bxi}{\bm{\xi}}
+\newcommand{\bpi}{\bm{\pi}}
+
+% denote matrices
+\newcommand{\bGamma}{\bm{\Gamma}}
+\newcommand{\bLambda}{\bm{\Lambda}}
+\newcommand{\bSigma}{\bm{\Sigma}}
+
+% others
+\newcommand{\bcE}{\bm{\mathcal{E}}}	% filtration
+\newcommand{\bcF}{\bm{\mathcal{F}}}	% filtration
+\newcommand{\bcG}{\bm{\mathcal{G}}}	% filtration
+
+
+%----- double fonts -----%
+
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+
+%----- script fonts -----%
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+
+%----- special operators -----%
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}}
+
+\newcommand{\bvar}{\textbf{Var}}
+\newcommand{\bbias}{\textbf{Bias}}
+\newcommand{\bcov}{\textbf{Cov}}
+\newcommand{\bcor}{\textbf{Cor}}
+\newcommand{\brank}{\textbf{rank}}
+\newcommand{\bsign}{\textbf{sign}}
+\newcommand{\bdiag}{\textbf{diag}}	% diagonal
+\newcommand{\bdim}{\textbf{dim}}	% dimension
+\newcommand{\btr}{\textbf{tr}}	    % trace
+\newcommand{\bspan}{\textbf{span}}	% linear span
+\newcommand{\bsupp}{\textbf{supp}}	% support
+\newcommand{\bepi}{\textbf{epi}}	% epigraph
+
+\newcommand{\perm}{\textbf{Perm}}	% permutation
+
+\newcommand{\wass}{\textbf{Wass}}	% Wasserstein Distance
+\newcommand{\ks}{\textbf{KS}}		% Kolomogov-Smirnov Distance
+
+\newcommand{\brem}{\textbf{Rem}}		% remainders
+
+
+\newcommand{\bzero}{{\mathbf{0}}}	% zero vector
+\newcommand{\bone}{{\mathbf{1}}}	% all-one vector
+\newcommand{\bbone}{{\mathbbm{1}}}	% indicator
+
+\newcommand{\rmd}{\mathrm{d}}		% differentiation
+
+\newcommand\indep{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}	% independence
+
+%----- distribution name -----%
+
+\newcommand{\Exp}{\textbf{Exp}}
+\newcommand{\Pois}{\textbf{Pois}}
+\newcommand{\Gumb}{\textbf{Gumbel}}
+\newcommand{\Bern}{\textbf{Bernoulli}}
+\newcommand{\Bin}{\textbf{Bin}}
+\newcommand{\NBin}{\textbf{NBin}}
+\newcommand{\Multi}{\textbf{Multi}}
+\newcommand{\Geo}{\textbf{Geo}}
+\newcommand{\Hyper}{\textbf{Hyper}}
+\newcommand{\SBM}{\textbf{SBM}}
+\newcommand{\PoisProc}{\textbf{PoisProc}}
+
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+	\posttitle{
+		\begin{center}\large#1\end{center}
+	}
+}
+
+\setlength{\droptitle}{-2em}
+\title{STOR 767 Spring 2019 Hw2}
+\pretitle{\vspace{\droptitle}\centering\huge}
+\posttitle{\par}
+\subtitle{\textbf{Due on 02/06/2019 in Class}}
+\author{}
+\preauthor{}\postauthor{}
+\date{}
+\predate{}\postdate{}
+
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+
+\begin{center}
+    Name: \emph{Zhenghan Fang}
+\end{center}
+
+% \pdfbookmark[<level>]{<title>}{<dest>}
+%\pdfbookmark[section]{\contentsname}{toc}
+
+\begin{rmk}
+	This homework focuses on basics of statistical learning and linear regression methods. 
+\end{rmk}
+
+\noindent \textbf{Instruction.}
+\begin{itemize}
+	\item Submission of handwritten solution for the \textbf{Theoretical Part} of this homework is allowed.
+	
+	\item Please use \textbf{RMarkdown} to create a formatted report for the \textbf{Computational Part} of this homework. 
+
+	\item Some of the problems are selected from the textbook \cite{friedman2009elements}.
+	
+	\item At most 100 pt  (out of 115) can be earned for Homework 2.
+\end{itemize}
+
+\section*{Theoretical Part}
+\begin{enumerate}
+	\item 
+
+The solution set of 
+\begin{gather*}
+    \prod_{k=1}^{10} \Pr \left( \bx | \bx \sim N(m_k, \Ib / 5) \right) = \prod_{k=1}^{10} \Pr \left( \bx | \bx \sim N(n_k, \Ib / 5) \right)
+\end{gather*}
+where $\bx\in \mathbb{R}^2$ is the unknown, $m_1, ... ,m_{10}$ are the means of the Guassian clusters of Class BLUE and $n_1, ... ,n_{10}$ are the means of Class RED.
+
+	
+	\item (\textit{10 pt}) (Textbook Ex. 2.7) Suppose we have a sample of $ N $ pairs $ \{(\bX_{i},Y_{i})\}_{i=1}^{N} $ drawn \textit{i.i.d.} from the distribution characterized as follows:
+	\[ \begin{cases}
+	\bX_{i} \sim h(\bx), & \text{the design density on $ \bbR^{p} $}\\
+	Y_{i} = f(\bX_{i}) + \epsilon_{i}, & \text{$ f $ is the regression function}\\
+	\epsilon_{i} \sim (0,\sigma^{2}), & \text{mean zero, variance $ \sigma^{2} $}\\
+	\{ \epsilon_{i} \}_{i=1}^{N} \indep \{ \bX_{i} \}_{i=1}^{N}.
+	\end{cases} \]
+	We construct an estimator for $ f $ \textbf{linear} in the $ Y_{i} $
+	\[ \hat{f}(\bx_{0}) := \sum_{i=1}^{N}\ell_{i}(\bx_{0};\cX)Y_{i}, \]
+	where the weights $ \ell_{i}(\bx_{0};\cX) $ do not depend on the $ Y_{i} $, but do depend on the entire training sequence of $ \cX := \{ \bX_{j} \}_{j=1}^{N} $. Fix $ \bx_{0} \in \bbR^{p} $.
+	\begin{itemize}
+		\item [(a)] Show that linear regression and $ k $-nearest-neighbor regression are members of this class of estimators. Describe explicitly the weights $ \ell_{i}(\bx_{0};\cX) $ in each of these cases.
+		
+		
+		Linear regression:
+		\[ \begin{bmatrix} 
+		\ell_1 & \ell_2 & \hdots & \ell_p
+		\end{bmatrix} = \bx_0^T(\Xb^T\Xb)^{-1} \Xb^T \]
+		
+		$ k $-nearest-neighbor regression:
+		\[ \ell_i = \begin{cases}
+		1/k & \bX_i \in N_k(\bx_0) \\
+		0 & \bX_i \notin N_k(\bx_0)
+		\end{cases} \]
+		where $ N_k(\bx_0) $ is the set of $ k $ closest data points to $ \bx_0 $ in the training sample.
+		
+		\item [(b)] Decompose the conditional mean-square error (CMSE)
+		\[ \bbE_{\cY|\cX}\left( f(\bx_{0}) - \hat{f}(\bx_{0}) \right)^{2}  \]
+		into a conditional squared bias and a conditional variance component, where $ \cX = \{ \bX_{i} \}_{i=1}^{N} $ and $ \cY = \{ Y_{i} \}_{i=1}^{N} $ represent the entire training sequence of covariates and responses respectively.
+		
+		\begin{align*}
+		    \bbE_{\cY|\cX}\left( f(\bx_{0}) - \hat{f}(\bx_{0}) \right)^{2}& = \left[ f(\bx_{0}) - \bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) \right]^{2} + \bbE_{\cY|\cX}\left( \hat{f}(\bx_{0}) - \bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) \right)^2 
+		\end{align*}
+		where $ \left[ f(\bx_{0}) - \bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) \right]^{2} $ is the bias term and $ \bbE_{\cY|\cX}\left( \hat{f}(\bx_{0}) - \bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) \right)^2 $ is the variance term.
+		
+		\item [(c)] Decompose the (unconditional) mean-square error (MSE)
+		\[ \bbE_{\cX,\cY}\left( f(\bx_{0}) - \hat{f}(\bx_{0}) \right)^{2}  \]
+		into a squared bias and a variance component.
+		
+		\begin{align*}
+		    \bbE_{\cX,\cY}\left( f(\bx_{0}) - \hat{f}(\bx_{0}) \right)^{2} = \left[ f(\bx_{0}) - \bbE_{\cX,\cY}\left(\hat{f}(\bx_{0})\right) \right]^{2} + \bbE_{\cX,\cY}\left( \hat{f}(\bx_{0}) - \bbE_{\cX,\cY}\left(\hat{f}(\bx_{0})\right) \right)^2 
+		\end{align*}
+		where $ \left[ f(\bx_{0}) - \bbE_{\cX,\cY}\left(\hat{f}(\bx_{0})\right) \right]^{2} $ is the bias term and $ \bbE_{\cX,\cY}\left( \hat{f}(\bx_{0}) - \bbE_{\cX,\cY}\left(\hat{f}(\bx_{0})\right) \right)^2 $ is the variance term.
+		
+		\item [(d)] Establish the relationships between the conditional and unconditional versions of squared biases, variances respectively. In particular, how do the unconditional versions compared to the expected conditional versions?
+		
+		Let $\bbias_c$ be the conditional bias and $ \bbias_u $ be the unconditional bias.
+		\begin{align*}
+		    \bbias_u = \left[ \bbE_{\cX}\sqrt{\bbias_c} \right]^2
+		\end{align*}
+		
+		Let $\bvar_c$ be the conditional variance and $ \bvar_u $ be the unconditional variance.
+		\begin{align*}
+		    \bvar_u =  \bbE_{\cX}\left(\bvar_c\right) + \bvar\left( \bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) \right)
+		\end{align*}
+		where
+		\begin{align*}
+		    \bvar\left( \bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) \right) = \bbE_{\cX}\left( \bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) - \bbE_{\cX}\bbE_{\cY|\cX}\left(\hat{f}(\bx_{0})\right) \right)^2
+		\end{align*}
+	\end{itemize}
+	
+	\item (\textit{10 pt}) (Textbook Ex. 2.9) Consider a linear regression model with $ p $ covariates, fit by least squares to a set of training data $ \{ (\bX_{i},Y_{i}) \}_{i=1}^{N} $ drawn at random from a population. Let $ \hat{\bbeta} $ be the least squares estimate. Suppose we have some test data $ \{ (\tilde{\bX}_{i},\tilde{Y}_{i}) \}_{i=1}^{M} $ drawn at random from a population as the training data. If
+	\[ \cR_{\rm tr}(\bbeta) := {1 \over N}\sum_{i=1}^{N}\left( Y_{i} - \bbeta^{T}\bX_{i} \right)^{2} \]
+	and
+	\[ \cR_{\rm te}(\bbeta) := {1 \over M}\sum_{i=1}^{M}\left( \tilde{Y}_{i} - \bbeta^{T}\tilde{\bX}_{i} \right)^{2}, \]
+	prove that
+	\[ \bbE[\cR_{\rm tr}(\hat{\bbeta})] \le \bbE [\cR_{\rm te}(\hat{\bbeta})]. \]
+	
+	\begin{proof}
+	Because \[ \bbE\left[\left( \tilde{Y}_{1} - \hat{\bbeta}^{T}\tilde{\bX}_{1} \right)^{2}\right] = \bbE\left[\left( \tilde{Y}_{2} - \hat{\bbeta}^{T}\tilde{\bX}_{2} \right)^{2}\right] = \hdots = \bbE\left[\left( \tilde{Y}_{M} - \hat{\bbeta}^{T}\tilde{\bX}_{M} \right)^{2}\right] \]
+	we have \[ \bbE\left[{1 \over M}\sum_{i=1}^{M}\left( \tilde{Y}_{i} - \hat{\bbeta}^{T}\tilde{\bX}_{i} \right)^{2}\right] = \bbE\left[\left( \tilde{Y}_{1} - \hat{\bbeta}^{T}\tilde{\bX}_{1} \right)^{2}\right] = \bbE\left[{1 \over N}\sum_{i=1}^{N}\left( \tilde{Y}_{i} - \hat{\bbeta}^{T}\tilde{\bX}_{i} \right)^{2}\right] \]
+	
+	Let $\hat{\bgamma}$ be the least squares estimate obtained using $\{ (\tilde{\bX}_{i},\tilde{Y}_{i}) \}_{i=1}^{N}$ as training data.
+	By definition,
+	\[
+	{1 \over N}\sum_{i=1}^{N}\left( \tilde{Y}_{i} - \hat{\bbeta}^{T}\tilde{\bX}_{i} \right)^{2} 
+	\ge
+	{1 \over N}\sum_{i=1}^{N}\left( \tilde{Y}_{i} - \hat{\bgamma}^{T}\tilde{\bX}_{i} \right)^{2} 
+	\]
+	Therefore, 
+	\[
+	\bbE\left[{1 \over N}\sum_{i=1}^{N}\left( \tilde{Y}_{i} - \hat{\bbeta}^{T}\tilde{\bX}_{i} \right)^{2} \right]
+	\ge
+	\bbE\left[{1 \over N}\sum_{i=1}^{N}\left( \tilde{Y}_{i} - \hat{\bgamma}^{T}\tilde{\bX}_{i} \right)^{2} \right] = \bbE\left[{1 \over N}\sum_{i=1}^{N}\left( Y_{i} - \hat{\bbeta}^{T}\bX_{i} \right)^{2} \right]
+	\]
+	Therefore,
+	\[
+	\bbE\left[{1 \over N}\sum_{i=1}^{N}\left( Y_{i} - \hat{\bbeta}^{T}\bX_{i} \right)^{2} \right]
+	\le
+	\bbE\left[{1 \over N}\sum_{i=1}^{N}\left( \tilde{Y}_{i} - \hat{\bbeta}^{T}\tilde{\bX}_{i} \right)^{2} \right] = \bbE\left[{1 \over M}\sum_{i=1}^{M}\left( \tilde{Y}_{i} - \hat{\bbeta}^{T}\tilde{\bX}_{i} \right)^{2}\right]
+	\]
+	i.e.
+	\[
+	\bbE[\cR_{\rm tr}(\hat{\bbeta})] \le \bbE [\cR_{\rm te}(\hat{\bbeta})].
+	\]
+	\end{proof}
+	
+	\item (\textit{10 pt}) (Textbook Ex. 3.7) Assume independently
+	\[ Y_{i} \sim \cN(\beta_{0} + \bX_{i}^{T}\bbeta, \sigma^{2}), \quad (i=1,2,\cdots,N) \]
+	where $ \bX_{i} = (X_{i1},X_{i2},\cdots,X_{ip})^{T} $, $ \bbeta = (\beta_{1},\beta_{2},\cdots,\beta_{p})^{T} $, and the parameters $ \{\beta_{j}\}_{j=1}^{p} $ are each distributed as $ \cN(0,\tau^{2}) $, independently of one another. Assuming $ \beta_{0} $, $ \sigma^{2} $ and $ \tau^{2} $ are known, show that the (minus) log-posterior density of $ \bbeta $ is proportional to
+	\[ \sum_{i=1}^{N}\left( Y_{i} - \beta_{0} - \sum_{j=1}^{p}X_{ij}\beta_{j} \right)^{2} + \lambda \sum_{j=1}^{p}\beta_{j}^{2}  \]
+	where $ \lambda = \sigma^{2}/\tau^{2} $.
+	
+	\begin{align*}
+	    & \log\left(\Pr(\bbeta\mid \bX_1, \hdots, \bX_N, Y_1, \hdots, Y_N)\right) \\
+	    & \propto \log \left( \Pr(\bX_1, \hdots, \bX_N, Y_1, \hdots, Y_N \mid \bbeta) \Pr(\bbeta) \right) \\
+	    & \propto \log \left( \Pr(\bX_1, \hdots, \bX_N, Y_1, \hdots, Y_N \mid \bbeta)  \right) + \log \left(\Pr(\bbeta)\right) \\
+	    & \propto \sum_{i=1}^{N} \log \left( \Pr(\bX_i, Y_i, \mid \bbeta) \right)+ \sum_{j=1}^p \log \left(\Pr(\beta_j)\right) \\
+	    & \propto \sum_{i=1}^{N} \log \left( \Pr(Y_i \mid \bX_i, \bbeta) \right)+ \sum_{j=1}^p \log \left(\Pr(\beta_j)\right) \\
+	    & \propto \sum_{i=1}^{N} \frac{\left( Y_{i} - \beta_{0} - \sum_{j=1}^{p}X_{ij}\beta_{j} \right)^{2}}{2\sigma^2} + \sum_{j=1}^p \frac{\beta_j^2}{2\tau^2} \\
+	    & \propto \sum_{i=1}^{N} \left( Y_{i} - \beta_{0} - \sum_{j=1}^{p}X_{ij}\beta_{j} \right)^{2} + \frac{\sigma^2}{\tau^2}  \sum_{j=1}^p \beta_j^2 
+	\end{align*}
+	
+	\item (\textit{15 pt}) (Textbook Ex. 3.15) Let $ \Xb = [X_{ij}]_{n\times p} $ be a standardized covariate matrix (\textit{i.e.} $ \sum_{i=1}^{n}X_{ij} = 0 $, $ \sum_{i=1}^{n}X_{ij}^{2} = 1 $) with columns $ \{ \bX_{\cdot j} \}_{j=1}^{p} $, $ \bY \in \bbR^{n} $ be the response vector. Fix $ 1 \le m \le p $. Recall that the $ m $-th PLS variable $ \bZ_{m} = \Xb \widehat{\bphi}_{m} $ is obtained by Algorithm 3.3 in Textbook. Taking the following steps to verify that $ \widehat{\bphi}_{m} $ solves
+	\begin{align}
+	\begin{array}{rll}
+	\max\limits_{\bphi} & \widehat{\bcor}(\Xb\bphi,\bY)^{2}\widehat{\bvar}(\Xb\bphi)\\
+	\textrm{s.t.}
+	& \bphi^{T}\widehat{\bcov}(\Xb)\widehat{\bphi}_{l} = 0 & (1 \le l \le m-1)\\
+	 & \|\bphi\|_{2} = 1
+	\end{array} \label{eq_pls1}
+	\end{align}
+	where $ \widehat{\bcov}(\Xb\bphi,\bY) $, $ \widehat{\bvar}(\Xb\bphi) $ and $ \widehat{\bcov}(\Xb) $ are the sample correlation, sample variance and sample covariance matrix of $ (\Xb\bphi,\bY) $, $ \Xb\bphi $ and $ \Xb $ respectively.
+	\begin{itemize}[leftmargin=*]
+		\item [(a)] Show that (\ref{eq_pls1}) can be rewritten in inner-product form
+		\begin{align}
+		\begin{array}{rll}
+		\max\limits_{\bphi} & \langle \bZ_{m},\bY \rangle \\
+		\textrm{s.t.} 
+		& \bZ_{m} = \Xb\bphi \\
+		& \langle \bZ_{m}, \bZ_{l} \rangle = 0 & (1 \le l \le m-1)\\
+		& \|\bphi\|_{2} = 1.
+		\end{array} \label{eq_pls2}
+		\end{align}
+		
+		The constraints:
+		\begin{align*}
+		    & \begin{cases}
+		    \bZ_{m} = \Xb\bphi \\
+		    \langle \bZ_{m}, \bZ_{l} \rangle = 0
+		    \end{cases} \\
+		    \iff & \begin{cases}
+		    \bZ_{m} = \Xb\bphi \\
+		    \bphi^T\Xb^T\Xb\widehat{\bphi}_{l} = 0
+		    \end{cases} \\
+		    \iff & \begin{cases}
+		    \bZ_{m} = \Xb\bphi \\
+		    \bphi^T\widehat{\bcov}(\Xb)\widehat{\bphi}_{l} = 0
+		    \end{cases}
+		\end{align*}
+		
+		The objective function:
+		\begin{align*}
+		    & \max\limits_{\bphi} \widehat{\bcor}(\Xb\bphi,\bY)^{2}\widehat{\bvar}(\Xb\bphi) \\
+		    \iff & \max\limits_{\bphi} \frac{\widehat{\bcov}(\Xb\bphi,\bY)^{2}}{\widehat{\bvar}(\Xb\bphi)\widehat{\bvar}(\bY)}\widehat{\bvar}(\Xb\bphi) \\
+		    \iff & \max\limits_{\bphi} \widehat{\bcov}(\Xb\bphi,\bY)^{2} \\
+		    \iff & \max\limits_{\bphi} \widehat{\bcov}(\bZ_{m},\bY)^{2} \\
+		    \iff & \max\limits_{\bphi} \langle \bZ_{m},\bY-\bar{Y}\bm{1} \rangle^{2} \\
+		    \iff & \max\limits_{\bphi} \langle \bZ_{m},\bY \rangle^{2} \quad (\langle \bZ_{m},\bar{Y}\bm{1}  \rangle = 0) \\
+		    \iff & \max\limits_{\bphi} \langle \bZ_{m},\bY \rangle
+		\end{align*}
+		
+		\item [(b)] Inductively argue that orthogonality constraints in (\ref{eq_pls2}) can be successively replaced by Gram-Schmidt orthogonalization:
+		\begin{align}
+		\begin{array}{rl}
+		\textrm{s.t.}
+		&\widetilde{\bZ}_{m} = \Xb\bvarphi\\
+		&\bZ_{m} = \widetilde{\bZ}_{m} - \sum_{l=1}^{m-1}{\langle \widetilde{\bZ}_{m}, \bZ_{l} \rangle \over \langle \bZ_{l}, \bZ_{l} \rangle }\bZ_{l}.
+		\end{array}\label{eq_pls3}
+		\end{align}
+		
+		\begin{proof}
+		Assume the induction hypothesis that the orthogonality constraints hold for all $ m < M $. Consider $ m=M $. For any $L$ ($ 1 \le L \le M-1 $),
+		\begin{align*}
+		    \langle \bZ_{M}, \bZ_{L} \rangle & = \langle \widetilde{\bZ}_{M} - \sum_{l=1}^{M-1}{\langle \widetilde{\bZ}_{M}, \bZ_{l} \rangle \over \langle \bZ_{l}, \bZ_{l} \rangle }\bZ_{l} \; , \; \bZ_{L} \rangle \\
+		    & = \langle \widetilde{\bZ}_{M}, \bZ_{L} \rangle - \sum_{l=1}^{M-1}{\langle \widetilde{\bZ}_{M}, \bZ_{l} \rangle \over \langle \bZ_{l}, \bZ_{l} \rangle }\langle \bZ_{l}, \bZ_{L} \rangle
+		\end{align*}
+		By induction hypothesis, $ \langle \bZ_{l}, \bZ_{L} \rangle = 0 $, if $ l \ne L $, so
+		\begin{align*}
+		    \langle \bZ_{M}, \bZ_{L} \rangle  = \langle \widetilde{\bZ}_{M}, \bZ_{L} \rangle - \langle \widetilde{\bZ}_{M}, \bZ_{L} \rangle = 0
+		\end{align*}
+		\end{proof}
+		
+		\item [(c)] Define $ \Xb^{(m-1)} $ so that (\ref{eq_pls3}) reduces to
+		\[ \bZ_{m} = \Xb^{(m-1)}\bvarphi. \]
+		Find $ \Ab \in \bbR^{n\times n} $, $ \Bb \in \bbR^{p \times p} $ such that $ \Xb^{(m-1)} = \Ab \Xb = \Xb \Bb $. What can you tell from $ \Xb^{(m-1)} $? 
+		
+		\begin{align*}
+		    \bZ_{m} & = \widetilde{\bZ}_{m} - \sum_{l=1}^{m-1}{\langle \widetilde{\bZ}_{m}, \bZ_{l} \rangle \over \langle \bZ_{l}, \bZ_{l} \rangle }\bZ_{l} \\
+		    & = \Xb\bvarphi - \sum_{l=1}^{m-1}{\langle \Xb\bvarphi, \Xb\widehat{\bphi}_{l} \rangle \over \langle \bZ_{l}, \bZ_{l} \rangle }\Xb\widehat{\bphi}_{l} \\
+		    & = \Xb\bvarphi - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \Xb\widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb\bvarphi \\
+		    & = \left( \Xb - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \Xb\widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \right) \bvarphi 
+		\end{align*}
+		So, \[ \Xb^{(m-1)} = \Xb - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle }  \Xb\widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \]
+		
+		\[ \Ab = \Ib - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \Xb\widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \]
+		
+		\[ \Bb = \Ib - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \]
+		
+		The rows of $ \Xb^{(m-1)} $ are linear combinations of rows of $ \Xb $. The columns of $ \Xb^{(m-1)} $ are linear combinations of columns of $ \Xb $.
+		
+		\item [(d)] Give the reparametrization relationship of $ \bphi $ in (\ref{eq_pls2}) and $ \bvarphi $ in (\ref{eq_pls3}) by $ \Xb\bphi = \Xb^{(m-1)}\bvarphi $. Prove that
+		\[ \bZ_{m} = \Xb^{(m-1)}\bphi. \]
+		\begin{hint}
+			Studying $ \Xb^{(m-1)}\widehat{\bphi}_{l} $ for $ 1 \le l \le m-1 $ might be useful.
+		\end{hint}
+		
+		$ \Xb\bphi = \Xb^{(m-1)}\bvarphi = \Xb\Bb\bvarphi $,
+		so the reparametrization relationship is \[ \bphi = \Bb\bvarphi . \]
+		
+		For any $ L $, $1 \le L \le m-1$,
+		\begin{align*}
+		    \Xb^{(m-1)} \widehat{\bphi}_{L} & = \Xb \widehat{\bphi}_{L} - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle }  \Xb\widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \widehat{\bphi}_{L} \\
+		    & = \bZ_{L} - \sum_{l=1}^{m-1}{ \langle \bZ_{l}, \bZ_{L} \rangle \over \langle \bZ_{l}, \bZ_{l} \rangle }  \bZ_{l} \\
+		    & = \bZ_{L} - \bZ_{L} \quad (\langle \bZ_{l}, \bZ_{L} \rangle = 0, \textrm{~if~} l \ne L) \\
+		    & = 0.
+		\end{align*}
+		
+		Therefore,
+		\begin{align*}
+		    \Xb^{(m-1)}\bphi & = \Xb^{(m-1)}\Bb\bvarphi \\
+		    & = \Xb^{(m-1)} \left( \Ib - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \right) \bvarphi \\
+		    & = \Xb^{(m-1)} \bvarphi - \Xb^{(m-1)} \left( \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \right) \bvarphi \\
+		    & = \Xb^{(m-1)} \bvarphi - \sum_{l=1}^{m-1} \Xb^{(m-1)} \left( { 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \right) \bvarphi \\
+		    & = \Xb^{(m-1)} \bvarphi - \sum_{l=1}^{m-1} { 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \Xb^{(m-1)}  \widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \bvarphi \\
+		    & = \Xb^{(m-1)} \bvarphi \quad (\Xb^{(m-1)} \widehat{\bphi}_{l} = 0) \\
+		    & = \bZ_{m}
+		\end{align*}
+		
+		\item [(e)] Show that (\ref{eq_pls2}) reduces to a projection of $ \bY $ on the column space of $ \Xb^{(m-1)} $. 
+		
+		(\ref{eq_pls2}) is equivalent to
+		\begin{align*}
+		\begin{array}{rll}
+		\max\limits_{\bphi} & \langle \bZ_{m},\bY \rangle \\
+		\textrm{s.t.} 
+		& \bZ_{m} = \Xb^{(m-1)}\bphi \\
+		& \|\bphi\|_{2} = 1
+		\end{array} 
+		\end{align*}
+		where
+		\begin{align*}
+		    \langle \bZ_{m},\bY \rangle & = \langle \Xb^{(m-1)}\bphi,\bY \rangle \\
+		    & = \bphi^T\left(\Xb^{(m-1)}\right)^T\bY \\
+		    & = \bphi^T \begin{bmatrix} \langle \Xb^{(m-1)}_{1},\bY \rangle \\ \vdots \\ \Xb^{(m-1)}_{p},\bY \end{bmatrix} \\
+		    & = \sum_{j=1}^{p} \phi_{j} \langle \Xb^{(m-1)}_{j},\bY \rangle
+		\end{align*}
+		where $ \phi_{j} $ is the $j$th entry of $\bphi$, and $ \Xb^{(m-1)}_{j} $ is the $ j $th column of $ \Xb^{(m-1)} $.
+		Solve the maximization problem, we get 
+		\[ \phi_{j} = \lambda \langle \Xb^{(m-1)}_{j}, \bY \rangle  \] 
+		% \[ \bphi = \lambda \left(\Xb^{(m-1)}\right)^T \bY \] 
+		where $ \lambda = \left( \sum_{j=1}^{p} \langle \Xb^{(m-1)}_{j}, \bY \rangle ^{2} \right)^{-1/2} $. Therefore, (\ref{eq_pls2}) reduces to a projection of $\bY$ on each column of $\Xb^{(m-1)}$.
+		
+		\item [(f)] Give an updating formula from $ \bX^{(m-1)} $ to $ \bZ_{m} $. Compare it with Algorithm 3.3 in Textbook.
+		
+		\begin{align*}
+		    \bZ_{m} & = \Xb^{(m-1)}\bphi \\
+		    & = \sum_{j=1}^{p} \phi_{j} \Xb^{(m-1)}_{j}
+		\end{align*}
+		where
+		\[ \phi_{j} = \lambda \langle \Xb^{(m-1)}_{j}, \bY \rangle  \]
+		\[ \lambda = \left( \sum_{j=1}^{p} \langle \Xb^{(m-1)}_{j}, \bY \rangle ^{2} \right)^{-1/2}  \]
+		
+		$\bZ_{m}$ is parallel to $\bz_{m}$ got in step 2(a) in Algorithm 3.3 in Textbook.
+		
+		\item [(g)] Give an updating formula from $ \Xb^{(m-1)} $ to $ \Xb^{(m)} $ which might depend on $ \bZ_{m} $. Compare it with Algorithm 3.3 in Textbook.
+		
+		\begin{align*}
+		    \Xb^{(m-1)}
+		    & = \Xb - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle }  \Xb\widehat{\bphi}_{l} \widehat{\bphi}_{l}^T\Xb^T \Xb \\
+		    & = \Xb - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \bZ_{l} \bZ_{l}^T \Xb
+		\end{align*}
+		So
+		\begin{align*}
+		    \Xb^{(m)} 
+		    & = \Xb^{(m-1)} - { 1 \over \langle \bZ_{m}, \bZ_{m} \rangle } \bZ_{m} \bZ_{m}^T \Xb
+		\end{align*}
+		So
+		\begin{align*}
+		    \Xb^{(m)}_{j} & = \Xb^{(m-1)}_{j} - { 1 \over \langle \bZ_{m}, \bZ_{m} \rangle } \bZ_{m} \bZ_{m}^T \Xb_{j} \\
+		    & = \Xb_{j}^{(m-1)} - { \langle \bZ_{m}, \Xb_{j} \rangle \over \langle \bZ_{m}, \bZ_{m} \rangle } \bZ_{m}
+		\end{align*}
+		Note that
+		\begin{align*}
+		    \langle \bZ_{m}, \Xb^{(m-1)}_{j} \rangle
+		    & = \langle \bZ_{m}, \Xb_{j} - \sum_{l=1}^{m-1}{ 1 \over \langle \bZ_{l}, \bZ_{l} \rangle } \bZ_{l} \bZ_{l}^T \Xb_{j} \rangle \\
+		    & = \langle \bZ_{m}, \Xb_j \rangle - \sum_{l=1}^{m-1} \langle \bZ_{m}, { \langle \bZ_{l}, \Xb_{j} \rangle \over \langle \bZ_{l}, \bZ_{l} \rangle } \bZ_{l}  \rangle \\
+		    & = \langle \bZ_{m}, \Xb_j \rangle \qquad (\langle \bZ_{m}, \bZ_{l} \rangle = 0, \; l = 1, \hdots, m-1)
+		\end{align*}
+		So the updating formula is
+		\begin{align*}
+		    \Xb^{(m)}_{j} = \Xb_{j}^{(m-1)} - { \langle \bZ_{m}, \Xb^{(m-1)}_{j} \rangle \over \langle \bZ_{m}, \bZ_{m} \rangle } \bZ_{m}
+		\end{align*}
+		same as step 2(d) in Algorithm 3.3 in Textbook.
+		
+		
+	\end{itemize}
+	
+	\item (\textit{15 pt}) (Textbook Ex. 3.27) Consider the LASSO problem in Lagrange multiplier form: with 
+	\[ L(\bbeta) = {1 \over 2}\sum_{i=1}^{N}\left (Y_{i} - \sum_{j=1}^{p}X_{ij}\beta_{j} \right )^{2}, \]
+	we minimize
+	\begin{align}
+	L(\bbeta) + \lambda \sum_{j=1}^{p}|\beta_{j}| \label{eq_lasso}
+	\end{align}
+	for fixed $ \lambda \ge 0 $.
+	\begin{itemize}[leftmargin=*]
+		\item [(a)] Setting $ \beta_{j} = \beta_{j}^{+} - \beta_{j}^{-} $ with $ \beta_{j}^{+},\beta_{j}^{-} \ge 0 $, expression (\ref{eq_lasso}) becomes 
+		\begin{align}
+		L(\bbeta) + \lambda \sum_{j=1}^{p}(\beta_{j}^{+} + \beta_{j}^{-}) \label{eq_lasso_pos}
+		\end{align}
+		with non-negativity constraints on $ \{ \beta_{j}^{\pm} \}_{j=1}^{p} $. Show that the Lagrange dual function to (\ref{eq_lasso_pos}) is
+		\begin{align*}
+		L(\bbeta) + \lambda\sum_{j=1}^{p}(\beta_{j}^{+} + \beta_{j}^{-}) - \sum_{j=1}^{p}\lambda_{j}^{+}\beta_{j}^{+} - \sum_{j=1}^{p}\lambda_{j}^{-}\beta_{j}^{-}
+		\end{align*}
+		and the the Karush–Kuhn–Tucker (KKT) optimality conditions are
+		\[ \begin{array}{rll}
+		 \nabla_{j}L(\bbeta) + \lambda - \lambda_{j}^{+} & = & 0\\
+		-\nabla_{j}L(\bbeta) + \lambda - \lambda_{j}^{-} & = & 0\\
+		\lambda_{j}^{+}\beta_{j}^{+} & = & 0\\
+		\lambda_{j}^{-}\beta_{j}^{-} & = & 0
+		\end{array} \]
+		along with the non-negativity constraints on the parameters $ \{ \beta_{j}^{\pm} \}_{j=1}^{p} $ and all the Lagrange multipliers $ \{ \lambda_{j}^{\pm} \}_{j=1}^{p} $.
+		\begin{hint}
+			More information on the KKT conditions can be found in \cite{boyd2004convex}.
+		\end{hint}
+	
+		\item [(b)] Show that $ |\nabla_{j}L(\bbeta)| \le \lambda $ $ (\forall 1 \le j \le p) $, and that the KKT conditions imply one of the following three scenarios:
+		\[ \begin{array}{rll}
+		\lambda = 0 & \Rightarrow & \nabla_{j}L(\bbeta) = 0 \quad(\forall 1 \le j \le p)\\
+		\beta_{j}^{+} > 0,\ \lambda > 0 & \Rightarrow & \lambda_{j}^{+} = 0,\ \nabla_{j}L(\bbeta) = -\lambda < 0,\ \beta_{j}^{-} = 0 \\
+		\beta_{j}^{-} > 0,\ \lambda > 0 & \Rightarrow & \lambda_{j}^{-} = 0,\ \nabla_{j}L(\bbeta) = +\lambda > 0,\ \beta_{j}^{-} = 0.
+		\end{array} \]
+		Hence show that for any "active" predictor having $ \beta_{j} \ne 0 $, we must have $ \nabla_{j}L(\bbeta) = -\lambda $ if $ \beta_{j} > 0 $, and $ \nabla_{j}L(\bbeta) = \lambda $ if $ \beta_{j} < 0 $. Assuming the predictors are standardized (\textit{i.e.} $ \sum_{j=1}^{p}X_{ij} = 0 $, $ \sum_{j=1}^{p}X_{ij}^{2} = 1 $), relate $ \lambda $ to the correlation between the $ j $-th predictor and the current residuals.
+		
+		\item [(c)] Suppose that the set of active predictors is unchanged for $ \lambda_{0} \ge \lambda \ge \lambda_{1} $. Show that there is a vector $ \bgamma_{0} \in \bbR^{p} $ such that
+		\[ \hat{\bbeta}_{\rm LASSO}(\lambda) = \hat{\bbeta}_{\rm LASSO}(\lambda_{0}) - (\lambda - \lambda_{0})\bgamma_{0}. \]
+		Thus the LASSO solution path is linear as $ \lambda $ ranges from $ \lambda_{0} $ to $ \lambda_{1} $ (\cite[Efron \textit{et al.}, 2004]{efron2004least}; \cite[Rosset and Zhu, 2007]{rosset2007piecewise}).
+	\end{itemize}
+\end{enumerate}
+
+\footnotetext{Continue with \textbf{Computational Part} in next page.}
+
+\newpage 
+
+\section*{Computational Part}
+
+\begin{enumerate}
+	\item (\textit{10 pt}) \textbf{Replicating Analysis on Prostate Cancer Data} \\ 
+	Compare the performance of least squares (LS), best subset selection, ridge regression, LASSO, principal components regression (PCR) and partial least squares (PLS) on the \textit{Prostate Cancer Data}\footnote{Available in \url{https://web.stanford.edu/~hastie/ElemStatLearn/datasets/prostate.data}}. More information can be found from Section 3.2.1 and 3.3.4 in Textbook. In particular, follow the same procedure on data preparation and replicate the results. Extend the analysis with your own comments.
+	
+	\item (\textit{15 pt}) \textbf{KNN Classification}
+	\begin{itemize}[leftmargin=*]
+		\item [(a)] Write a function (from scratch) to perform $ K $-Nearest Neighbors Classifier using various distance
+		functions.
+		\item[(b)] Apply this function to the digits data {\it zip.train.gz}.\footnote{Available in \url{https://web.stanford.edu/~hastie/ElemStatLearn/datasets/zip.train.gz}. Unzip the file to get \texttt{zip.train}.} For
+		simplicity, you will need to parse the 3's and 8's from the data. Be sure to split the data into training
+		(60\%) set and test set before you apply your function to the data.
+		\item[(c)] Compare the training and test errors for various $ K $'s and various distance functions, and the results of linear regression.
+	\end{itemize}
+	
+	\item (\textit{25 pt}) {\bf Analysis of Baseball Data}\\
+	Install the \texttt{ISLR} package in \textbf{R} and load the baseball dataset by running the command {\tt data(Hitters)}.
+	The response variable for this problem is {\tt Salary}. 
+	
+	\begin{itemize}[leftmargin=*]
+		\item [(a)] \textbf{Variable Selection:} Fit and visualize regularization paths for the following methods: LASSO, elastic net, adaptive LASSO, SCAD. What are the top predictors selected by each method? Are they different? If so, why?
+		
+		\item [(b)] \textbf{Prediction:} Compare the averaged prediction MSE on the test set for the following methods: least squares, ridge regression, best subset selection, LASSO, elastic net, adaptive LASSO, SCAD. Which types of methods give the best prediction error? Why do these methods perform well? Do any methods seem to overfit  the training set? If so, why? Do all the methods choose the same subset of variables? Explain and expand on your discussions.
+	\end{itemize}
+	
+	\begin{note}\item  
+		\begin{itemize}[leftmargin=*]
+			\item As the distribution of \texttt{Salary} is skewed, you may need
+			to take the log transform of \texttt{Salary}.
+			
+			\item Remember to remove rows with
+			missing data.
+			
+			\item Remember to account for the intercept by centering covariates or adding a column of \textbf{1}'s whenever
+			necessary. \textbf{R} function \texttt{model.matrix} may be useful.
+			
+			\item \textbf{R} functions \texttt{regsubsets} (from package \texttt{leaps}), \texttt{glmnet} (with options \texttt{alpha}, \texttt{penalty.factor}), and \texttt{ncvreg} might be useful. 
+			
+			\item Clearly report the way in which you call key functions in \textbf{R} or the procedures/algorithms by which you realize the key steps. Implicit processing of data (\textit{e.g.} standardization) within given functions should be taken care of.
+			
+			\item Tuning parameters should be determined by cross-validation or performing prediction on a hold-out dataset (validation set) from training set. \textbf{$ k $-fold cross-validation procedure:} Fix a tuning parameter/model.
+			\begin{itemize}[leftmargin=*]
+				\item Randomly partition the training set into $ k $ subsets.
+				
+				\item For each hold-out subset, use the rest of training set to train the desired model and perform prediction on the hold-out subset to obtain a prediction error.
+				
+				\item Average the prediction errors for all hold-out subsets as the assessment for the tuning parameter/model.
+			\end{itemize}
+			
+			\item Prediction comparisons should be performed on an independent dataset (test set). To avoid randomness from the way you partition the dataset (into training and test sets), you might repeat by multiple times and report the aggregated results.
+			
+			\item Use appropriate tables and plots to organize your discussion.
+		\end{itemize}
+	\end{note}
+\end{enumerate}
+
+\bibliography{bibfile.bib}
+\bibliographystyle{plain}
+\end{document}

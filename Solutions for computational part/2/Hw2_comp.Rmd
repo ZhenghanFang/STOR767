@@ -1,0 +1,621 @@
+---
+title: "STOR 767 Spring 2019 Hw2: Computational Part"
+author: "Zhenghan Fang"
+header-includes:
+- \usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm}
+- \usepackage[labelsep=space]{caption}
+output:
+  pdf_document: default
+  html_document: default
+subtitle: \textbf{Due on 02/06/2019 in Class}
+bibliography: 
+link-citations: yes
+linkcolor: blue
+editor_options: 
+  chunk_output_type: inline
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require("diagram")) { install.packages("diagram", repos = "http://cran.us.r-project.org"); library(diagram) }
+if(!require("ggplot2")) { install.packages("ggplot2", repos = "http://cran.us.r-project.org"); library(ggplot2) }
+if(!require("dplyr")) { install.packages("dplyr", repos = "http://cran.us.r-project.org"); library(dplyr) }
+if(!require("knitr")) {install.packages("knitr", repos = "http://cran.us.r-project.org"); library("knitr")}
+if(!require("kableExtra")) {install.packages("kableExtra", repos = "http://cran.us.r-project.org"); library("kableExtra")}
+if(!require("lbfgs")) {install.packages("lbfgs", repos = "http://cran.us.r-project.org"); library("lbfgs")}
+library('glmnet')
+library("leaps")
+library('pls')
+library('ISLR')
+```
+
+\theoremstyle{definition}
+\newtheorem*{hint}{Hint}
+\newtheorem*{pchln}{Punchline}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+
+\newcommand{\Hb}{\mathbf{H}}
+
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cX}{\mathcal{X}}
+
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbR}{\mathbb{R}}
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+
+**Instruction.** 
+
+- Please use **RMarkdown** to create a formatted report for the **Computational Part** of this homework.
+
+# Exercise 1
+Read data.
+```{r}
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+formula.full <- as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ "))
+```
+
+Standardize the predictors to unit variance and zero mean.
+```{r}
+for (i in pred.name){
+  t <- data.prost[, i]
+  data.prost[ ,i] <- (t-mean(t)) / sqrt(var(t))
+}
+```
+
+Split the data into training and test set.
+```{r}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+```
+
+## Least squares (LS)
+The coefficients are
+```{r}
+model.ls <- lm(formula.full, data.train)
+coef(model.ls)
+```
+
+The test error is
+```{r}
+test.pred <- predict(model.ls, data.test)
+err <- abs(data.test[,resp.name] - test.pred) ^ 2
+mean(err)
+```
+
+## Best-subset selection
+```{r}
+regfit.best = regsubsets(formula.full, data = data.train, nvmax=8)
+```
+
+The coefficients of the best model that contains 2 variables are
+```{r}
+coef(regfit.best, id = 2)
+```
+
+The test error of the above model is
+```{r}
+test.mat = model.matrix(formula.full, data = data.test) 
+coefi= coef(regfit.best, id = 2)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+```
+
+## Ridge regression
+Fit with cross validation.
+```{r}
+x <- data.matrix(data.train[,pred.name])
+y <- data.train[,resp.name]
+fit <- cv.glmnet(x,y,alpha=0,nlambda=100)
+```
+
+Select the $\lambda$ which gives minimum mean cross-validated error.
+```{r}
+fit$lambda.min
+```
+
+The test error is
+```{r}
+pred <- predict(fit,newx=data.matrix(data.test[,pred.name]),  s = "lambda.min")
+err = mean((data.test$lpsa-pred)^2)
+err
+```
+
+The coefficients are
+```{r}
+coef(fit, s = "lambda.1se")
+```
+
+## LASSO
+Fit with cross validation.
+```{r}
+fit <- cv.glmnet(x,y,alpha=1)
+```
+
+Select the $\lambda$ which gives the most regularized model such that error is within one standard error of the minimum.
+```{r}
+fit$lambda.1se
+```
+
+The test error is
+```{r}
+pred <- predict(fit,newx=data.matrix(data.test[,pred.name]),  s = "lambda.1se")
+err = mean((data.test$lpsa-pred)^2)
+err
+```
+
+The coefficients are
+```{r}
+coef(fit, s = "lambda.1se")
+```
+
+## PCR
+Fit with cross validation.
+```{r}
+fit <- pcr(formula.full, data = data.train, validation = "CV")
+```
+
+Select 7 as the number of components.
+
+The test error is
+```{r}
+pred <- predict(fit, ncomp = 7, newdata = data.test)
+err = mean((data.test$lpsa-pred)^2)
+err
+```
+
+The coefficients are
+```{r}
+coef(fit, ncomp = 7)
+```
+
+## PLS
+Fit with cross validation.
+```{r}
+fit <- plsr(formula.full, data = data.train, validation = "CV")
+summary(fit)
+```
+
+Select 5 as the number of components based on the cross validation result.
+
+The test error is
+```{r}
+pred <- predict(fit, ncomp = 5, newdata = data.test)
+err=mean((data.test$lpsa-pred)^2)
+err
+```
+
+The coefficients are
+```{r}
+coef(fit, ncomp = 5)
+```
+
+# Exercise 2
+Read data from *zip.train.gz*. Parse 3's and 8's from the data.
+```{r}
+data <- read.table('zip.train')
+data <- data[which(data$V1 == 3 | data$V1 == 8), ]
+```
+
+Split the data into training (60%) and test set.
+```{r}
+N.tr <- round(length(data[,1])*0.6)
+N.te <- length(data[,1]) - N.tr
+data.tr <- data[1:N.tr,]
+data.te <- data[(N.tr+1):length(data[,1]),]
+```
+
+Define function *knn* to perform *K*-Nearest Neighbors Classifier using L-p distances. Use matrix computation to accelerate calculation of distance.
+```{r}
+knn <- function(x, tr.pred, tr.resp, k, p){
+  # x: test data point (predictors).
+  # tr.pred: training data points (predictors).
+  # tr.resp: training data points (reponses).
+  # k: # of neighbors. 
+  # p: L-p distance.
+  
+  N.tr <- length(tr.resp)
+  
+  x = data.matrix(x)
+  x = x[rep(1,N.tr), ]
+  y = data.matrix(tr.pred)
+  dist = rowSums( abs(x - y) ^ p )
+  
+  # slow implementation
+  #for(i in c(1:N.tr)){
+  #  print(i)
+  #  dist[i] <- get.dist(x, tr.pred[,])
+  #}
+  
+  idx <- order(dist)[1:k]
+  n.3 <- sum(tr.resp[idx] == 3)
+  n.8 <- sum(tr.resp[idx] == 8)
+  x.resp <- 3*(n.3>n.8) + 8*(n.3<=n.8)
+  return(x.resp)
+}
+```
+
+Define function *apply.knn* to apply *knn* to the data.
+```{r}
+apply.knn <- function(data.te, data.tr, k, p){
+  # data.te: test data.
+  # data.tr: training data.
+  # k: # of neighbors. 
+  # p: L-p distance.
+  te.pred = rep(NA, N.te)
+  for(i in c(1:N.te)){
+    te.pred[i] = knn(data.te[i,2:257], data.tr[,2:257], data.tr[,1], k, p)
+  }
+  te.error = mean((data.te[,1]!=te.pred))
+  
+  tr.pred = rep(NA, N.tr)
+  for(i in c(1:N.tr)){
+    tr.pred[i] = knn(data.tr[i,2:257], data.tr[,2:257], data.tr[,1], k, p)
+  }
+  tr.error = mean((data.tr[,1]!=tr.pred))
+  c(te.error,tr.error)
+}
+```
+
+Calcualte training and test errors for $K$ = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} and L-p distances with p = {1, 1.5, 2}.
+```{r, cache=TRUE}
+k.knn = c(1,2,3,4,5,6,7,8,9,10)
+p.dist = c(1, 1.5, 2)
+te.err = matrix(nrow = length(k.knn), ncol = length(p.dist))
+tr.err = matrix(nrow = length(k.knn), ncol = length(p.dist))
+for(i in 1:length(k.knn)){
+  for(j in 1:length(p.dist)){
+    err = apply.knn(data.te, data.tr, k=k.knn[i], p=p.dist[j])
+    te.err[i,j] = err[1]
+    tr.err[i,j] = err[2]
+  }
+}
+```
+
+Calculate the least squares estimate.
+```{r}
+fit.ls = lm(V1~., data.tr)
+```
+
+Calculate the test and training errors of least squares.
+```{r}
+pred = predict(fit.ls, data.te)
+pred = (abs(pred-3) < abs(pred-8) ) * 3 + (abs(pred-3) >= abs(pred-8) ) * 8
+te.err.ls = mean((data.te$V1!=pred))
+
+pred = predict(fit.ls, data.tr)
+pred = (abs(pred-3) < abs(pred-8) ) * 3 + (abs(pred-3) >= abs(pred-8) ) * 8
+tr.err.ls = mean((data.tr$V1!=pred))
+```
+
+Plot the training and test errors of least squares and KNN with various $K$'s and p's. Error = number of misclassified samples / total number of samples.
+```{r}
+cols = c("DarkTurquoise","DeepPink","RosyBrown","Red")
+x = log(N.tr/k.knn)
+plot(x, te.err[,1],col=cols[1], pch=1,xlab="log(N/k)",ylab="Error", ylim=c(0,0.07))
+for(i in c(1:3)){
+  lines(x, te.err[,i], col=cols[i], lty=1)
+  points(x, te.err[,i], col=cols[i], pch=1)
+  lines(x, tr.err[,i], col=cols[i], lty=2)
+  points(x, tr.err[,i], col=cols[i], pch=16)
+}
+points(log(257), te.err.ls, col=cols[4], pch=2)
+points(log(257), tr.err.ls, col=cols[4], pch=17)
+legend("topright", c("p=1,test","p=1,train","p=1.5,test","p=1.5,train","p=2,test","p=2,train","Least squares, test","Least squares, train"),col=rep(cols,each=2),text.col=rep(cols,each=2),pch=c(1,16,1,16,1,16,2,17),lty=c(1,2,1,2,1,2,0,0))
+title("Errors of KNN and least squares")
+```
+
+# Exercise 3
+## (a) Variable Selection
+Load the dataset. Remove rows with missing data. Take log transform of Salary.
+```{r}
+data(Hitters)
+Hitters = na.omit(Hitters)
+Hitters$Salary = log(Hitters$Salary)
+```
+
+Prepare data.
+```{r}
+# get the response as a vector
+resp <- Hitters[,"Salary"]
+
+# get the predictors
+N.pred <- 19
+pred <- Hitters[,c(1:18,20)]
+```
+
+Fit and Visualize regularization paths for LASSO, elastic net, adaptive LASSO, SCAD.
+```{r}
+# conver the predictors to a matrix
+pred <- data.matrix(pred)
+
+x <- pred
+y <- resp
+
+# lasso
+fit.lasso <- glmnet(x,y,family='gaussian',alpha=1)
+plot(fit.lasso, main=expression(paste("LASSO")), label=TRUE)
+#predict(fit.lasso,newx=x,s=c(0.01,0.005))
+
+# elastic net
+alpha = 0.5
+fit.elastic <- glmnet(x,y,family='gaussian',alpha=alpha)
+plot(fit.elastic, main=expression(paste("Elastice net")), label=TRUE)
+#predict(fit.elastic,newx=x,s=c(0.01,0.005))
+
+# adaptive LASSO
+p.fac <- rep(1, N.pred)
+p.fac[c(5, 10, 15)] <- 0
+fit.adpLasso <- glmnet(x,y,family='gaussian',alpha=1,penalty.factor=p.fac)
+plot(fit.adpLasso, main=expression(paste("Adaptive LASSO")), label=TRUE)
+#predict(fit.adpLasso,newx=x,s=c(0.01,0.005))
+
+# SCAD
+library('ncvreg')
+fit.SCAD <- ncvreg(x, y, penalty="SCAD")
+plot(fit.SCAD, main=expression(paste("SCAD")))
+```
+
+The top predictor selected by LASSO is "CRuns".
+```{r}
+coefi = coef(fit.lasso)
+coefi[,2]
+```
+
+The top predictors selected by elastic net are "CAtBat", "CHits", and "CRuns".
+```{r}
+coefi = coef(fit.elastic)
+coefi[,2]
+```
+
+The top predictors selected by adaptive LASSO are "RBI", "CHits", "CHmRun", and "Division".
+```{r}
+coefi = coef(fit.adpLasso)
+coefi[,2]
+```
+
+The top predictor selected by SCAD is CRuns".
+```{r}
+coefi = coef(fit.SCAD)
+coefi[,2]
+```
+
+The top predictors selected by different methods are different, because different methods have different regularizations on fitting parameters.
+
+## (b) Prediction
+Split data into training (50%) and test set.
+```{r}
+set.seed(1)
+train = sample(c(TRUE, FALSE), nrow(Hitters), rep = TRUE)
+test = (!train)
+```
+
+## Least squares (LS)
+```{r}
+model.ls <- lm(Salary ~., Hitters[train, ])
+```
+
+The test MSE is
+```{r}
+test.pred <- predict(model.ls, Hitters[test, ])
+err <- abs(Hitters$Salary[test] - test.pred) ^ 2
+err.ls.te <- mean(err)
+err.ls.te
+```
+
+The training MSE is
+```{r}
+train.pred <- predict(model.ls, Hitters[train, ])
+err <- abs(Hitters$Salary[train] - train.pred) ^ 2
+err.ls.tr <- mean(err)
+err.ls.tr
+```
+
+The coefficients are
+```{r}
+coef(model.ls)
+```
+
+## Ridge regression
+Fit with cross validation.
+```{r}
+x <- data.matrix(Hitters[train,c(1:18,20)])
+y <- data.matrix(Hitters[train,19])
+fit <- cv.glmnet(x,y,alpha=0,nlambda=100)
+```
+
+The test error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[test,c(1:18,20)]),  s = "lambda.min")
+err.rid.te = mean((Hitters$Salary[test]-pred)^2)
+err.rid.te
+```
+
+The training error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[train,c(1:18,20)]),  s = "lambda.min")
+err.rid.tr = mean((Hitters$Salary[train]-pred)^2)
+err.rid.tr
+```
+
+The coefficients are
+```{r}
+coef(fit, lambda = fit$lambda.min)
+```
+
+## LASSO
+Fit with cross validation.
+```{r}
+fit <- cv.glmnet(x,y,alpha=1,nlambda=100)
+```
+
+The test error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[test,c(1:18,20)]),  s = "lambda.min")
+err.las.te = mean((Hitters$Salary[test]-pred)^2)
+err.las.te
+```
+
+The training error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[train,c(1:18,20)]),  s = "lambda.min")
+err.las.tr = mean((Hitters$Salary[train]-pred)^2)
+err.las.tr
+```
+
+The coefficients are
+```{r}
+coef(fit, lambda = fit$lambda.min)
+```
+
+## Elastic net
+```{r}
+fit <- cv.glmnet(x,y,alpha=0.5,nlambda=100)
+```
+
+The test error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[test,c(1:18,20)]),  s = "lambda.min")
+err.ela.te = mean((Hitters$Salary[test]-pred)^2)
+err.ela.te
+```
+
+The training error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[train,c(1:18,20)]),  s = "lambda.min")
+err.ela.tr = mean((Hitters$Salary[train]-pred)^2)
+err.ela.tr
+```
+
+The coefficients are
+```{r}
+coef(fit, lambda = fit$lambda.min)
+```
+
+## Adaptive LASSO
+```{r}
+p.fac <- rep(1, N.pred)
+p.fac[c(5, 10, 15)] <- 0
+fit <- cv.glmnet(x,y,alpha=1,penalty.factor=p.fac)
+```
+
+The test error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[test,c(1:18,20)]),  s = "lambda.min")
+err.adp.te = mean((Hitters$Salary[test]-pred)^2)
+err.adp.te
+```
+
+The training error is
+```{r}
+pred <- predict(fit,newx=data.matrix(Hitters[train,c(1:18,20)]),  s = "lambda.min")
+err.adp.tr = mean((Hitters$Salary[train]-pred)^2)
+err.adp.tr
+```
+
+The coefficients are
+```{r}
+coef(fit, lambda = fit$lambda.min)
+```
+
+## SCAD
+Fit with cross validation.
+```{r}
+fit.SCAD <- cv.ncvreg(x, y, penalty="SCAD")
+```
+
+The test error is
+```{r}
+pred <- predict(fit.SCAD,data.matrix(Hitters[test,c(1:18,20)]), lambda = fit.SCAD$lambda.min)
+err.scad.te = mean((Hitters$Salary[test]-pred)^2)
+err.scad.te
+```
+
+The training error is
+```{r}
+pred <- predict(fit.SCAD,data.matrix(Hitters[train,c(1:18,20)]), lambda = fit.SCAD$lambda.min)
+err.scad.tr = mean((Hitters$Salary[train]-pred)^2)
+err.scad.tr
+```
+
+The coefficients are
+```{r}
+coef(fit.SCAD, lambda = fit.SCAD$lambda.min)
+```
+
+## Best subset selection
+Choose among models using cross validation. (Reference: \url{https://rpubs.com/davoodastaraky/subset})
+```{r}
+k = 10
+set.seed(1)
+Hitters.train = Hitters[train, ]
+folds = sample(1:k,nrow(Hitters.train),replace=TRUE)
+# table(folds)
+
+cv.errors=matrix(NA,k,19, dimnames=list(NULL, paste(1:19)))
+
+for(j in 1:k){
+        best.fit = regsubsets(Salary ~., data=Hitters.train[folds != j,], nvmax = 19)
+        test.mat = model.matrix(Salary~., data = Hitters.train[folds == j,]) 
+        
+        for (i in 1:19){
+          coefi= coef(best.fit, id = i)
+          pred=test.mat[,names(coefi)]%*%coefi
+          cv.errors[j, i] = mean((Hitters.train$Salary[folds == j] - pred)^2)
+        }
+}
+
+mean.cv.errors = apply(cv.errors ,2,mean)
+```
+
+The mean cross-validation errors for different numbers of variables are
+```{r}
+mean.cv.errors
+```
+
+The 2-variable model gives the minimum mean cross-validation error.
+```{r}
+which.min(mean.cv.errors)
+```
+
+Apply best subset selection on full training set and select the 2-variable model. The test error is
+```{r}
+reg.best=regsubsets (Salary~.,data=Hitters[train, ] , nvmax=19)
+coefi = coef(reg.best ,2)
+test.mat = model.matrix(Salary~., data = Hitters[test,])
+pred=test.mat[,names(coefi)]%*%coefi
+err.bsub.te = mean((Hitters$Salary[test] - pred)^2)
+err.bsub.te
+```
+
+The training error is
+```{r}
+train.mat = model.matrix(Salary~., data = Hitters[train,])
+pred=train.mat[,names(coefi)]%*%coefi
+err.bsub.tr = mean((Hitters$Salary[train] - pred)^2)
+err.bsub.tr
+```
+
+The coefficients are
+```{r}
+coef(reg.best ,2)
+```
+
+## Discussion
+Among the methods, ridge regression and LASSO give the best prediction errors on test set. These methods perform well probably because their regularizations are more suitable for the data.
+
+The least squares method seems to overfit the training set. The reason is that it has no regularization on the fitting parameters.
+
+Not all methods select the same subset of variables. However, "Hits", "CHits", and "RBI" are selected by most methods, which suggests that these variables are the most predictive of the response "Salary".

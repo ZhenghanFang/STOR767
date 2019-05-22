@@ -1,0 +1,588 @@
+\documentclass[10pt]{article}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm,romannum,enumitem}
+\usepackage[dvips]{graphicx}
+
+\usepackage[pagebackref,bookmarksnumbered]{hyperref}
+\usepackage{url}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=red,
+	urlcolor=blue,
+}
+
+%\setcounter{tocdepth}{3}
+%\usepackage[depth=3]{bookmark}
+
+\usepackage[margin=1in]{geometry}
+\renewcommand{\baselinestretch}{1.5}	% Line Stretch
+
+\usepackage[utf8]{inputenc}
+
+%----- theorems -----%
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{coro}[thm]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}[section]
+\newtheorem*{pchln}{Punchline}
+\newtheorem*{discuss}{Discussion}
+\newtheorem*{sol}{Solution}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem{eg}{Example}[section]
+\newtheorem{fact}{Fact}[section]
+\newtheorem*{hint}{\underline{Hint}}
+
+
+%----- bold fonts -----%
+
+\newcommand{\ab}{\mathbf{a}}
+\newcommand{\bbb}{\mathbf{b}}
+\newcommand{\cbb}{\mathbf{c}}
+\newcommand{\db}{\mathbf{d}}
+\newcommand{\eb}{\mathbf{e}}
+\newcommand{\fb}{\mathbf{f}}
+\newcommand{\gb}{\mathbf{g}}
+\newcommand{\hb}{\mathbf{h}}
+\newcommand{\ib}{\mathbf{i}}
+\newcommand{\jb}{\mathbf{j}}
+\newcommand{\kb}{\mathbf{k}}
+\newcommand{\lb}{\mathbf{l}}
+\newcommand{\mb}{\mathbf{m}}
+\newcommand{\nbb}{\mathbf{n}}
+\newcommand{\ob}{\mathbf{o}}
+\newcommand{\pb}{\mathbf{p}}
+\newcommand{\qb}{\mathbf{q}}
+\newcommand{\rb}{\mathbf{r}}
+\newcommand{\sbb}{\mathbf{s}}
+\newcommand{\tb}{\mathbf{t}}
+\newcommand{\ub}{\mathbf{u}}
+\newcommand{\vb}{\mathbf{v}}
+\newcommand{\wb}{\mathbf{w}}
+\newcommand{\xb}{\mathbf{x}}
+\newcommand{\yb}{\mathbf{y}}
+\newcommand{\zb}{\mathbf{z}}
+
+% denote vectors
+\newcommand{\ba}{\bm{a}}
+\newcommand{\bb}{\bm{b}}
+\newcommand{\bc}{\bm{c}}
+\newcommand{\bd}{\bm{d}}
+\newcommand{\be}{\bm{e}}
+\newcommand{\bbf}{\bm{f}}
+\newcommand{\bg}{\bm{g}}
+\newcommand{\bh}{\bm{h}}
+\newcommand{\bi}{\bmf{i}}
+\newcommand{\bj}{\bm{j}}
+\newcommand{\bk}{\bm{k}}
+\newcommand{\bl}{\bm{l}}
+\newcommand{\bbm}{\bm{m}}
+\newcommand{\bn}{\bm{n}}
+\newcommand{\bo}{\bm{o}}
+\newcommand{\bp}{\bm{p}}
+\newcommand{\bq}{\bm{q}}
+\newcommand{\br}{\bm{r}}
+\newcommand{\bs}{\bm{s}}
+\newcommand{\bt}{\bm{t}}
+\newcommand{\bu}{\bm{u}}
+\newcommand{\bv}{\bm{v}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bz}{\bm{z}}
+
+% denote random matrices
+\newcommand{\Ab}{\mathbf{A}}
+\newcommand{\Bb}{\mathbf{B}}
+\newcommand{\Cb}{\mathbf{C}}
+\newcommand{\Db}{\mathbf{D}}
+\newcommand{\Eb}{\mathbf{E}}
+\newcommand{\Fb}{\mathbf{F}}
+\newcommand{\Gb}{\mathbf{G}}
+\newcommand{\Hb}{\mathbf{H}}
+\newcommand{\Ib}{\mathbf{I}}
+\newcommand{\Jb}{\mathbf{J}}
+\newcommand{\Kb}{\mathbf{K}}
+\newcommand{\Lb}{\mathbf{L}}
+\newcommand{\Mb}{\mathbf{M}}
+\newcommand{\Nb}{\mathbf{N}}
+\newcommand{\Ob}{\mathbf{O}}
+\newcommand{\Pb}{\mathbf{P}}
+\newcommand{\Qb}{\mathbf{Q}}
+\newcommand{\Rb}{\mathbf{R}}
+\newcommand{\Sbb}{\mathbf{S}}
+\newcommand{\Tb}{\mathbf{T}}
+\newcommand{\Ub}{\mathbf{U}}
+\newcommand{\Vb}{\mathbf{V}}
+\newcommand{\Wb}{\mathbf{W}}
+\newcommand{\Xb}{\mathbf{X}}
+\newcommand{\Yb}{\mathbf{Y}}
+\newcommand{\Zb}{\mathbf{Z}}
+
+% denote random vectors
+\newcommand{\bA}{\bm{A}}
+\newcommand{\bB}{\bm{B}}
+\newcommand{\bC}{\bm{C}}
+\newcommand{\bD}{\bm{D}}
+\newcommand{\bE}{\bm{E}}
+\newcommand{\bF}{\bm{F}}
+\newcommand{\bG}{\bm{G}}
+\newcommand{\bH}{\bm{H}}
+\newcommand{\bI}{\bm{I}}
+\newcommand{\bJ}{\bm{J}}
+\newcommand{\bK}{\bm{K}}
+\newcommand{\bL}{\bm{L}}
+\newcommand{\bM}{\bm{M}}
+\newcommand{\bN}{\bm{N}}
+\newcommand{\bO}{\bm{O}}
+\newcommand{\bP}{\bm{P}}
+\newcommand{\bQ}{\bm{Q}}
+\newcommand{\bR}{\bm{R}}
+\newcommand{\bS}{\bm{S}}
+\newcommand{\bT}{\bm{T}}
+\newcommand{\bU}{\bm{U}}
+\newcommand{\bV}{\bm{V}}
+\newcommand{\bW}{\bm{W}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bZ}{\bm{Z}}
+
+% denote vectors
+\newcommand{\bbeta}{\bm{\beta}}
+\newcommand{\balpha}{\bm{\alpha}}
+\newcommand{\bgamma}{\bm{\gamma}}
+\newcommand{\blambda}{\bm{\lambda}}
+\newcommand{\bomega}{\bm{\omega}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\bepsilon}{\bm{\epsilon}}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\bphi}{\bm{\phi}}
+\newcommand{\bvarphi}{\bm{\varphi}}
+\newcommand{\bxi}{\bm{\xi}}
+\newcommand{\bpi}{\bm{\pi}}
+
+% denote matrices
+\newcommand{\bGamma}{\bm{\Gamma}}
+\newcommand{\bLambda}{\bm{\Lambda}}
+\newcommand{\bSigma}{\bm{\Sigma}}
+
+% others
+\newcommand{\bcE}{\bm{\mathcal{E}}}	% filtration
+\newcommand{\bcF}{\bm{\mathcal{F}}}	% filtration
+\newcommand{\bcG}{\bm{\mathcal{G}}}	% filtration
+
+
+%----- double fonts -----%
+
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+
+%----- script fonts -----%
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+
+%----- special operators -----%
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}}
+
+\newcommand{\bvar}{\mathbf{Var}}
+\newcommand{\bcov}{\mathbf{Cov}}
+\newcommand{\bcor}{\mathbf{Cor}}
+\newcommand{\bbias}{\mathbf{Bias}}
+
+\newcommand{\btr}{\mathbf{Tr}}	    % trace
+
+\newcommand{\bsign}{\mathbf{sign}}	% sign
+
+\newcommand{\bspan}{\mathbf{span}}	% linear span
+
+\newcommand{\brank}{\mathbf{rank}}	% rank
+
+\newcommand{\bdiag}{\mathbf{diag}}	% diagonal
+
+\newcommand{\bzero}{{\mathbf{0}}}	% zero vector
+\newcommand{\bone}{{\mathbf{1}}}	% all-one vector
+\newcommand{\bbone}{{\mathbbm{1}}}	% indicator
+
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\DeclareMathOperator{\diag}{diag}
+
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+	\posttitle{
+		\begin{center}\large#1\end{center}
+	}
+}
+
+\setlength{\droptitle}{-2em}
+\title{STOR 767 Spring 2019 Hw3}
+\pretitle{\vspace{\droptitle}\centering\huge}
+\posttitle{\par}
+\subtitle{\textbf{Due on 02/18/2019 in Class}}
+\author{\it Zhenghan Fang}
+%\preauthor{}\postauthor{}
+\date{}
+\predate{}\postdate{}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Zhenghan Fang}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\begin{document}
+	\pagenumbering{arabic}
+	\maketitle
+	
+	% \pdfbookmark[<level>]{<title>}{<dest>}
+	%\pdfbookmark[section]{\contentsname}{toc}
+
+\begin{rmk}
+	This homework focuses on linear classification methods. 
+\end{rmk}
+
+\noindent \textbf{Instruction.}
+\begin{itemize}
+	\item Submission of handwritten solution for the \textbf{Theoretical Part} of this homework is allowed.
+	
+	\item Please use \textbf{RMarkdown} to create a formatted report for the \textbf{Computational Part} of this homework. 
+
+	\item Some of the problems are selected or modified from the textbook \cite{friedman2009elements}.
+\end{itemize}
+
+\section*{Theoretical Part}
+\begin{enumerate}
+	\item (\textit{15 pt}) (LDA and Least-Squared Rule, Textbook Ex. 4.2) Suppose we have training features $ \bX_{i} \in \bbR^{p} $, a two-class response with class sizes $ N_{1},N_{2} $, $ N = N_{1} + N_{2} $, coded as 
+	\[ Y_{i} = \begin{cases}
+	-N/N_{1}, & \text{the $ i $-th sample belongs to class 1}\\
+	N/N_{2}, & \text{the $ i $-th sample belongs to class 2}
+	\end{cases} \]
+	\begin{itemize}
+		\item [(a)] Derive from scratch that the LDA rule classifies $ \bx \in \bbR^{p} $ to class 2 if
+		\[ \bx^{T}\widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) > {1 \over 2}\widehat{\bmu}_{2}^{T}\widehat{\bSigma}^{-1}\widehat{\bmu}_{2} - {1 \over 2}\widehat{\bmu}_{1}\widehat{\bSigma}^{-1}\widehat{\bmu}_{1} + \log\left( {N_{1} \over N} \right) - \log\left( {N_{2} \over N} \right), \]
+		and class 1 otherwise. Remember to declare $ \widehat{\bmu}_{1},\widehat{\bmu}_{2},\widehat{\bSigma} $.
+		\begin{hint}
+			Derive the Bayes rule under multivariate Gaussian with equal covariance assumption for class-conditional densities of $ \bX_{i} $'s, and plug in training sample estimates for unknown parameters.
+		\end{hint}
+		
+		The LDA rule classifies $ \bx $ to class 2 if
+		\begin{align*}
+		    & \log \frac{\Pr (G=1 | X=x)}{\Pr (G=2|X=x)} < 0 \\
+		    \iff & \log \frac{\pi_1}{\pi_2} - \frac{1}{2} \mu_1^T \Sigma^{-1} \mu_1 + \frac{1}{2} \mu_2^T \Sigma^{-1} \mu_2 + x^T\Sigma^{-1}(\mu_1-\mu_2) < 0 \\
+		    \iff & x^T\Sigma^{-1}(\mu_2-\mu_1) > \frac{1}{2} \mu_2^T \Sigma^{-1} \mu_2 - \frac{1}{2} \mu_1^T \Sigma^{-1} \mu_1 + \log \pi_1 - \log \pi_2
+		\end{align*}
+		Let $ \widehat{\bmu}_{1},\widehat{\bmu}_{2},\widehat{\bSigma}, \frac{N_1}{N}, \frac{N_2}{N} $ be the estimation of $ \mu_1,\mu_2,\Sigma, \pi_1,\pi_2 $ respectively, then we get the expression in the question.
+	
+		\item [(b)] Consider minimization of the least squares criterion
+		\[ \min_{\beta_{0} \in \bbR,\ \bbeta \in \bbR^{p}}\sum_{i=1}^{N}(Y_{i} - \beta_{0} - \bbeta^{T}\bX_{i})^{2}. \]
+		Show that the solution $ \widehat{\bbeta} $ satisfies
+		\[ \left( (N-2)\widehat{\bSigma} + {N_{1}N_{2} \over N}\widehat{\bSigma}_{\rm B} \right)\widehat{\bbeta} = N(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) \]
+		where $ \widehat{\bSigma}_{\rm B} := (\widehat{\bmu}_{2} - \widehat{\bmu}_{1})(\widehat{\bmu}_{2} - \widehat{\bmu}_{1})^{T} $.
+		\begin{hint}
+			Solve $ \widehat{\beta}_{0}(\bbeta) $ for fixed $ \bbeta $ first, then write down the normal equations for $ \widehat{\bbeta} $. Consider an ANOVA-type covariance matrix decomposition for $ \bX_{i} $'s: SS = SSW (within-class) + SSB (between-class). You might refer to Problem 2(b)(ii) for a more abstract development.
+		\end{hint}
+		
+		\textbf{Answer:}
+		
+		Solve $ \widehat{\beta}_{0}(\bbeta) $ for fixed $ \bbeta $.
+		\begin{align*}
+		    \widehat{\beta}_{0} & = - \bbeta^T \frac{\sum_{i=1}^{N}\bX_{i}}{N}
+		\end{align*}
+		
+		Write down the normal equations for $ \widehat{\bbeta} $.
+		\begin{align*}
+		    & \left( \sum_{i=1}^{N}\bX_i \bX_i^T \right) \widehat{\bbeta} = \sum_{i=1}^{N} (Y_i-\beta_0)\bX_i \\
+		    \iff & \left(\sum_{i=1}^{N}\bX_i \bX_i^T \right) \widehat{\bbeta} + \beta_0 \sum_{i=1}^{N} \bX_i = \sum_{i=1}^{N} Y_i\bX_i
+		\end{align*}
+		
+		Plug  $ \widehat{\beta}_{0}(\bbeta) $ in the above equation.
+		\begin{align*}
+		& \left(\sum_{i=1}^{N}\bX_i \bX_i^T \right) \widehat{\bbeta}  - \left(\widehat{\bbeta}^T \frac{\sum_{i=1}^{N}\bX_{i}}{N} \right) \sum_{i=1}^{N} \bX_i = \sum_{i=1}^{N} Y_i\bX_i \\
+		\iff & \left(\sum_{i=1}^{N}\bX_i \bX_i^T - \frac{1}{N} \sum_{i=1}^{N}\bX_{i} \sum_{i=1}^{N}\bX_{i}^T \right) \widehat{\bbeta} = \sum_{i=1}^{N} Y_i\bX_i \tag{a1}.
+		\end{align*}
+		
+		By definition,
+		\begin{align*}
+		    \widehat{\bmu}_{1} = \frac{1}{N_1}\sum_{g_i=1} \bX_i \\
+		    \widehat{\bmu}_{2} = \frac{1}{N_2}\sum_{g_i=2} \bX_i
+		\end{align*}
+		\begin{align*}
+		    \widehat{\bSigma} & = \frac{1}{N-2} \left( \sum_{g_i=1} (\bX_i-\widehat{\bmu}_{1}) (\bX_i-\widehat{\bmu}_{1})^T + \sum_{g_i=2} (\bX_i-\widehat{\bmu}_{2}) (\bX_i-\widehat{\bmu}_{2})^T \right) \\
+		    & = \frac{1}{N-2} \left( \sum_{i=1}^{N} \bX_i\bX_i^T - N_1\widehat{\bmu}_{1}\widehat{\bmu}_{1}^T - N_2\widehat{\bmu}_{2}\widehat{\bmu}_{2}^T \right) \\ 
+		    \iff & \sum_{i=1}^{N} \bX_i\bX_i^T = (N-2) \widehat{\bSigma} + N_1\widehat{\bmu}_{1}\widehat{\bmu}_{1}^T + N_2\widehat{\bmu}_{2}\widehat{\bmu}_{2}^T \tag{a2}
+		\end{align*}
+		\begin{align*}
+		    \sum_{i=1}^{N} \bX_i = N_1\widehat{\bmu}_{1} + N_2\widehat{\bmu}_{2} \tag{a3}
+		\end{align*}
+		\begin{align*}
+		    \sum_{i=1}^{N} Y_i\bX_i = \sum_{g_i=1} -N/N_1\bX_i + \sum_{g_i=2} N/N_2\bX_2 = N(\widehat{\bmu}_{2}-\widehat{\bmu}_{1}) \tag{a4}
+		\end{align*}
+		
+		Plug (a2), (a3), (a4) into (a1), we get the expression in the question.
+	
+		\item [(c)] Argue that 
+		\begin{align}
+		\widehat{\bbeta}\ \propto\ \widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}),\label{eq_lda_lse}
+		\end{align}
+		\textit{i.e.} the least squares coefficient is identical to the LDA coefficient up to a scalar multiple.
+		
+		Plug $ \widehat{\bSigma}_{\rm B} = (\widehat{\bmu}_{2} - \widehat{\bmu}_{1})(\widehat{\bmu}_{2} - \widehat{\bmu}_{1})^{T} $ into
+		\begin{align*}
+		    \left( (N-2)\widehat{\bSigma} + {N_{1}N_{2} \over N}\widehat{\bSigma}_{\rm B} \right)\widehat{\bbeta} = N(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}),
+		\end{align*}
+		we get 
+		\begin{align*}
+		    & \left( (N-2)\widehat{\bSigma} + {N_{1}N_{2} \over N}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1})(\widehat{\bmu}_{2} - \widehat{\bmu}_{1})^{T}  \right)\widehat{\bbeta} = N(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) \\
+		    \iff & (N-2)\widehat{\bSigma}\widehat{\bbeta} = \left(N-{N_{1}N_{2} \over N}(\widehat{\bmu}_{2} -\widehat{\bmu}_{1})^{T} \widehat{\bbeta}\right)(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) \\
+		    \iff & \widehat{\bbeta} = \frac{1}{N-2} \left(N-{N_{1}N_{2} \over N}(\widehat{\bmu}_{2} -\widehat{\bmu}_{1})^{T} \widehat{\bbeta}\right)\widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) \\
+		    \implies & \widehat{\bbeta}\ \propto\ \widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1})
+		\end{align*}
+
+		
+		\item [(d)] Argue that (\ref{eq_lda_lse}) holds invariantly for any (distinct) coding of $ Y_{i} $'s.
+		
+		For any distinct coding of $Y_i$,
+		\begin{align*}
+		    \sum_{i=1}^{N} Y_i\bX_i = Y_1\sum_{g_i=1} \bX_i + Y_2\sum_{g_i=2} \bX_2 = Y_1N_1\widehat{\bmu}_{1} + Y_2N_2\widehat{\bmu}_{2}.
+		\end{align*}
+		
+		Then $ \widehat{\bbeta} $ satisfies
+		\[ \left( (N-2)\widehat{\bSigma} + {N_{1}N_{2} \over N}\widehat{\bSigma}_{\rm B} \right)\widehat{\bbeta} = Y_1N_1\widehat{\bmu}_{1} + Y_2N_2\widehat{\bmu}_{2} \]
+		
+		\item [(e)] Find the least-square prediction function $ \widehat{f}_{\rm LS} $. Consider the least-square discriminant rule
+		\[ \widehat{d}_{\rm LS}(\bx) = \begin{cases}
+		\text{class 2}, & \widehat{f}_{\rm LS}(\bx) > 0\\
+		\text{class 1}, & \text{otherwise}
+		\end{cases} \]
+		Show that $ \widehat{d}_{\rm LS} $ is not the same as the LDA rules unless $ N_{1} = N_{2} $. If, alternatively, we use uniform class prior rather than plug-in estimates, then least-square discriminant rule is equivalent to the LDA.
+		
+		Let
+		\begin{align*}
+		\widehat{\bbeta} = \lambda \widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1})
+		\end{align*}
+		where $ \lambda \in \bbR $ is a constant. Then,
+		\begin{align*}
+		    \widehat{\beta}_{0} & = - \bbeta^T \frac{\sum_{i=1}^{N}\bX_{i}}{N} \\
+		    & = - \bbeta^T \frac{N_1\widehat{\bmu}_{1} + N_2\widehat{\bmu}_{2}}{N} \\
+		    & = - \left( \lambda \widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) \right)^T \frac{N_1\widehat{\bmu}_{1} + N_2\widehat{\bmu}_{2}}{N} \\
+		    & = -\frac{\lambda}{N} \left( (N_1-N_2) \widehat{\bmu}_{1} \widehat{\bSigma}^{-1} \widehat{\bmu}_{2}^T - N_1 \widehat{\bmu}_{1} \widehat{\bSigma}^{-1} \widehat{\bmu}_{1}^T + N_2 \widehat{\bmu}_{2} \widehat{\bSigma}^{-1} \widehat{\bmu}_{2}^T \right)
+		\end{align*}
+		Then
+		\begin{align*}
+		    \widehat{f}_{\rm LS} & = \widehat{\beta}_{0} + \widehat{\bbeta}^T\bX_i \\ 
+		    & = -\frac{\lambda}{N} \left( (N_1-N_2) \widehat{\bmu}_{1} \widehat{\bSigma}^{-1} \widehat{\bmu}_{2}^T - N_1 \widehat{\bmu}_{1} \widehat{\bSigma}^{-1} \widehat{\bmu}_{1}^T + N_2 \widehat{\bmu}_{2} \widehat{\bSigma}^{-1} \widehat{\bmu}_{2}^T \right) + \lambda \bX_i^T \widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) 
+		\end{align*}
+		Therefore, $ \widehat{d}_{\rm LS} $ classifies $\bX_i$ to class 2 if
+		\begin{align*}
+		    & \widehat{f}_{\rm LS} > 0 \\ 
+		    \iff & \bX_i^T \widehat{\bSigma}^{-1}(\widehat{\bmu}_{2} - \widehat{\bmu}_{1}) > \frac{1}{N} \left( (N_1-N_2) \widehat{\bmu}_{1} \widehat{\bSigma}^{-1} \widehat{\bmu}_{2}^T - N_1 \widehat{\bmu}_{1} \widehat{\bSigma}^{-1} \widehat{\bmu}_{1}^T + N_2 \widehat{\bmu}_{2} \widehat{\bSigma}^{-1} \widehat{\bmu}_{2}^T \right) \tag{a5}
+		\end{align*}
+		(a5) is not equivalent to the LDA rule (stated in question 1(a)) unless $N_1=N_2$. Therefore, $ \widehat{d}_{\rm LS} $ is not the same as the LDA rules unless $ N_{1} = N_{2} $.
+	\end{itemize}
+
+	\item (\textit{20 pt}) (Fisher's Discriminant Analysis/Reduced Rank LDA, Textbook Ex. 4.1, 4.8) Let $ \Xb = [X_{ij}]_{n\times p} \in \bbR^{n\times p} $ be a centered\footnote{That is, $ \sum_{i=1}^{n}X_{ij} = 0 $ for all $ 1 \le j \le p $.} data matrix with $ n $ observations (in rows) of $ p $-dimensional features (in columns), $ \Yb = [Y_{ik}]_{n\times K} \in \{0,1\}^{n\times K} $ be an indicator matrix with 0-1 entries encoding memberships out of $ K(\le n) $ classes for observations, $ n_{1},n_{2},\cdots,n_{K} \ge 1 $ be class sizes.
+	\begin{itemize}
+		\item [(a)] Derive the class-centroid matrix $ \Mb \in \bbR^{K \times p} $ in terms of $ \Xb $ and $ \Yb $.
+		\[
+		\Yb^T\Yb = \diag(n_1, n_2, \hdots, n_K)
+		\]
+		\[
+		\Mb = ( \diag(n_1, n_2, \hdots, n_K) )^{-1} \Yb^T\Xb = ( \Yb^T\Yb )^{-1} \Yb^T\Xb
+		\]
+		
+		\item [(b)] Denote rows in $ \Xb $ and $ \Mb $ as $ \{ \bX_{i\cdot} \}_{i=1}^{n} $ and $ \{ \widehat{\bmu}_{k} \}_{k=1}^{K} $ respectively. Define
+		\[ \Sbb := \sum_{i=1}^{n}\bX_{i\cdot}\bX_{i\cdot}^{T}, \quad \Sbb_{\rm B} := \sum_{k=1}^{K}n_{k}\widehat{\bmu}_{k}\widehat{\bmu}_{k}^{T}, \quad \Sbb_{\rm W} := \sum_{k=1}^{K}\sum_{Y_{i} = k}(\bX_{i\cdot} - \widehat{\bmu}_{k})(\bX_{i\cdot} - \widehat{\bmu}_{k})^{T}. \]
+		\begin{itemize}[leftmargin=*]
+			\item [(\romannum{1})] Write $ \Sbb,\Sbb_{\rm B},\Sbb_{\rm W} $ in compact form in terms of $ \Xb $ and $ \Yb $.
+			
+			\[ \Sbb = \Xb^T\Xb \]
+			\[ \Sbb_{\rm B} = \Mb^T \diag(n_1, \hdots, n_K) \Mb = \Mb^T \Yb^T\Yb \Mb = \Xb^T\Yb ( \Yb^T\Yb )^{-1} \Yb^T\Xb \]
+			\begin{align*}
+			    \Sbb_{\rm W} & = (\Xb - \Yb\Mb)^T(\Xb - \Yb\Mb) \\
+			    & = \Xb^T\Xb -\Mb^T\Yb^T\Xb - \Xb^T\Yb\Mb + \Mb^T\Yb^T\Yb\Mb \\
+			    & = \Xb^T\Xb -2\Xb^T\Yb(\Yb^T\Yb)^{-1}\Yb^T\Xb + \Xb^T\Yb ( \Yb^T\Yb )^{-1} \Yb^T\Xb \\
+			    & = \Xb^T\Xb -\Xb^T\Yb(\Yb^T\Yb)^{-1}\Yb^T\Xb
+			\end{align*}
+			
+			\item [(\romannum{2})] Prove an ANOVA-type covariance matrix decomposition
+			\[ \Sbb = \Sbb_{\rm B} + \Sbb_{\rm W}. \]
+			
+			Plug in the results from (i).
+		\end{itemize}
+		
+		\item [(c)] Suppose $ \Sbb_{\rm W} \succ 0 $. Show how to solve the generalized eigenvalue problem 
+		\begin{align}
+		\begin{array}{rl}
+		\max\limits_{\bphi} & \bphi^{T}\Sbb_{\rm B} \bphi\\
+		\textrm{s.t.} & \bphi^{T}\Sbb_{\rm W}\bphi = 1
+		\end{array}\label{eq_lda}
+		\end{align}
+		by transforming it to a standard eigenvalue problem. 
+		
+		There is an orthogonal matrix $\Pb$ and a diagonal matrix $\Db$ such that $\Pb^T \Sbb_{\rm W} \Pb= \Db$. Let $\Sbb_{\rm W}^{\frac{1}{2}} = \Pb\Db^{\frac{1}{2}}\Pb^T$, $\Sbb_{\rm W}^{-\frac{1}{2}} = \Pb\Db^{-\frac{1}{2}}\Pb^T$, $ \btheta = \Sbb_{\rm W}^{\frac{1}{2}} \bphi $. Transform (2) to
+		\begin{align*}
+		\begin{array}{rl}
+		\max\limits_{\btheta} & \btheta^{T} \Sbb_{\rm W}^{-\frac{1}{2}} \Sbb_{\rm B} \Sbb_{\rm W}^{-\frac{1}{2}} \btheta\\
+		\textrm{s.t.} & \btheta^{T}\btheta = 1
+		\end{array}\label{eq_lda}
+		\end{align*}
+		
+		\item [(d)] Suppose $ \Sbb_{\rm W} \succ 0 $. Let $ \{\widehat{\bphi}_{j}\}_{j=1}^{p} $ be Fisher's discriminant coordinates, \textit{i.e.} the solutions to (\ref{eq_lda}) with each one orthogonal in $ \Sbb_{\rm W} $\footnote{We say $ \bx $ is orthogonal to $ \by $ in $ \Ab $ if $ \bx^{T}\Ab\by = 0 $.} to the predecessors. For $ 1 \le m \le p $, define the (Fisher's) discriminant rules based on nearest centroids projected on $ \{ \widehat{\bphi}_{j} \}_{j=1}^{m} $ 
+		\[ d_{m}(\bx) = \argmin_{1 \le k \le K} \sum_{j=1}^{m}\left( \widehat{\bphi}_{j}^{T}\bx - \widehat{\bphi}_{j}^{T}\widehat{\bmu}_{k} \right)^{2}. \]
+		Now let $ L := \dim\left( \bspan\{ \widehat{\mu}_{k} \}_{k=1}^{K}\right) = \brank(\Sbb_{\rm B}) \le \min\{K-1,p\}  $. Take the following steps to show the equivalence between LDA based on multivariate-Gaussian Bayes rule introduced in class and Fisher's discrimination.
+		\begin{itemize}[leftmargin=*]
+			\item [(\romannum{1})] Using the fact that $ \widehat{\bphi}_{j}^{T}\Sbb_{\rm W}\widehat{\bphi}_{j'} = \bbone(j=j') $ $ (1 \le j,j' \le p) $, show that
+			\[ \Sbb_{\rm W}^{-1} =  \sum_{j=1}^{p}\widehat{\bphi}_{j}\widehat{\bphi}_{j}^{T}. \]
+			
+			Let \[\Ab = \begin{bmatrix} \widehat{\bphi}_{1}^{T} \\ \vdots \\ \widehat{\bphi}_{p}^{T} \end{bmatrix}\]
+			Then,
+			\begin{align*}
+			    & \widehat{\bphi}_{j}^{T}\Sbb_{\rm W}\widehat{\bphi}_{j'} = \bbone(j=j')\\
+			    \implies & \Ab\Sbb_{\rm W}\Ab^T = \Ib_p \\
+			    \implies & \Ab\Sbb_{\rm W} = (\Ab^T)^{-1} \\
+			    \implies & \Ab^T\Ab\Sbb_{\rm W} = \Ib_p \\
+			    \implies & \Sbb_{\rm W}^{-1} = \Ab^T\Ab = \sum_{j=1}^{p}\widehat{\bphi}_{j}\widehat{\bphi}_{j}^{T}
+			\end{align*}
+			
+			\item [(\romannum{2})] Show that
+			\[ \widehat{\bphi}^{T}_{j}\Sbb_{\rm B}\widehat{\bphi}_{j} = 0. \quad(L+1 \le j \le p) \]
+			
+			Because $ \Sbb_{\rm W}^{-\frac{1}{2}} $ has full rank, $\Sbb_{\rm W}^{-\frac{1}{2}} \Sbb_{\rm B} \Sbb_{\rm W}^{-\frac{1}{2}} $ has rank of $L$. Therefore, $\Sbb_{\rm W}^{-\frac{1}{2}} \Sbb_{\rm B} \Sbb_{\rm W}^{-\frac{1}{2}} $ has $p-L$ zero eigenvalues. Therefore, $ \widehat{\bphi}^{T}_{j}\Sbb_{\rm B}\widehat{\bphi}_{j} = 0. \quad(L+1 \le j \le p) $.
+			
+			\item [(\romannum{3})] Show the equivalence between (\romannum{2}) and
+			\[ \widehat{\bphi}_{j}^{T}\widehat{\bmu}_{k} = 0.\quad(L+1 \le j\le p,\ 1 \le k \le K) \]
+			
+			\begin{align*}
+			    & \widehat{\bphi}^{T}_{j}\Sbb_{\rm B}\widehat{\bphi}_{j} = 0 \\
+			    \iff & \sum_{k=1}^{K}  n_k\widehat{\bphi}^{T}_{j} \widehat{\bmu}_{k} \widehat{\bmu}_{k}^T \widehat{\bphi}_{j} = 0 \\
+			    \iff & \sum_{k=1}^{K}  n_k(\widehat{\bphi}^{T}_{j} \widehat{\bmu}_{k})^2 = 0 \\
+			    \iff & \widehat{\bphi}^{T}_{j} \widehat{\bmu}_{k} = 0 \quad (1 \le k \le K)
+			\end{align*}
+			
+			\item [(\romannum{4})] Show that $ d_{L},d_{L+1},\cdots,d_{p} $ are equivalent to the multivariate-Gaussian-based LDA with uniform prior.
+			
+			Let $d(\bx)$ be the estimation from multivariate-Gaussian-based LDA with uniform prior.
+			\begin{align*}
+			    d(\bx) & = \argmin_{1\le k \le K} (\bx-\widehat{\bmu}_{k})^T \widehat{\bSigma}^{-1} (\bx-\widehat{\bmu}_{k}) \\ 
+			    & = \argmin_{1\le k \le K} \frac{1}{n-K} (\bx-\widehat{\bmu}_{k})^T \Sbb_{\rm W}^{-1} (\bx-\widehat{\bmu}_{k}) \\
+			    & = \argmin_{1\le k \le K} \sum_{j=1}^{p} (\bx-\widehat{\bmu}_{k})^T \widehat{\bphi}_{j}\widehat{\bphi}_{j}^{T} (\bx-\widehat{\bmu}_{k}) \\
+			    & = \argmin_{1\le k \le K} \sum_{j=1}^{p} ( \widehat{\bphi}_{j}^{T} \bx-\widehat{\bphi}_{j}^{T}\widehat{\bmu}_{k})^2 \\
+			    & = d_p(\bx).
+			\end{align*}
+			\begin{align*}
+			    & \widehat{\bphi}^{T}_{j} \widehat{\bmu}_{k} = 0 \quad(L+1 \le j\le p,\ 1 \le k \le K)  \\
+			    \implies & d_L(\bx) = d_{L+1}(\bx) = \cdots = d_p(\bx).
+			\end{align*}
+			 Therefore, $ d_{L},d_{L+1},\cdots,d_{p} $ are equivalent to the multivariate-Gaussian-based LDA with uniform prior.
+
+
+		\end{itemize}
+		
+		\begin{rmk}[Reduced-Rank LDA] The scaling matrices for Fisher's discriminant rules are actually \href{https://en.wikipedia.org/wiki/Low-rank_approximation}{low-rank approximations}\footnote{NOT under the usual spectral/Frobenius norm, but under a Mahalanobis-type Frobenius norm.} to that of multivariate-Gaussian LDA. In particular, $ m = p $ recovers the scaling matrix of multivariate-Gaussian LDA as in (\romannum{1}), and the $ m(\ge L) $-rank approximations don't lose information in the sense of discriminating centroids in the reduced space as in (\romannum{3}). The equivalence of (\romannum{2}) and (\romannum{3}) reveals the rationale of finding directions to maximize between-class variances.
+		\end{rmk}
+	\end{itemize}
+	
+	\item (\textit{15 pt}) (Logistic Regression Recession, Textbook Ex. 4.5) Consider a two-class Logistic regression problem. We encode labels $ Y_{i} \in \{ \pm 1 \} $.
+	\begin{itemize}
+		\item [(a)] Show that solving the maximum-likelihood estimate (MLE) for the intercept and slope parameters $ (\beta_{0},\bbeta) $ is equivalent to the following empirical risk minimization (ERM) problem\footnote{We call $ \ell(u,v) := \log(1+e^{-uv}) $ as the \textbf{Logistic loss}.}
+		\[ \min_{(\beta_{0},\bbeta)}{1 \over n}\sum_{i=1}^{n} \log\left\{ 1 + \exp\left[ -Y_{i}(\beta_{0}+\bX_{i}^{T}\bbeta) \right]  \right\}. \]
+		\begin{pchln}
+			In standard generalized linear model (GLM) formulation\footnote{See Section 4.4.1 at page 114 in \cite[McCullagh and Nelder (1989)]{mccullagh1989generalized}.} for the Logistic likelihood, $ Y_{i} $'s are coded as 0-1, but now we are coding it into $ \pm 1 $.
+		\end{pchln}
+		
+		Let 
+		\[y_i=\begin{cases}1 & Y_i=1 \\ 0 & Y_i=-1\end{cases}\]
+		The maximum-likelihood estimate is
+		\begin{align*}
+		    & \max_{\beta_{0},\bbeta} \sum_{i=1}^n \left\{ y_i \log \frac{\exp\left[ \beta_{0}+\bX_{i}^{T}\bbeta \right]}{1+\exp\left[ \beta_{0}+\bX_{i}^{T}\bbeta \right]} + (1-y_i) \log \frac{1}{1+\exp\left[ \beta_{0}+\bX_{i}^{T}\bbeta \right]} \right\} \\
+		    \iff & \max_{\beta_{0},\bbeta} \sum_{i=1}^n \left\{ y_i \log \frac{1}{1+\exp\left[-( \beta_{0}+\bX_{i}^{T}\bbeta) \right]} + (1-y_i) \log \frac{1}{1+\exp\left[ \beta_{0}+\bX_{i}^{T}\bbeta \right]} \right\} \\
+		    \iff & \min_{\beta_{0},\bbeta} \sum_{i=1}^n \left\{ y_i \log \left\{1+\exp\left[-( \beta_{0}+\bX_{i}^{T}\bbeta) \right]\right\} + (1-y_i) \log \left\{1+\exp\left[ \beta_{0}+\bX_{i}^{T}\bbeta \right]\right\} \right\} \\
+		    \iff & \min_{(\beta_{0},\bbeta)}\sum_{i=1}^{n} \log\left\{ 1 + \exp\left[ -Y_{i}(\beta_{0}+\bX_{i}^{T}\bbeta) \right]  \right\}
+		\end{align*}
+		
+		\item [(b)] Argue that if the training data can be perfectly separated by a hyperplane (Figure 4.16 at page 134 in Textbook), or mathematically, there exists a hyperplane $ H \subseteq \bbR^{p} $ with upper (\textit{resp.} lower) halfspace $ H^{+} $ (\textit{resp.} $ H^{-} $)\footnote{If we write a hyperplane into $ H = \{ \bx \in \bbR^{p}: \beta_{0} + \bx^{T}\bbeta = 0 \} $, then the halfspaces are $ H^{+(-)} = \{ \bx \in \bbR^{p}: \beta_{0} + \bx^{T}\bbeta \ge(\le) 0 \} $.} such that 
+		\[ \{ \bX_{i}: Y_{i} = + 1\ (1 \le i \le n) \} \subseteq H^{+}, \quad \{ \bX_{i}: Y_{i} = -1\ (1 \le i \le n) \} \subseteq H^{-}, \]
+		then the optimal solution to Logistic regression is characterized by some unbounded directions\footnote{In convex analysis, we say such directions compose of the \textbf{recession cone} of the objective function. More general discussion of recession and unboundedness can be found in Section 8 in \cite[Rockafellar (1970)]{rockafellar1970convex}.}. That is, there exists a direction $ (\alpha,\bgamma) \in \bbR^{p+1} $ along which $ (\beta_{0},\bbeta) = c\times (\alpha,\bgamma) $ will give objectives increasing/decreasing to an objective supremum/infimum as $ c \to +\infty $.
+		
+		Let $ H=\alpha + \Xb^T\bgamma $. Then,
+		\[
+		\alpha+\bX_{i}^{T}\bgamma >0,\quad \textrm{if~} Y_i=+1
+		\]
+		\[
+		\alpha+\bX_{i}^{T}\bgamma <0,\quad \textrm{if~} Y_i=-1
+		\]
+		Therefore,
+		\[
+		Y_i(\alpha+\bX_{i}^{T}\bgamma) > 0, \quad 1\le i\le n
+		\]
+		Then,
+		\begin{align*}
+		    \sum_{i=1}^{n} \log\left\{ 1 + \exp\left[ -Y_{i}(\beta_{0}+\bX_{i}^{T}\bbeta) \right]  \right\} = \sum_{i=1}^{n} \log\left\{ 1 + \exp\left[ -cY_{i}(\alpha+\bX_{i}^{T}\bgamma) \right]  \right\} \to 0
+		\end{align*}
+		as $c \to +\infty$.
+		
+		\item [(c)] Describe the recession/unboundedness phenomenon in (b) when the number of classes is greater than two.
+		
+		Denote the number of classes as $K$. Denote the class of the $i$th sample as $G_i$.
+		
+		If for each $k$, $1\le k\le K-1$, there exists a hyperplane $ H \subseteq \bbR^{p} $ with upper (\textit{resp.} lower) halfspace $ H^{+} $ (\textit{resp.} $ H^{-} $) such that 
+		\[ \{ \bX_{i}: G_{i} = k \ (1 \le i \le n) \} \subseteq H^{+}, \quad \{ \bX_{i}: G_{i} \ne k\ (1 \le i \le n) \} \subseteq H^{-}, \]
+		then the optimal solution to Logistic regression is characterized by some unbounded directions. That is, there exists directions $ (\alpha_k,\bgamma_k) \in \bbR^{p+1}$ $ (1\le k \le K-1)$ along which $ (\beta_{k0},\bbeta_k) = c\times (\alpha_k,\bgamma_k) $ will give objectives increasing/decreasing to an objective supremum/infimum as $ c \to +\infty $.
+		
+	\end{itemize}
+\end{enumerate}
+
+\section*{Computational Part}
+
+\begin{enumerate}
+	\item (\textit{25 pt}) \textbf{South African Heart Disease Data} \\
+	Perform LDA, QDA, and Logistic regression analysis on the \textit{South African Heart Disease Data}\footnote{Available at  \url{https://web.stanford.edu/~hastie/ElemStatLearn/datasets/SAheart.data}.} and compare their prediction performances. Find more information in Textbook Section 4.4.2. Remember to hold out a test set to perform prediction.
+	
+	\item (\textit{25 pt}) \textbf{Zip Code Digits Data} \\
+	Classify between 3's and 8's from the \textit{Zip Code Digits} data\footnote{Available in \url{https://web.stanford.edu/~hastie/ElemStatLearn/datasets/zip.train.gz} (training dataset) and \url{https://web.stanford.edu/~hastie/ElemStatLearn/datasets/zip.test.gz} (test dataset).}. Build up the LDA, QDA, and Logistic regression models on the training dataset and compare their prediction performances on the test dataset.
+\end{enumerate}
+
+\bibliography{bibfile.bib}
+\bibliographystyle{plain}
+\end{document}

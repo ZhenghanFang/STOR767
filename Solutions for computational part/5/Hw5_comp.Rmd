@@ -1,0 +1,349 @@
+---
+title: "STOR 767 Spring 2019 Hw5: Computational Part"
+author: "Zhenghan Fang"
+header-includes:
+- \usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm}
+- \usepackage[labelsep=space]{caption}
+output:
+  pdf_document: default
+  html_document: default
+subtitle: \textbf{Due on 03/18/2019 in Class}
+bibliography: 
+link-citations: yes
+linkcolor: blue
+editor_options: 
+  chunk_output_type: inline
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if(!require("diagram")) { install.packages("diagram", repos = "http://cran.us.r-project.org"); library(diagram) }
+if(!require("ggplot2")) { install.packages("ggplot2", repos = "http://cran.us.r-project.org"); library(ggplot2) }
+if(!require("dplyr")) { install.packages("dplyr", repos = "http://cran.us.r-project.org"); library(dplyr) }
+if(!require("knitr")) {install.packages("knitr", repos = "http://cran.us.r-project.org"); library("knitr")}
+if(!require("kableExtra")) {install.packages("kableExtra", repos = "http://cran.us.r-project.org"); library("kableExtra")}
+if(!require("lbfgs")) {install.packages("lbfgs", repos = "http://cran.us.r-project.org"); library("lbfgs")}
+library('glmnet')
+library("leaps")
+library('pls')
+library('ISLR')
+library(boot)
+library('bootstrap')
+library('e1071')
+library('MASS')
+library('rms')
+```
+
+\theoremstyle{definition}
+\newtheorem*{hint}{Hint}
+\newtheorem*{pchln}{Punchline}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+
+\newcommand{\Hb}{\mathbf{H}}
+
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cX}{\mathcal{X}}
+
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbR}{\mathbb{R}}
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+
+**Instruction.** 
+
+- Please use **RMarkdown** to create a formatted report for the **Computational Part** of this homework.
+
+# Exercise 1
+Define soft thresholding function and backfitting function.
+```{r}
+soft.thresholding = function(z, lambda){
+  if(abs(z) - lambda > 0){
+    z.th = z / abs(z) * (abs(z) - lambda)
+  }
+  else{
+    z.th = 0
+  }
+  return(z.th)
+}
+
+backfitting.LASSO = function(x, y, lambda, thresh=1e-20){
+  N.pred = length(x[1,])
+  n = length(x[,1])
+  alpha = mean(y)
+  beta = rep(0, N.pred)
+  while(T){
+    change = rep(0,N.pred)
+    for(j in 1:N.pred){
+      y.t = y - alpha - x[,-j] %*% beta[-j]
+      beta.ls = (x[,j] %*% y.t) / n
+      beta.lasso = soft.thresholding(beta.ls, lambda)
+      change[j] = beta[j] - beta.lasso
+      beta[j] = beta.lasso
+    }
+    if(sum(change^2) < thresh){
+      break
+    }
+  }
+  return(list("alpha" = alpha, "beta" = beta))
+}
+```
+
+Perform backfitting. Left column: result of glmnet. Right column: result of my lasso.
+```{r}
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+
+cbind(glmnet = cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta))))
+```
+
+# Exercise 2
+Read data.
+```{r}
+data.prost <- read.table('prostate.data.txt')
+pred.name <- c("lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45")
+resp.name <- "lpsa"
+train.idx <- which(data.prost$train)
+test.idx <- which(!data.prost$train)
+pred.N <- length(pred.name)
+formula.full <- as.formula(paste(resp.name, paste(pred.name, collapse=" + "), sep=" ~ "))
+```
+
+Standardize the predictors to unit variance and zero mean.
+```{r}
+for (i in pred.name){
+  t <- data.prost[, i]
+  data.prost[ ,i] <- (t-mean(t)) / sqrt(var(t))
+}
+```
+
+Split the data into training and test set.
+```{r}
+data.train <- data.prost[train.idx, ]
+data.test <- data.prost[test.idx, ]
+```
+
+## Cross-validation
+Define function "bs.cv" for cross validation. Inputs: data.train: training data; K.cv: number of folds.
+```{r}
+bs.cv = function(data.train, K.cv){
+  N.train = length(data.train[,1])
+  cv.idx = sample(1:K.cv,N.train,replace=T)
+  err.cv=c()
+  for (k in 1:K.cv){
+    bs = regsubsets(formula.full, data = data.train[cv.idx!=k,], nvmax=8)
+    test.mat = model.matrix(formula.full, data = data.train[cv.idx==k,])
+    err.cv.temp = c()
+    for (size.bs in 1:8){
+      coefi= coef(bs, id = size.bs)
+      pred=test.mat[,names(coefi)]%*%coefi
+      err=(data.train[cv.idx==k,]$lpsa-pred)^2
+      err.cv.temp[size.bs] = mean(err)
+    }
+    err.cv = cbind(err.cv, err.cv.temp)
+  }
+  err.cv = rowMeans(err.cv)
+  return(err.cv)
+}
+```
+
+Perform 5-fold CV.
+```{r}
+K.cv = 5
+err.cv = bs.cv(data.train, K.cv)
+```
+The best subset size is
+```{r}
+best.size.cv = which.min(err.cv)
+best.size.cv
+```
+The test error (MSE) is
+```{r}
+bs = regsubsets(formula.full, data = data.train, nvmax=8)
+test.mat = model.matrix(formula.full, data = data.test)
+coefi= coef(bs, id = best.size.cv)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+```
+
+Perform 10-fold CV.
+```{r}
+K.cv = 10
+err.cv = bs.cv(data.train, K.cv)
+```
+The best subset size is
+```{r}
+best.size.cv = which.min(err.cv)
+best.size.cv
+```
+The test error is
+```{r}
+coefi= coef(bs, id = best.size.cv)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+```
+
+## AIC and BIC
+```{r}
+bs = regsubsets(formula.full, data = data.train, nvmax=8)
+AIC.bs = c()
+BIC.bs = c()
+for(size.bs in 1:8){
+  pred.name <- names(coef(bs,id=size.bs))
+  formula.t <- as.formula(paste(resp.name, paste(pred.name[-1], collapse=" + "), sep=" ~ "))
+  model.t <- lm(formula.t, data.train)
+  AIC.bs[size.bs] = AIC(model.t)
+  BIC.bs[size.bs] = BIC(model.t)
+}
+```
+The best subset size from AIC is
+```{r}
+best.size.AIC = which.min(AIC.bs)
+best.size.AIC
+```
+Test error is
+```{r}
+coefi= coef(bs, id = best.size.AIC)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+```
+The best subset size from BIC is
+```{r}
+best.size.BIC = which.min(BIC.bs)
+best.size.BIC
+```
+Test error is 
+```{r}
+coefi= coef(bs, id = best.size.BIC)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+```
+
+## Bootstrap .632 estimator
+```{r}
+bs = regsubsets(formula.full, data = data.train, nvmax=8)
+
+err.632.bs = c()
+theta.fit <- function(x,y){lsfit(x,y)}
+theta.predict <- function(fit,x){
+  cbind(1,x)%*%fit$coef
+}
+sq.err <- function(y,yhat) { (y-yhat)^2}
+for(size.bs in 1:8){
+  pred.name <- names(coef(bs,id=size.bs))
+  x = data.train[,pred.name[-1]]
+  y = data.train[,resp.name]
+  results <- bootpred(x,y,200,theta.fit,theta.predict, err.meas=sq.err)
+  err.632.bs[size.bs] = results[[3]]
+}
+```
+The best subset size from bootstrap .632 estimator is
+```{r}
+best.size.632 = which.min(err.632.bs)
+best.size.632
+```
+Test error is
+```{r}
+coefi= coef(bs, id = best.size.632)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+```
+
+# Exercise 3.
+
+Load dataset.
+```{r}
+SAheart = read.table('SAheart.data.txt', sep=",", header=T, row.names=1)
+SAheart$chd = factor(SAheart$chd)
+```
+Use half of the dataset as training data.
+```{r}
+train = sample(1:462, 231)
+```
+
+## SVM with various kernels
+SVM with linear kernel.
+```{r}
+model.svm = svm(chd~., data=SAheart[train,], kernel = "linear")
+summary(model.svm)
+```
+Define error as number of misclassified samples/total number of samples.
+
+Test error is
+```{r}
+pred.svm = predict(model.svm, newdata = SAheart[-train, -10])
+err = sum(pred.svm != SAheart$chd[-train] ) / length(pred.svm)
+err
+```
+SVM with radial basis function kernel. Tune gamma by 10-fold cross validation.
+```{r}
+model.svm = best.tune(svm, chd~., data=SAheart[train,], kernel = "radial", gamma = 0.05*2^(-1:3))
+summary(model.svm)
+```
+Test error is
+```{r}
+pred.svm = predict(model.svm, newdata = SAheart[-train, -10])
+err = sum(pred.svm != SAheart$chd[-train] ) / length(pred.svm)
+err
+```
+SVM with sigmoid kernel. Tune gamma by 10-fold cross validation.
+```{r}
+model.svm = best.tune(svm, chd~., data=SAheart[train,], kernel = "sigmoid", gamma = 0.05*2^(-1:3))
+summary(model.svm)
+```
+Test error is
+```{r}
+pred.svm = predict(model.svm, newdata = SAheart[-train, -10])
+err = sum(pred.svm != SAheart$chd[-train] ) / length(pred.svm)
+err
+```
+
+## LDA, QDA, and logistic regression
+Perform LDA.
+```{r}
+model = lda(formula=chd~., data=SAheart, subset=train)
+model
+```
+
+The test error of LDA is
+```{r}
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum(pred$class != SAheart$chd[-train] ) / length(pred$class)
+err
+```
+Perform QDA.
+```{r}
+model = qda(formula=chd~., data=SAheart, subset=train)
+model
+```
+The test error of QDA is
+```{r}
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum(pred$class != SAheart$chd[-train] ) / length(pred$class)
+err
+```
+Perform Logistic regression.
+```{r}
+model = lrm(formula=chd~., data=SAheart, subset=train)
+model
+```
+The test error of Logistic regression is
+```{r}
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum((pred>0)*1 != SAheart$chd[-train] ) / length(pred)
+err
+```

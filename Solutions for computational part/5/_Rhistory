@@ -1,0 +1,512 @@
+alpha = mean(y)
+beta = rep(0, N.pred)
+while(T){
+for(j in 1:N.pred){
+y.t = y - alpha - x[,-j] %*% beta[-j]
+beta.ls = (x[,j] %*% y.t) / n
+beta.lasso = soft.thresholding(beta.ls, lambda)
+change = beta[j] - beta.lasso
+beta[j] = beta.lasso
+if(abs(change) < 1e-6){
+break
+}
+}
+}
+return(list("alpha" = alpha, "beta" = beta))
+}
+soft.thresholding = function(z, lambda){
+if(abs(z) - lambda > 0){
+z.th = z / abs(z) * (abs(z) - lambda)
+}
+else{
+z.th = 0
+}
+return(z.th)
+}
+backfitting.LASSO = function(x, y, lambda){
+N.pred = length(x[1,])
+n = length(x[,1])
+alpha = mean(y)
+beta = rep(0, N.pred)
+while(T){
+for(j in 1:N.pred){
+y.t = y - alpha - x[,-j] %*% beta[-j]
+beta.ls = (x[,j] %*% y.t) / n
+beta.lasso = soft.thresholding(beta.ls, lambda)
+change = beta[j] - beta.lasso
+beta[j] = beta.lasso
+if(abs(change) < 1e-6){
+break
+}
+}
+if(abs(change) < 1e-6){
+break
+}
+}
+return(list("alpha" = alpha, "beta" = beta))
+}
+x = matrix(rnorm(10000), 100, 100)
+y = rnorm(100)
+lambda = 1/10
+backfitting.LASSO(x, y, lambda)
+soft.thresholding = function(z, lambda){
+if(abs(z) - lambda > 0){
+z.th = z / abs(z) * (abs(z) - lambda)
+}
+else{
+z.th = 0
+}
+return(z.th)
+}
+backfitting.LASSO = function(x, y, lambda, thresh=1e-20){
+N.pred = length(x[1,])
+n = length(x[,1])
+alpha = mean(y)
+beta = rep(0, N.pred)
+while(T){
+for(j in 1:N.pred){
+y.t = y - alpha - x[,-j] %*% beta[-j]
+beta.ls = (x[,j] %*% y.t) / n
+beta.lasso = soft.thresholding(beta.ls, lambda)
+change = beta[j] - beta.lasso
+beta[j] = beta.lasso
+if(abs(change) < thresh){
+break
+}
+}
+if(abs(change) < thresh){
+break
+}
+}
+return(list("alpha" = alpha, "beta" = beta))
+}
+x = matrix(rnorm(10000), 100, 100)
+y = rnorm(100)
+lambda = 1/10
+backfitting.LASSO(x, y, lambda)
+glmnet(x, y, lambda = 1/10, thresh=1e-20)
+soft.thresholding = function(z, lambda){
+if(abs(z) - lambda > 0){
+z.th = z / abs(z) * (abs(z) - lambda)
+}
+else{
+z.th = 0
+}
+return(z.th)
+}
+backfitting.LASSO = function(x, y, lambda, thresh=1e-20){
+N.pred = length(x[1,])
+n = length(x[,1])
+alpha = mean(y)
+beta = rep(0, N.pred)
+while(T){
+for(j in 1:N.pred){
+y.t = y - alpha - x[,-j] %*% beta[-j]
+beta.ls = (x[,j] %*% y.t) / n
+beta.lasso = soft.thresholding(beta.ls, lambda)
+change = beta[j] - beta.lasso
+beta[j] = beta.lasso
+if(abs(change) < thresh){
+break
+}
+}
+if(abs(change) < thresh){
+break
+}
+}
+return(list("alpha" = alpha, "beta" = beta))
+}
+x = matrix(rnorm(10000), 100, 100)
+y = rnorm(100)
+lambda = 1/10
+backfitting.LASSO(x, y, lambda)
+glmnet(x, y, lambda = 1/10, thresh=1e-20)
+sum(x[1,])
+sum(x[,1])
+x
+colMeans(x)
+x
+x-colMeans(x)
+x.norm <- as.data.frame(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+colMeans(x.norm)
+rowMeans(x.norm)
+mean(x.norm[,1])
+mean(x.norm[,2])
+mean(x.norm[,2]^2)
+mean(x[,2]^2)
+mean(x[,2])
+x
+x-x.norm
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+backfitting.LASSO(x, y, lambda)
+glmnet(x, y, lambda = 1/10, thresh=1e-20)
+?glmnet
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+backfitting.LASSO(x, y, lambda)
+glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+summary(lasso.glmnet)
+beta(lasso.glmnet)
+coef(lasso.glmnet)
+lasso.my
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, family="gaussian", alpha=1, lambda = 1/10, thresh=1e-20)
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, family="gaussian", alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+mean(y)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+soft.thresholding(10,1/10)
+soft.thresholding(-10,1/10)
+soft.thresholding(-1,1/10)
+soft.thresholding(-1/10,1/10)
+soft.thresholding(-1/20,1/10)
+soft.thresholding(1/20,1/10)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-200)
+lasso.my
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+soft.thresholding = function(z, lambda){
+if(abs(z) - lambda > 0){
+z.th = z / abs(z) * (abs(z) - lambda)
+}
+else{
+z.th = 0
+}
+return(z.th)
+}
+backfitting.LASSO = function(x, y, lambda, thresh=1e-20){
+N.pred = length(x[1,])
+n = length(x[,1])
+alpha = mean(y)
+beta = rep(0, N.pred)
+while(T){
+for(j in 1:N.pred){
+y.t = y - alpha - x[,-j] %*% beta[-j]
+beta.ls = (x[,j] %*% (y.t-mean(y.t))) / n
+beta.lasso = soft.thresholding(beta.ls, lambda)
+change = beta[j] - beta.lasso
+beta[j] = beta.lasso
+if(abs(change) < thresh){
+break
+}
+}
+if(abs(change) < thresh){
+break
+}
+}
+return(list("alpha" = alpha, "beta" = beta))
+}
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+x[,-j] %*% beta[-j]
+j=1
+x[,-j] %*% beta[-j]
+beta
+x[,-j] %*% lasso.my$beta[-j]
+soft.thresholding = function(z, lambda){
+if(abs(z) - lambda > 0){
+z.th = z / abs(z) * (abs(z) - lambda)
+}
+else{
+z.th = 0
+}
+return(z.th)
+}
+backfitting.LASSO = function(x, y, lambda, thresh=1e-20){
+N.pred = length(x[1,])
+n = length(x[,1])
+alpha = mean(y)
+beta = rep(0, N.pred)
+while(T){
+change = rep(0,N.pred)
+for(j in 1:N.pred){
+y.t = y - alpha - x[,-j] %*% beta[-j]
+beta.ls = (x[,j] %*% y.t) / n
+beta.lasso = soft.thresholding(beta.ls, lambda)
+change[j] = beta[j] - beta.lasso
+beta[j] = beta.lasso
+}
+if(sum(change^2) < thresh){
+break
+}
+}
+return(list("alpha" = alpha, "beta" = beta))
+}
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+soft.thresholding = function(z, lambda){
+if(abs(z) - lambda > 0){
+z.th = z / abs(z) * (abs(z) - lambda)
+}
+else{
+z.th = 0
+}
+return(z.th)
+}
+backfitting.LASSO = function(x, y, lambda, thresh=1e-20){
+N.pred = length(x[1,])
+n = length(x[,1])
+alpha = mean(y)
+beta = rep(0, N.pred)
+while(T){
+change = rep(0,N.pred)
+for(j in 1:N.pred){
+y.t = y - alpha - x[,-j] %*% beta[-j]
+beta.ls = (x[,j] %*% y.t) / n
+beta.lasso = soft.thresholding(beta.ls, lambda)
+change[j] = beta[j] - beta.lasso
+beta[j] = beta.lasso
+}
+if(sum(change^2) < thresh){
+break
+}
+}
+return(list("alpha" = alpha, "beta" = beta))
+}
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+rbind(lasso.my$alpha, lasso.my$beta)
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+rbind(lasso.my$alpha, t(lasso.my$beta))
+coef(lasso.glmnet)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+rbind(lasso.my$alpha, t(lasso.my$beta))
+coef(lasso.glmnet)
+t(lasso.my$beta)
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+matrix(lasso.my$beta)
+(matrix(lasso.my$alpha,lasso.my$beta))
+matrix(cbind(lasso.my$alpha,lasso.my$beta))
+matrix(rbind(lasso.my$alpha,lasso.my$beta))
+rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta))
+cbind(coef(lasso.glmnet),rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta)))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+lasso.my
+coef(lasso.glmnet)
+cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta)))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+data.frame(cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta)))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+data.frame(glmnet = cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta)))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+data.frame(glmnet = cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta))))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+matrix(glmnet = cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta))))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+cbind.data.frame(glmnet = cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta))))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+cbind(glmnet = cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta))))
+x = matrix(rnorm(10000), 100, 100)
+x.norm <- as.matrix(apply(x, 2, function(x) (x - mean(x))/sqrt(mean(x^2))))
+y = rnorm(100)
+lambda = 1/10
+lasso.my = backfitting.LASSO(x, y, lambda)
+lasso.glmnet = glmnet(x, y, alpha=1, lambda = 1/10, thresh=1e-20)
+cbind(glmnet = cbind(glmnet = coef(lasso.glmnet), my = rbind(matrix(lasso.my$alpha), matrix(lasso.my$beta))))
+best.size.AIC = which.min(AIC.bs)
+best.size.AIC
+best.size.BIC = which.min(BIC.bs)
+best.size.BIC
+coefi= coef(bs, id = best.size.BIC)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+coefi= coef(bs, id = best.size.AIC)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+bs = regsubsets(formula.full, data = data.train, nvmax=8)
+err.632.bs = c()
+theta.fit <- function(x,y){lsfit(x,y)}
+theta.predict <- function(fit,x){
+cbind(1,x)%*%fit$coef
+}
+sq.err <- function(y,yhat) { (y-yhat)^2}
+for(size.bs in 1:8){
+pred.name <- names(coef(bs,id=size.bs))
+x = data.train[,pred.name[-1]]
+y = data.train[,resp.name]
+results <- bootpred(x,y,200,theta.fit,theta.predict, err.meas=sq.err)
+err.632.bs[size.bs] = results[[3]]
+}
+best.size.632 = which.min(err.632.bs)
+best.size.632
+coefi= coef(bs, id = best.size.632)
+pred=test.mat[,names(coefi)]%*%coefi
+err=(data.test$lpsa-pred)^2
+mean(err)
+SAheart = read.table('SAheart.data.txt', sep=",", header=T, row.names=1)
+SAheart$chd = factor(SAheart$chd)
+train = sample(1:462, 231)
+model.svm = svm(chd~., data=SAheart[train,], kernel = "linear")
+summary(model.svm)
+pred.svm = predict(model.svm, newdata = SAheart[-train, -10])
+err = sum(pred.svm != SAheart$chd[-train] ) / length(pred.svm)
+err
+model.svm = best.tune(svm, chd~., data=SAheart[train,], kernel = "radial", gamma = 0.05*2^(-1:3))
+summary(model.svm)
+pred.svm = predict(model.svm, newdata = SAheart[-train, -10])
+err = sum(pred.svm != SAheart$chd[-train] ) / length(pred.svm)
+err
+model.svm = best.tune(svm, chd~., data=SAheart[train,], kernel = "sigmoid", gamma = 0.05*2^(-1:3))
+summary(model.svm)
+pred.svm = predict(model.svm, newdata = SAheart[-train, -10])
+err = sum(pred.svm != SAheart$chd[-train] ) / length(pred.svm)
+err
+model = lda(formula=chd~., data=SAheart, subset=train)
+model
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum(pred$class != SAheart$chd[-train] ) / length(pred$class)
+err
+model = qda(formula=chd~., data=SAheart, subset=train)
+model
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum(pred$class != SAheart$chd[-train] ) / length(pred$class)
+err
+model = lrm(formula=chd~., data=SAheart, subset=train)
+model
+pred = predict(object = model, newdata = SAheart[-train, ])
+err = sum((pred>0)*1 != SAheart$chd[-train] ) / length(pred)
+err

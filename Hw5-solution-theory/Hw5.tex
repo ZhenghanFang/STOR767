@@ -1,0 +1,696 @@
+\documentclass[10pt]{article}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,amssymb,mathabx,amsthm,bm,bbm,romannum,enumitem,natbib,algorithm2e}
+\usepackage[dvips]{graphicx}
+\usepackage[english]{babel}
+\usepackage[pagebackref,bookmarksnumbered]{hyperref}
+\usepackage{url}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=red,
+	urlcolor=blue,
+	citecolor=blue
+}
+
+%\setcounter{tocdepth}{3}
+%\usepackage[depth=3]{bookmark}
+
+\usepackage[margin=1in]{geometry}
+\renewcommand{\baselinestretch}{1.5}	% Line Stretch
+
+\usepackage[utf8]{inputenc}
+
+%----- theorems -----%
+
+\newtheorem{thm}{Theorem}[subsection]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{coro}[thm]{Corollary}
+\newtheorem{fact}[thm]{Fact}
+\newtheorem*{claim}{Claim}
+
+\theoremstyle{definition}
+\newtheorem{eg}{Example}
+\newtheorem*{hint}{Hint}
+\newtheorem*{dfn}{Definition}
+\newtheorem*{pchln}{Punchline}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{\underline{Remark}}
+
+
+%----- Bolded fonts -----%
+
+\newcommand{\ab}{\mathbf{a}}
+\newcommand{\bbb}{\mathbf{b}}
+\newcommand{\cbb}{\mathbf{c}}
+\newcommand{\db}{\mathbf{d}}
+\newcommand{\eb}{\mathbf{e}}
+\newcommand{\fb}{\mathbf{f}}
+\newcommand{\gb}{\mathbf{g}}
+\newcommand{\hb}{\mathbf{h}}
+\newcommand{\ib}{\mathbf{i}}
+\newcommand{\jb}{\mathbf{j}}
+\newcommand{\kb}{\mathbf{k}}
+\newcommand{\lb}{\mathbf{l}}
+\newcommand{\mb}{\mathbf{m}}
+\newcommand{\nbb}{\mathbf{n}}
+\newcommand{\ob}{\mathbf{o}}
+\newcommand{\pb}{\mathbf{p}}
+\newcommand{\qb}{\mathbf{q}}
+\newcommand{\rb}{\mathbf{r}}
+\newcommand{\sbb}{\mathbf{s}}
+\newcommand{\tb}{\mathbf{t}}
+\newcommand{\ub}{\mathbf{u}}
+\newcommand{\vb}{\mathbf{v}}
+\newcommand{\wb}{\mathbf{w}}
+\newcommand{\xb}{\mathbf{x}}
+\newcommand{\yb}{\mathbf{y}}
+\newcommand{\zb}{\mathbf{z}}
+
+% denote vectors
+\newcommand{\ba}{\bm{a}}
+\newcommand{\bb}{\bm{b}}
+\newcommand{\bc}{\bm{c}}
+\newcommand{\bd}{\bm{d}}
+\newcommand{\be}{\bm{e}}
+\newcommand{\bbf}{\bm{f}}
+\newcommand{\bg}{\bm{g}}
+\newcommand{\bh}{\bm{h}}
+\newcommand{\bi}{\bmf{i}}
+\newcommand{\bj}{\bm{j}}
+\newcommand{\bk}{\bm{k}}
+\newcommand{\bl}{\bm{l}}
+\newcommand{\bbm}{\bm{m}}
+\newcommand{\bn}{\bm{n}}
+\newcommand{\bo}{\bm{o}}
+\newcommand{\bp}{\bm{p}}
+\newcommand{\bq}{\bm{q}}
+\newcommand{\br}{\bm{r}}
+\newcommand{\bs}{\bm{s}}
+\newcommand{\bt}{\bm{t}}
+\newcommand{\bu}{\bm{u}}
+\newcommand{\bv}{\bm{v}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bz}{\bm{z}}
+
+\newcommand{\Ab}{\mathbf{A}}
+\newcommand{\Bb}{\mathbf{B}}
+\newcommand{\Cb}{\mathbf{C}}
+\newcommand{\Db}{\mathbf{D}}
+\newcommand{\Eb}{\mathbf{E}}
+\newcommand{\Fb}{\mathbf{F}}
+\newcommand{\Gb}{\mathbf{G}}
+\newcommand{\Hb}{\mathbf{H}}
+\newcommand{\Ib}{\mathbf{I}}
+\newcommand{\Jb}{\mathbf{J}}
+\newcommand{\Kb}{\mathbf{K}}
+\newcommand{\Lb}{\mathbf{L}}
+\newcommand{\Mb}{\mathbf{M}}
+\newcommand{\Nb}{\mathbf{N}}
+\newcommand{\Ob}{\mathbf{O}}
+\newcommand{\Pb}{\mathbf{P}}
+\newcommand{\Qb}{\mathbf{Q}}
+\newcommand{\Rb}{\mathbf{R}}
+\newcommand{\Sbb}{\mathbf{S}}
+\newcommand{\Tb}{\mathbf{T}}
+\newcommand{\Ub}{\mathbf{U}}
+\newcommand{\Vb}{\mathbf{V}}
+\newcommand{\Wb}{\mathbf{W}}
+\newcommand{\Xb}{\mathbf{X}}
+\newcommand{\Yb}{\mathbf{Y}}
+\newcommand{\Zb}{\mathbf{Z}}
+
+\newcommand{\bA}{\bm{A}}
+\newcommand{\bB}{\bm{B}}
+\newcommand{\bC}{\bm{C}}
+\newcommand{\bD}{\bm{D}}
+\newcommand{\bE}{\bm{E}}
+\newcommand{\bF}{\bm{F}}
+\newcommand{\bG}{\bm{G}}
+\newcommand{\bH}{\bm{H}}
+\newcommand{\bI}{\bm{I}}
+\newcommand{\bJ}{\bm{J}}
+\newcommand{\bK}{\bm{K}}
+\newcommand{\bL}{\bm{L}}
+\newcommand{\bM}{\bm{M}}
+\newcommand{\bN}{\bm{N}}
+\newcommand{\bO}{\bm{O}}
+\newcommand{\bP}{\bm{P}}
+\newcommand{\bQ}{\bm{Q}}
+\newcommand{\bR}{\bm{R}}
+\newcommand{\bS}{\bm{S}}
+\newcommand{\bT}{\bm{T}}
+\newcommand{\bU}{\bm{U}}
+\newcommand{\bV}{\bm{V}}
+\newcommand{\bW}{\bm{W}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bZ}{\bm{Z}}
+
+\newcommand{\bbeta}{\bm{\beta}}
+\newcommand{\balpha}{\bm{\alpha}}
+\newcommand{\bgamma}{\bm{\gamma}}
+\newcommand{\blambda}{\bm{\lambda}}
+\newcommand{\bomega}{\bm{\omega}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\bepsilon}{\bm{\epsilon}}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\bxi}{\bm{\xi}}
+\newcommand{\bpi}{\bm{\pi}}
+\newcommand{\bphi}{\bm{\phi}}
+
+\newcommand{\bGamma}{\bm{\Gamma}}
+\newcommand{\bPhi}{\bm{\Phi}}
+\newcommand{\bLambda}{\bm{\Lambda}}
+\newcommand{\bSigma}{\bm{\Sigma}}
+
+
+%----- Blackboard bolded fonts -----%
+
+\newcommand{\bbA}{\mathbb{A}}
+\newcommand{\bbB}{\mathbb{B}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbD}{\mathbb{D}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\bbF}{\mathbb{F}}
+\newcommand{\bbG}{\mathbb{G}}
+\newcommand{\bbH}{\mathbb{H}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbJ}{\mathbb{J}}
+\newcommand{\bbK}{\mathbb{K}}
+\newcommand{\bbL}{\mathbb{L}}
+\newcommand{\bbM}{\mathbb{M}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbQ}{\mathbb{Q}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbS}{\mathbb{S}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbU}{\mathbb{U}}
+\newcommand{\bbV}{\mathbb{V}}
+\newcommand{\bbW}{\mathbb{W}}
+\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bbY}{\mathbb{Y}}
+\newcommand{\bbZ}{\mathbb{Z}}
+
+
+%----- Calligraphic fonts -----%
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\smallcO{
+	\mathchoice
+	{{\scriptstyle\mathcal{O}}}% \displaystyle
+	{{\scriptstyle\mathcal{O}}}% \textstyle
+	{{\scriptscriptstyle\mathcal{O}}}% \scriptstyle
+	{\scalebox{.5}{$\scriptscriptstyle\mathcal{O}$}}%\scriptscriptstyle
+}
+
+%----- Script fonts -----%
+
+\newcommand{\sA}{\mathscr{A}}
+\newcommand{\sB}{\mathscr{B}}
+\newcommand{\sC}{\mathscr{C}}
+\newcommand{\sD}{\mathscr{D}}
+\newcommand{\sE}{\mathscr{E}}
+\newcommand{\sF}{\mathscr{F}}
+\newcommand{\sG}{\mathscr{G}}
+\newcommand{\sH}{\mathscr{H}}
+\newcommand{\sI}{\mathscr{I}}
+\newcommand{\sJ}{\mathscr{J}}
+\newcommand{\sK}{\mathscr{K}}
+\newcommand{\sL}{\mathscr{L}}
+\newcommand{\sM}{\mathscr{M}}
+\newcommand{\sN}{\mathscr{N}}
+\newcommand{\sO}{\mathscr{O}}
+\newcommand{\sP}{\mathscr{P}}
+\newcommand{\sQ}{\mathscr{Q}}
+\newcommand{\sR}{\mathscr{R}}
+\newcommand{\sS}{\mathscr{S}}
+\newcommand{\sT}{\mathscr{T}}
+\newcommand{\sU}{\mathscr{U}}
+\newcommand{\sV}{\mathscr{V}}
+\newcommand{\sW}{\mathscr{W}}
+\newcommand{\sX}{\mathscr{X}}
+\newcommand{\sY}{\mathscr{Y}}
+\newcommand{\sZ}{\mathscr{Z}}
+
+%----- Fraktur fonts -----%
+
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fB}{\mathfrak{B}}
+\newcommand{\fC}{\mathfrak{C}}
+\newcommand{\fD}{\mathfrak{D}}
+\newcommand{\fE}{\mathfrak{E}}
+\newcommand{\fF}{\mathfrak{F}}
+\newcommand{\fG}{\mathfrak{G}}
+\newcommand{\fH}{\mathfrak{H}}
+\newcommand{\fI}{\mathfrak{I}}
+\newcommand{\fJ}{\mathfrak{J}}
+\newcommand{\fK}{\mathfrak{K}}
+\newcommand{\fL}{\mathfrak{L}}
+\newcommand{\fM}{\mathfrak{M}}
+\newcommand{\fN}{\mathfrak{N}}
+\newcommand{\fO}{\mathfrak{O}}
+\newcommand{\fP}{\mathfrak{P}}
+\newcommand{\fQ}{\mathfrak{Q}}
+\newcommand{\fR}{\mathfrak{R}}
+\newcommand{\fS}{\mathfrak{S}}
+\newcommand{\fT}{\mathfrak{T}}
+\newcommand{\fU}{\mathfrak{U}}
+\newcommand{\fV}{\mathfrak{V}}
+\newcommand{\fW}{\mathfrak{W}}
+\newcommand{\fX}{\mathfrak{X}}
+\newcommand{\fY}{\mathfrak{Y}}
+\newcommand{\fZ}{\mathfrak{Z}}
+
+\newcommand{\fa}{\mathfrak{a}}
+\newcommand{\ffb}{\mathfrak{b}}
+\newcommand{\fc}{\mathfrak{c}}
+\newcommand{\fd}{\mathfrak{d}}
+\newcommand{\fe}{\mathfrak{e}}
+\newcommand{\ff}{\mathfrak{f}}
+\newcommand{\fg}{\mathfrak{g}}
+\newcommand{\fh}{\mathfrak{h}}
+\newcommand{\ffi}{\mathfrak{i}}
+\newcommand{\fj}{\mathfrak{j}}
+\newcommand{\fk}{\mathfrak{k}}
+\newcommand{\fl}{\mathfrak{l}}
+\newcommand{\fm}{\mathfrak{m}}
+\newcommand{\fn}{\mathfrak{n}}
+\newcommand{\fo}{\mathfrak{o}}
+\newcommand{\fp}{\mathfrak{p}}
+\newcommand{\fq}{\mathfrak{q}}
+\newcommand{\fr}{\mathfrak{r}}
+\newcommand{\fs}{\mathfrak{s}}
+\newcommand{\ft}{\mathfrak{t}}
+\newcommand{\fu}{\mathfrak{u}}
+\newcommand{\fv}{\mathfrak{v}}
+\newcommand{\fw}{\mathfrak{w}}
+\newcommand{\fx}{\mathfrak{x}}
+\newcommand{\fy}{\mathfrak{y}}
+\newcommand{\fz}{\mathfrak{z}}
+
+%----- special operators -----%
+
+\newcommand{\bVar}{\mathbf{Var}}	% variance
+\newcommand{\bCov}{\mathbf{Cov}}	% covariance
+\newcommand{\bzero}{{\mathbf{0}}}	% zero vector
+\newcommand{\bone}{{\mathbf{1}}}	% all-one vector
+
+\newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+\newcommand{\argmax}{\mathop{\mathrm{argmax}}}
+\newcommand{\rank}{\mathrm{rank}}	% rank
+\newcommand{\sign}{\mathrm{sign}}	% sign
+\newcommand{\diag}{\mathrm{diag}}	% diagonal
+\newcommand{\dom}{\mathrm{dom}}		% domain
+\newcommand{\ext}{\mathrm{ext}}		% Extreme
+\newcommand{\diam}{\mathrm{diam}}	% diameter
+\newcommand{\rdim}{\mathrm{dim}}	% dimension
+\newcommand{\rker}{\mathrm{ker}}	% kernel
+\newcommand{\Tr}{\mathrm{Tr}}	    % trace
+\newcommand{\rspan}{\mathrm{span}}	% linear span
+\newcommand{\supp}{\mathrm{supp}}	% support
+\newcommand{\epi}{\mathrm{epi}}		% epigraph
+\newcommand{\loc}{\mathrm{loc}}		% local
+\newcommand{\ucp}{\mathrm{ucp}}		% uniform convergence on compacts
+\newcommand{\rL}{\mathrm{L}}		% Levy Metric
+\newcommand{\Wass}{\mathrm{Wass}}	% Wasserstein Metric
+\newcommand{\KS}{\mathrm{KS}}		% Kolomogov-Smirnov Distance
+\newcommand{\LP}{\mathrm{LP}}		% Levy-Prokhorov Metric
+\newcommand{\TV}{\mathrm{TV}}		% Total Variation
+\newcommand{\Lips}{\mathrm{Lips}}	% Lipschitz Metric
+\newcommand{\rS}{\mathrm{S}}		% Skorokhod Topology
+\newcommand{\rd}{\mathrm{d}}		% differentiation
+\newcommand{\rF}{\mathrm{F}}		% Frobenius
+\newcommand{\coup}{\mathrm{coup}}	% coupling
+\newcommand{\mix}{\mathrm{mix}}		% mixing
+\newcommand{\rel}{\mathrm{rel}}		% relaxation
+\newcommand{\set}{\mathrm{set}}		% set
+\newcommand{\LOOCV}{\mathrm{LOOCV}}	% leave-one-out cross-validation
+\newcommand{\err}{\mathrm{err}}		% sample error
+\newcommand{\Err}{\mathrm{Err}}		% population error
+\newcommand{\rin}{\mathrm{in}}		% in-sample
+\newcommand{\new}{\mathrm{new}}		% new
+\newcommand{\op}{\mathrm{op}}		% op
+\newcommand{\st}{\mathrm{s.t.}}		% subject to
+\newcommand{\boot}{\mathrm{boot}}	% boot
+\newcommand{\oob}{\mathrm{oob}}		% out-of-bag
+\newcommand{\LS}{\mathrm{LS}}		% least-square
+\newcommand{\bbone}{{\mathbbm{1}}}	% indicator
+
+\newcommand\munderbar[1]{%
+	\underaccent{\bar}{#1}}
+
+\newcommand\indep{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}	% independence
+
+%----- distribution name -----%
+
+\newcommand{\Exp}{\textbf{Exponential}}
+\newcommand{\Pois}{\textbf{Poisson}}
+\newcommand{\Gumb}{\textbf{Gumbel}}
+\newcommand{\Bern}{\textbf{Bernoulli}}
+\newcommand{\Bin}{\textbf{Binomial}}
+\newcommand{\NBin}{\textbf{Negative-Binomial}}
+\newcommand{\Multi}{\textbf{Multinomial}}
+\newcommand{\Geo}{\textbf{Geometric}}
+\newcommand{\Hyper}{\textbf{Hypergeometric}}
+\newcommand{\Cauchy}{\textbf{Cauchy}}
+\newcommand{\Levy}{\textbf{L\'{e}vy}}
+\newcommand{\Unif}{\textbf{Uniform}}
+
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+	\posttitle{
+		\begin{center}\large#1\end{center}
+	}
+}
+
+\setlength{\droptitle}{-2em}
+\title{STOR 767 Spring 2019 Hw5}
+\pretitle{\vspace{\droptitle}\centering\huge}
+\posttitle{\par}
+\subtitle{\textbf{Due on 03/18/2019 in Class}}
+\author{\it Zhenghan Fang}
+%\preauthor{}\postauthor{}
+\date{}
+\predate{}\postdate{}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Zhenghan Fang}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+\begin{document}
+	\pagenumbering{arabic}
+	\maketitle
+	
+	% \pdfbookmark[<level>]{<title>}{<dest>}
+	%\pdfbookmark[section]{\contentsname}{toc}
+
+\begin{rmk}
+	This homework focuses on additive models, model assessment and selection, and support vector machines. 
+\end{rmk}
+
+\noindent \textbf{Instruction.}
+\begin{itemize}
+	\item {\bf Theoretical Part and Computational Part are respectively credited 60 points. At most 100 points in total will be accounted for this homework.}
+	
+	\item Submission of handwritten solution for the \textbf{Theoretical Part} of this homework is allowed.
+	
+	\item Please use \textbf{RMarkdown} to create a formatted report for the \textbf{Computational Part} of this homework. 
+
+	\item Some of the problems are selected or modified from the textbook \citep{friedman2009elements}.
+	
+\end{itemize}
+
+\section*{Theoretical Part}
+\begin{enumerate}
+	\item (\textit{10 pt}) (Naive Bayes and Logistic GAM, Textbook Ex. 6.9) What's the differences between the naive Bayes model and a generalized additive Logistic regression model in terms of (a) model assumptions, and (b) estimation? If all the variables are discrete, what can you say about the Logistic GAM?
+	
+	Model assumptions: The naive Bayes model assumes that features $X_k$'s are independent for a given class. The Logistic GAM assumes that the log-posterior odds are additive functions of the features $X_k$'s.
+	
+	Estimation: Class-conditional marginal densities in naive Bayes are estimated separately by one-dimensional density estimates. The logistic GAM is estimated iteratively by backfitting algorithm.
+	
+	\item (\textit{15 pt}) (Optimism, Textbook Ex. 7.4, 7.5) Let $ \cY=\{ Y_{i} \}_{i=1}^{n}$ be a training sample, $ \cY^{\new}=\{Y_{i}^{\new}\}_{i=1}^{n} \overset{iid}{=} \cY $ be an independent copy of $ \cY $, $ \{ \widehat{Y}_{i} \}_{i=1}^{n} $ be the in-sample prediction based on $ \cY $. Recall the in-sample prediction error and its training estimate
+	\[ \Err_{\rin} := {1 \over n}\sum_{i=1}^{n}\bbE_{\cY,\cY^{\new}}\ell(Y_{i}^{\new},\widehat{Y}_{i}), \quad \widebar{\err} := {1 \over n}\sum_{i=1}^{n}\ell(Y_{i},\widehat{Y}_{i}), \]
+	and the optimism
+	\[ \op := \Err_{\rin} - \bbE_{\cY} \widebar{\err}. \]
+	Consider the squared-error loss $ \ell(y,\widehat{y}) := (y - \widehat{y})^{2} $. 
+	\begin{itemize}
+		\item [(\Romannum{1})] Show that
+		\[ \op = {2 \over n}\sum_{i=1}^{n}\bCov_{\cY}( \widehat{Y}_{i},Y_{i} ). \]
+		
+		\begin{align*}
+		    \op & = \Err_{\rin} - \bbE_{\cY} \widebar{\err} \\
+		    & = {1 \over n}\sum_{i=1}^{n}\bbE_{\cY,\cY^{\new}}\ell(Y_{i}^{\new},\widehat{Y}_{i}) - {1 \over n}\sum_{i=1}^{n} \bbE_{\cY} \ell(Y_{i},\widehat{Y}_{i}) \\
+		    & = {1 \over n}\sum_{i=1}^{n}\bbE_{\cY,\cY^{\new}}\left[ \ell(Y_{i}^{\new},\widehat{Y}_{i}) - \ell(Y_{i},\widehat{Y}_{i}) \right]
+		\end{align*}
+		
+		Plug in $ \ell(y,\widehat{y}) := (y - \widehat{y})^{2} $,
+		\begin{align*}
+		    \op & = {1 \over n}\sum_{i=1}^{n}\bbE_{\cY,\cY^{\new}}\left[ (Y_{i}^{\new}-\widehat{Y}_{i})^2 - (Y_{i}-\widehat{Y}_{i})^2 \right] \\
+		    & = {1 \over n}\sum_{i=1}^{n}\bbE_{\cY,\cY^{\new}}\left[ Y_{i}^{\new 2} - 2Y_{i}^{\new}\widehat{Y}_{i} - Y_{i}^2 + 2Y_{i}\widehat{Y}_{i} \right]
+		\end{align*}
+		
+		Because
+		\begin{gather*}
+		    \cY^{\new} \indep \cY, \\
+		    \bbE_{\cY^{\new}} Y_{i}^{\new 2} = \bbE_{\cY} Y_{i}^{2}, \\
+		    \bbE_{\cY^{\new}} Y_{i}^{\new} = \bbE_{\cY} Y_{i},
+		\end{gather*}
+		we get
+		\begin{align*}
+		    \op & = {2 \over n}\sum_{i=1}^{n}\bbE_{\cY} Y_{i}\widehat{Y}_{i}  - \bbE_{\cY} Y_{i} \bbE_{\cY} \widehat{Y}_{i} \\
+		    & = {2 \over n}\sum_{i=1}^{n}\bCov_{\cY}( \widehat{Y}_{i},Y_{i} ).
+		\end{align*}
+		
+		\item [(\Romannum{2})] Assume $ \bVar(Y_{i}) = \sigma^{2} $ $ (1 \le i \le n) $. Write $ \cY $ in vector form $ \bY \in \bbR^{n} $. Let $ \Sbb \in \bbR^{n \times n} $ be a (fixed) smoother matrix, $ \widehat{\bY} := \Sbb\bY $ be the linear-smoother in-sample prediction vector. Show that
+		\[ \op = {2 \over n}\Tr(\Sbb)\sigma^{2}. \]
+		
+		Let $S_{ij}$ be the element on the $i$th row and $j$th column of $\Sbb$.
+		\begin{align*}
+		    \bCov_{\cY}( \widehat{Y}_{i},Y_{i} ) & = \bCov_{\cY}( \sum_{j=1}^{n} S_{ij} Y_j, Y_i ) \\
+		    & = \sum_{j=1}^{n} \bCov_{\cY}( S_{ij} Y_j, Y_i ) \\
+		    & = \bCov_{\cY}( S_{ii} Y_i, Y_i ) \quad (Y_i \indep Y_j ,i\ne j)\\
+		    & = S_{ii} \sigma^2.
+		\end{align*}
+		Therefore,
+		\[ \op = {2 \over n}\sum_{i=1}^{n}\bCov_{\cY}( \widehat{Y}_{i},Y_{i} ) = {2 \over n}\Tr(\Sbb)\sigma^{2}. \]
+	\end{itemize}
+	
+	\item (\textit{15 pt}) (Bootstrap Prediction Error) Suppose $ \cY := \{Y_{1} = 1, Y_{2} = 2, Y_{3} = 6\} $ where $ n = 3 $. Consider a linear model
+	\[ Y_{i} = \theta + \epsilon_{i} \quad(i = 1,2,3) \]
+	with $ \epsilon_{1},\epsilon_{2},\epsilon_{3} \overset{iid}{\sim} (0,\sigma^{2}) $ and squared-error loss $ \ell(y,\widehat{y}) := (y - \widehat{y})^{2} $.
+	\begin{itemize}
+		\item [(a)] Consider Bootstrap on $ \cY $. Enumerate all possible unordered \textbf{Bootstrap bags}\footnote{We call a size-$ n $ sample with replacement from $ \cY $ as a Bootstrap bag.} and their Bootstrap probabilities. For example, $ \{ 1,1,2 \} $ is a possible Bootstrap bag with probability $ 3/27 $. Indicate the \textbf{out-of-bag (OOB)} sample points\footnote{Let $ \cY^{*} $ be a Bootstrap bag from $ \cY $, then $ \cY\backslash\cY^{*} $ is the OOB sample.} for each unordered Bootstrap bag.
+		
+
+		\begin{tabular}{c|c|c}
+		Bootstrap bag & Probability & OOB  \\
+		$\{1,1,1\}$ & $ 1/27 $ & $\{2,6\}$ \\
+		$\{2,2,2\}$ & $ 1/27 $ & $\{1,6\}$ \\
+		$\{6,6,6\}$ & $ 1/27 $ & $\{1,2\}$ \\
+		$\{1,1,2\}$ & $ 3/27 $ & $\{6\}$ \\
+		$\{1,1,6\}$ & $ 3/27 $ & $\{2\}$ \\
+		$\{2,2,1\}$ & $ 3/27 $ & $\{6\}$ \\
+		$\{2,2,6\}$ & $ 3/27 $ & $\{1\}$ \\
+		$\{6,6,1\}$ & $ 3/27 $ & $\{2\}$ \\
+		$\{6,6,2\}$ & $ 3/27 $ & $\{1\}$ \\
+		$\{1,2,6\}$ & $ 6/27 $ & $\emptyset$ \\
+		\end{tabular}
+
+		
+		\item [(b)] For each Bootstrap sample $ \cY^{*}_{b} $, derive the least-square prediction rule and its prediction on $ \cY $ as $ \{\widehat{Y}_{bi}^{*}\}_{i=1}^{n} $. Compare the training error $ \widebar{\err} $, Bootstrap prediction error estimate 
+		\[ \err_{b}^{*} := \sum_{i=1}^{n}\ell(Y_{i},\widehat{Y}_{bi}^{*}), \quad \widehat{\Err}_{\boot} := \lim_{B\to+\infty}{1 \over nB}\sum_{b=1}^{B}\err_{b}^{*}, \]
+		and the OOB prediction error estimate\footnote{$ \widehat{\Err}_{\oob} $ is the same as the leave-one-out Bootstrap estimate $ \widehat{\Err}^{(1)} $ introduced in \citet[Equation (7.56)]{friedman2009elements}, where they only differ in the order of summation (summing over Bootstrap bags and sample points).}
+		\[ \err^{*}_{\oob,b} := \sum_{Y_{i} \in \cY\backslash\cY^{*}_{b}}\ell(Y_{i},\widehat{Y}_{bi}^{*}), \quad p_{\oob,n} := \left( 1 - {1 \over n} \right)^{n}, \quad \widehat{\Err}_{\oob} := \lim_{B\to+\infty}{1 \over np_{\oob,n}B}\sum_{b=1}^{B}\widebar{\err}_{\oob,b}^{*}. \]
+		
+		Let a Bootstrap sample $ \cY^{*}_{b} = \{Y_{bi}^{*}\}_{i=1}^{n}$.
+		The least-square estimate of $\theta$ is
+		\begin{align*}
+		    \hat{\theta}_b & = \arg \min_{\theta} \sum_{i=1}^{n} (Y_{bi}^{*} - \theta)^2 \\
+		    & = \frac{1}{n}\sum_{i=1}^{n} Y_{bi}^{*}
+		\end{align*}
+		The least-square rule's prediction $ \widehat{Y}_{bi}^{*} = \hat{\theta}_b $ for all the samples.
+		
+		\begin{tabular}{c|c|c|c|c|c}
+		Bootstrap bag & Probability & OOB & $ \hat{\theta}_b$ & Training error, $\err_{b}^{*}$ & OOB error, $\err_{\oob,b}^{*}$  \\
+		$\{1,1,1\}$ & $ 1/27 $ & $\{2,6\}$ & 1 & 26 & 26 \\
+		$\{2,2,2\}$ & $ 1/27 $ & $\{1,6\}$ & 2 & 17 & 17 \\
+		$\{6,6,6\}$ & $ 1/27 $ & $\{1,2\}$ & 6 & 41 & 41 \\
+		$\{1,1,2\}$ & $ 3/27 $ & $\{6\}$ & 4/3 & 67/3 & 1176/9 \\
+		$\{1,1,6\}$ & $ 3/27 $ & $\{2\}$ & 8/3 & 43/3 & 4/9 \\
+		$\{2,2,1\}$ & $ 3/27 $ & $\{6\}$ & 5/3 & 58/3 & 169/9 \\
+		$\{2,2,6\}$ & $ 3/27 $ & $\{1\}$ & 10/3 & 43/3 & 49/9 \\
+		$\{6,6,1\}$ & $ 3/27 $ & $\{2\}$ & 13/3 & 58/3 & 49/9 \\
+		$\{6,6,2\}$ & $ 3/27 $ & $\{1\}$ & 14/3 & 67/3 & 121/9 \\
+		$\{1,2,6\}$ & $ 6/27 $ & $\emptyset$ & 3 & 14 & 0 \\
+		\end{tabular}
+		\begin{align*}
+		    \widehat{\Err}_{\boot} & := \lim_{B\to+\infty}{1 \over nB}\sum_{b=1}^{B}\err_{b}^{*} \\
+		    & = \frac{1}{n}\sum_{b} \Pr(b) \err_{b}^{*} \\
+		    & = 56/3
+		\end{align*}
+		\begin{align*}
+		    \widehat{\Err}_{\oob} & := \lim_{B\to+\infty}{1 \over np_{\oob,n}B}\sum_{b=1}^{B}\widebar{\err}_{\oob,b}^{*} \\
+		    & = \frac{1}{np_{\oob,n}} \sum_{b} \Pr(b) \err_{\oob,b}^{*} \\
+		    & = 455/18
+		\end{align*}
+		
+		
+		
+	\end{itemize}
+
+	\item (\textit{20 pt}) (SVM) Let $ \{ (\bx_{i},y_{i}) \}_{i=1}^{n} \subseteq \bbR^{p} \times \{ \pm 1 \} $ be a training sample. Consider the large-margin linear classification problem
+	\begin{align}
+	\begin{array}{cll}
+	\max\limits_{(\bw,b) \in \bbR^{p+1}} & \gamma\\
+	\st & y_{i}(b + \bw^{T}\bx_{i}) \ge \gamma & (1 \le i \le n)\\
+	& \|\bw\|_{2} = 1
+	\end{array}\label{eq_svm_max}
+	\end{align}
+	\begin{itemize}
+		\item [(a)] Show that (\ref{eq_svm_max}) is equivalent to
+		\begin{align}
+			\begin{array}{cll}
+			\min\limits_{(\bw,b) \in \bbR^{p+1}} & {1 \over 2}\|\bw\|_{2}^{2}\\
+			\st & y_{i}(b + \bw^{T}\bx_{i}) \ge 1 & (1 \le i \le n)
+			\end{array}\label{eq_svm_min}
+		\end{align}
+		
+		Let $\bv = \bw/\gamma$. (\ref{eq_svm_max}) is equivalent to 
+		\begin{align*}
+	\begin{array}{cll}
+	\max\limits_{(\bv,b) \in \bbR^{p+1}} & \gamma\\
+	\st & y_{i}(\frac{b}{\gamma} + \bv\bx_{i}) \ge 1 & (1 \le i \le n)\\
+	& \|\bv\|_{2} = \frac{1}{\gamma}
+	\end{array}
+	\end{align*}
+	equivalent to 
+	\begin{align*}
+	\begin{array}{cll}
+	\max\limits_{(\bv,b) \in \bbR^{p+1}} & \frac{1}{\|\bv\|_{2}} \\
+	\st & y_{i}(\frac{b}{\gamma} + \bv\bx_{i}) \ge 1 & (1 \le i \le n)
+	\end{array}
+	\end{align*}
+	equivalent to (\ref{eq_svm_min}).
+		
+		
+		\item [(b)] Introduce Lagrangian variables $ \balpha \in \bbR^{n}_{+} $ to inequality constraints in (\ref{eq_svm_min}) and write down the Lagrangian function $ L(\bw,b;\balpha) $ \citep[see][Chapter 5]{boyd2004convex}. Use strong duality
+		\[ \begin{array}{ccccl}
+		&\min\limits_{(\bw,b) \in \bbR^{p+1}}\max\limits_{\balpha \in \bbR_{+}^{n}}L(\bw,b;\balpha) & = & \min\limits_{(\bw,b) \in \bbR^{p+1}}L_{\cP}(\bw,b) &(\text{primal problem (\ref{eq_svm_min})})
+		\\
+		=&\max\limits_{\balpha \in \bbR^{n}_{+}}\min\limits_{(\bw,b) \in \bbR^{p+1}}L(\bw,b;\balpha) & = & \max\limits_{\balpha \in \bbR^{n}_{+}}L_{\cD}(\balpha) & (\text{dual problem (\ref{eq_svm_dual})})
+		\end{array} \]
+		to derive the Lagrangian dual problem
+		\begin{align}
+		\begin{array}{cll}
+		\max\limits_{\balpha \in \bbR^{n}} & \displaystyle L_{\cD}(\balpha) = \sum_{i=1}^{n}\alpha_{i} - {1 \over 2}\sum_{i=1}^{n}\sum_{j=1}^{n}\alpha_{i}\alpha_{j}y_{i}y_{j}\langle \bx_{i},\bx_{j} \rangle \\
+		\st & \alpha_{i} \ge 0 & (1 \le i \le n)\\
+		& \displaystyle \sum_{i=1}^{n}\alpha_{i}y_{i} = 0
+		\end{array}\label{eq_svm_dual}
+		\end{align}
+		where the primal problem solution given dual optima $ \balpha^{*} $ is
+		\[ \bw^{*} = \sum_{i=1}^{n}\alpha_{i}^{*}y_{i}\bx_{i}. \]
+		
+		The Lagrangian function is
+		\begin{align*}
+		    L(\bw,b;\balpha) = \frac{1}{2}\|\bw\|_{2}^{2} - \sum_{i=1}^{n}\alpha_i [y_{i}(b + \bw^{T}\bx_{i}) - 1].
+		\end{align*}
+		For any fixed $\alpha$,
+		\begin{align*}
+		    & \frac{\partial L(\bw,b;\balpha)}{\partial w_j} = 0, j=1,2,...,p \implies \bw = \sum_{i=1}^{n}\alpha_i y_{i}\bx_i \\
+		    & \frac{\partial L(\bw,b;\balpha)}{\partial b} = 0 \implies \sum_{i=1}^{n}\alpha_i y_i = 0
+		\end{align*}
+		Plug $\bw = \sum_{i=1}^{n}\alpha_i y_{i}\bx_i$ and $ \sum_{i=1}^{n}\alpha_i y_i = 0 $ into $L(\bw,b;\balpha)$, then we get $L_{\cD}(\balpha)$.
+		
+		\item [(c)] Use KKT conditions to argue that $ \supp(\balpha^{*}) := \{ 1 \le i \le n: \alpha^{*}_{i} \ne 0 \} $ indicates the support vectors. Show how to solve for $ b^{*} $. What's the support hyperplanes and margin?
+		
+		KKT conditions include
+		\begin{align*}
+		    \hat{\alpha}_i[y_{i}(\hat{b} + \hat{\bw}^{T}\bx_{i}) - 1] = 0, i=1,2,...,n
+		\end{align*}
+		These imply 
+		\[\text{if~} \alpha_i \ne 0 \text{,~then~} y_{i}(\hat{b} + \hat{\bw}^{T}\bx_{i}) = 1, \]
+		i.e., $ \supp(\balpha^{*}) := \{ 1 \le i \le n: \alpha^{*}_{i} \ne 0 \} $ indicates the support vectors.
+		
+		If $\bx_i$ is a support vector, then $b^* = 1/y_{i}-\bw^{*T}\bx_{i}$.
+		
+		\item [(d)] (Kernel Trick) Let $ K $ be a positive semidefinite (PSD) kernel on $ \bbR^{p} $ generating a reproducing kernel Hilbert space (RKHS) $ \cH_{K} $, admitting eigen expansion
+		\[ K(\bx,\bx') = \sum_{j=1}^{\infty}\gamma_{j}\phi_{j}(\bx)\phi_{j}(\bx'). \quad(\bx,\bx' \in \bbR^{p}) \]
+		For any $ f \in \cH_{K} $, there exists $ \{ \theta_{j} \}_{j=1}^{\infty} \subseteq \bbR $ such that
+		\[ f(\bx) = \sum_{j=1}^{\infty}\theta_{j}\phi_{j}(\bx), \quad \|f\|^{2}_{\cH_{K}} = \sum_{j=1}^{\infty}{\theta_{j}^{2} \over \gamma_{j}} < +\infty. \]
+		Consider an RKHS analog to (\ref{eq_svm_min})
+		\begin{align}
+		\begin{array}{cll}
+		\min\limits_{f \in \cH_{K}, b \in \bbR} & {1 \over 2}\|f\|_{\cH_{K}}^{2}\\
+		\st & y_{i}[b + f(\bx_{i})] \ge 1 & (1 \le i \le n)
+		\end{array}\label{eq_svm_kern}
+		\end{align}
+		Show that the Lagrangian dual problem now becomes\footnote{It greatly reduces the nonlinear problem to simply replace $ [\langle \bx_{i},\bx_{j} \rangle]_{n\times n} $ by the kernel matrix $ [K(\bx_{i},\bx_{j})]_{n \times n} $ and motivates}
+		\begin{align}
+		\begin{array}{cll}
+		\max\limits_{\balpha \in \bbR^{n}} & \displaystyle L_{\cD}(\balpha) = \sum_{i=1}^{n}\alpha_{i} - {1 \over 2}\sum_{i=1}^{n}\sum_{j=1}^{n}\alpha_{i}\alpha_{j}y_{i}y_{j}K(\bx_{i},\bx_{j}) \\
+		\st & \alpha_{i} \ge 0 & (1 \le i \le n)\\
+		& \displaystyle \sum_{i=1}^{n}\alpha_{i}y_{i} = 0
+		\end{array}\label{eq_svm_kern_dual}
+		\end{align}
+		where the primal problem solution given dual optima $ \balpha^{*} $ is\footnote{It hence also shows that $ f^{*} \in \rspan\{ K(\bx_{i},\cdot) \}_{i=1}^{n} $, which is a generic result for loss minimization over RKHS \citep[Ex 5.15]{wahba1990spline, friedman2009elements}.}
+		\[ f^{*}(\bx) = \sum_{i=1}^{n}\alpha_{i}^{*}y_{i}K(\bx_{i},\bx). \quad(\bx \in \bbR^{p}) \]
+		
+		The Lagrangian function is \[L(\bw,b;\balpha) = {1 \over 2}\|f\|_{\cH_{K}}^{2} - \sum_{i=1}^n \alpha_i \{y_{i}[b + f(\bx_{i})] - 1\}. \]
+		
+		For any fixed $\alpha$,
+		\begin{align*}
+		    & \frac{\partial L(\bw,b;\balpha)}{\partial \theta_j} = 0, j=1,2,... \implies \theta_j = \sum_{i=1}^{n} \alpha_i y_{i} \gamma_j \phi_{j}(\bx_i) \tag{d1} \\
+		    & \frac{\partial L(\bw,b;\balpha)}{\partial b} = 0 \implies \sum_{i=1}^{n}\alpha_i y_i = 0 \tag{d2}
+		\end{align*}
+		Plug (d1) and (d2) into the Lagrangian function $L(\bw,b;\balpha)$, then we get $L_{\cD}(\balpha)$.
+		
+		Plug (d1) into $f(\bx)$, then we get 
+		\[ f^{*}(\bx) = \sum_{i=1}^{n}\alpha_{i}^{*}y_{i}K(\bx_{i},\bx). \quad(\bx \in \bbR^{p}) \]
+	\end{itemize}
+	\end{enumerate}
+
+\section*{Computational Part}
+
+\begin{enumerate}
+	\item (\textit{20 pt}) \textbf{Backfitting and Coordinate Descent in LASSO \citep{wu2008coordinate,friedman2010regularization}}\\
+	Recall that the univariate LASSO regression $ \{ Y_{i} \}_{i=1}^{n} $ on standardized regressor $ \{ X_{i} \}_{i=1}^{n} $ with $ \sum_{i=1}^{n}X_{i} = 0 $, $ {1 \over n}\sum_{i=1}^{n}X_{i}^{2} = 1 $\footnote{It admits with the internal standardization of \texttt{glmnet}. Note that \texttt{scale} function scales as $ {1 \over n-1}\sum_{i=1}^{n}X_{i}^{2} = 1 $.} is soft-thresholding
+	\[ \argmin_{\alpha,\beta \in \bbR} {1 \over 2n}\sum_{i=1}^{n}(Y_{i} - \alpha - \beta X_{i})^{2} + \lambda |\beta| = \left( \widebar{Y}, \cS( \widehat{\beta}_{\LS}; \lambda) \right) \]
+	where $ \widehat{\beta}_{\LS} = {1 \over n}\sum_{i=1}^{n}X_{i}(Y_{i} - \widebar{Y}) $ is the ordinary least-square estimate, $ \cS $ is a soft-thresholding operator
+	\[ \cS(z;\lambda) := \sign(z)(|z| - \lambda)_{+} = \begin{cases}
+	z-\lambda, & z > \lambda\\
+	0, & -\gamma < z \le \lambda\\
+	z+\lambda, & z \le -\lambda
+	\end{cases} \]
+	Derive the cyclic backfitting algorithm to solve multivariate LASSO regression given a standardized covariate matrix $ \Xb = [X_{ij}]_{n\times p} \in \bbR^{n\times p} $ with $ \sum_{i=1}^{n}X_{ij} = 0 $, $ {1 \over n}\sum_{i=1}^{n}X_{ij}^{2} = 1 $, response vector $ \bY \in \bbR^{n} $ and $ \ell^{1} $-regularization parameter $ \lambda > 0 $. Write an \textbf{R} function \texttt{lasso} and compare it with \texttt{glmnet} on your simulated
+	\[ n=p=100, \quad \{X_{ij}\}_{i,j=1}^{100},\{Y_{i}\}_{i=1}^{100}\overset{iid}{\sim}\cN(0,1), \quad \lambda = 1/10. \]
+	
+	\begin{hint}
+		The algorithm derived above is implemented in \texttt{glmnet} \citep{friedman2010regularization}. In order to get exactly the same result from \texttt{glmnet}, standardize the data on your own to avoid internal scaling since \texttt{glmnet} would report coefficients in the original scale. Specify \texttt{lambda = 1/10} in \texttt{glmnet} to avoid internal generated $\lambda$ sequence. Set the \texttt{thresh} option to \texttt{1e-20} to get an accurate fit.
+	\end{hint}
+	
+	\item (\textit{20 pt}) (Textbook Ex. 7.9) \textbf{Prostate Cancer Data}\\
+	Carry out a best-subset regression analysis on the \textit{Prostate Cancer Data} as Hw2 has done, while using AIC, BIC, 5-fold and 10-fold CVs, and Bootstrap .632 estimates of prediction error to tune the best size of subsets. Discuss the results.
+	\item (\textit{20 pt}) \textbf{South African Heart Disease Data} \\
+	Perform Support Vector Machine analysis on the \textit{South African Heart Disease Data} with various kernels and compare the prediction performance with the results using LDA, QDA, and Logistic regression in Hw3. Remember to tune the bandwidth parameters in nonlinear kernels using cross-validation.
+\end{enumerate}
+
+\bibliography{bibfile.bib}
+\bibliographystyle{plainnat}
+\end{document}
